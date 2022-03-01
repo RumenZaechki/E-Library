@@ -9,6 +9,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "E-Library.Data", "E-Library
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "E-Library.Services", "E-Library.Services\E-Library.Services.csproj", "{7ABA2EA1-88E8-4093-8082-177F28C3145A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{D01FDFC6-9195-4289-9DA0-218B3F9FF809}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{0649B0E6-8DFE-4A4F-9D80-FDEFE3A35E6E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{55C0F835-E158-46ED-B9E0-5E5F15C1D4DA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +36,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{566F8EDB-0283-470B-946C-81579E93AD80} = {D01FDFC6-9195-4289-9DA0-218B3F9FF809}
+		{20890008-8311-41FF-8148-53AD87A935BB} = {0649B0E6-8DFE-4A4F-9D80-FDEFE3A35E6E}
+		{7ABA2EA1-88E8-4093-8082-177F28C3145A} = {55C0F835-E158-46ED-B9E0-5E5F15C1D4DA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {01ADA3FD-B6F9-4EEE-A1FE-52FDA38D33E8}

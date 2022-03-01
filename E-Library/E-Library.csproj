@@ -20,4 +20,8 @@
     <ProjectReference Include="..\E-Library.Data\E-Library.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\" />
+  </ItemGroup>
+
 </Project>

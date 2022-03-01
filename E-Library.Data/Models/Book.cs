@@ -18,6 +18,8 @@ namespace E_Library.Data.Models
         [Column(TypeName = "decimal(18,4)")]
         public decimal Price { get; set; }
         [Required]
+        public string ImageUrl { get; set; }
+        [Required]
         public DateTime Release { get; set; }
         [Required]
         public string AuthorId { get; set; }
