@@ -5,3 +5,5 @@
 /.vs/E-Library
 /.vs
 /E-Library/obj/Release/net6.0
+/E-Library.Data/bin/Debug/net6.0
+/E-Library.Services/obj/Debug/net6.0

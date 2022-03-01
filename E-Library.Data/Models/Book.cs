@@ -15,6 +15,7 @@ namespace E_Library.Data.Models
         [StringLength(BookConstants.DescriptionMaxLength)]
         public string Description { get; set; }
         [Required]
+        [Column(TypeName = "decimal(18,4)")]
         public decimal Price { get; set; }
         [Required]
         public DateTime Release { get; set; }

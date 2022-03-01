@@ -20,6 +20,10 @@ namespace E_Library.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<BookCategory>(bc =>
+            {
+                bc.HasKey(k => new {k.CategoryId, k.BookId });
+            });
             base.OnModelCreating(modelBuilder);
         }
     }
