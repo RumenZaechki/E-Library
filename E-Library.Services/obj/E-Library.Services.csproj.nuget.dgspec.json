@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\My Lord\\Source\\Repos\\E-Library\\E-Library\\E-Library.csproj": {}
+    "C:\\Users\\My Lord\\Source\\Repos\\E-Library\\E-Library.Services\\E-Library.Services.csproj": {}
   },
   "projects": {
-    "C:\\Users\\My Lord\\Source\\Repos\\E-Library\\E-Library\\E-Library.csproj": {
+    "C:\\Users\\My Lord\\Source\\Repos\\E-Library\\E-Library.Services\\E-Library.Services.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\My Lord\\Source\\Repos\\E-Library\\E-Library\\E-Library.csproj",
-        "projectName": "E-Library",
-        "projectPath": "C:\\Users\\My Lord\\Source\\Repos\\E-Library\\E-Library\\E-Library.csproj",
+        "projectUniqueName": "C:\\Users\\My Lord\\Source\\Repos\\E-Library\\E-Library.Services\\E-Library.Services.csproj",
+        "projectName": "E-Library.Services",
+        "projectPath": "C:\\Users\\My Lord\\Source\\Repos\\E-Library\\E-Library.Services\\E-Library.Services.csproj",
         "packagesPath": "C:\\Users\\My Lord\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\My Lord\\Source\\Repos\\E-Library\\E-Library\\obj\\",
+        "outputPath": "C:\\Users\\My Lord\\Source\\Repos\\E-Library\\E-Library.Services\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\My Lord\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -39,28 +39,6 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "dependencies": {
-            "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
-              "target": "Package",
-              "version": "[6.0.2, )"
-            },
-            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
-              "target": "Package",
-              "version": "[6.0.2, )"
-            },
-            "Microsoft.AspNetCore.Identity.UI": {
-              "target": "Package",
-              "version": "[6.0.2, )"
-            },
-            "Microsoft.EntityFrameworkCore.SqlServer": {
-              "target": "Package",
-              "version": "[6.0.2, )"
-            },
-            "Microsoft.EntityFrameworkCore.Tools": {
-              "target": "Package",
-              "version": "[6.0.2, )"
-            }
-          },
           "imports": [
             "net461",
             "net462",
@@ -72,9 +50,6 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
