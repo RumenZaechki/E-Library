@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\My Lord\\Source\\Repos\\E-Library\\E-Library.Services\\E-Library.Services.csproj": {}
+    "C:\\Users\\My Lord\\source\\repos\\E-Library\\E-Library.Services\\E-Library.Services.csproj": {}
   },
   "projects": {
-    "C:\\Users\\My Lord\\Source\\Repos\\E-Library\\E-Library.Services\\E-Library.Services.csproj": {
+    "C:\\Users\\My Lord\\source\\repos\\E-Library\\E-Library.Services\\E-Library.Services.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\My Lord\\Source\\Repos\\E-Library\\E-Library.Services\\E-Library.Services.csproj",
+        "projectUniqueName": "C:\\Users\\My Lord\\source\\repos\\E-Library\\E-Library.Services\\E-Library.Services.csproj",
         "projectName": "E-Library.Services",
-        "projectPath": "C:\\Users\\My Lord\\Source\\Repos\\E-Library\\E-Library.Services\\E-Library.Services.csproj",
+        "projectPath": "C:\\Users\\My Lord\\source\\repos\\E-Library\\E-Library.Services\\E-Library.Services.csproj",
         "packagesPath": "C:\\Users\\My Lord\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\My Lord\\Source\\Repos\\E-Library\\E-Library.Services\\obj\\",
+        "outputPath": "C:\\Users\\My Lord\\source\\repos\\E-Library\\E-Library.Services\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\My Lord\\AppData\\Roaming\\NuGet\\NuGet.Config",
