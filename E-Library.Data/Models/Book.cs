@@ -26,7 +26,6 @@ namespace E_Library.Data.Models
 
         [ForeignKey(nameof(AuthorId))]
         public Author Author { get; set; }
-        [Required]
         public string CartId { get; set; }
 
         [ForeignKey(nameof(CartId))]

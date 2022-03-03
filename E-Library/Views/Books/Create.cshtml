@@ -1,0 +1,53 @@
+﻿@model CreateBookFormModel
+@{
+    ViewData["Title"] = "Add Book To Library";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-xl-6 offset-lg-2 col-lg-8 col-sm-12">
+            <h2>Add Book to Library</h2>
+
+            <form method="post">
+                <div class="form-group">
+                    <label asp-for="Title">Title</label>
+                    <input class="form-control" asp-for="Title">
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description">Description</label>
+                    <textarea class="form-control" asp-for="Description" rows="4"></textarea>
+                </div>
+@*                <div class="form-group">
+                    <label asp-for="Category">Category</label>
+                    <input class="form-control" asp-for="Category">
+                </div>*@
+                <div class="form-group">
+                    <label asp-for="Price">Price</label>
+                    <input class="form-control" asp-for="Price">
+                </div>
+                <div class="form-group">
+                    <label asp-for="ImageUrl">ImageUrl</label>
+                    <input class="form-control" asp-for="ImageUrl">
+                </div>
+                <div class="form-group">
+                    <label asp-for="Release">Release</label>
+                    <input class="form-control" asp-for="Release">
+                </div>
+                <div class="form-group">
+                    <label asp-for="Author">Author</label>
+                    <input class="form-control" asp-for="Author">
+                </div>
+                <div class="form-group">
+                    <label asp-for="CategoryId">Category</label>
+                    <select asp-for="CategoryId" class="form-control">
+                        @foreach (var category in Model.Categories)
+                        {
+                            <option value="@category.Id">@category.Name</option>
+                        }
+                    </select>
+                </div>
+                <input class="btn btn-primary" type="submit" value="Save"/>
+            </form>
+        </div>
+    </div>
+</div>
