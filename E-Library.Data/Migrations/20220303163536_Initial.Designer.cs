@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Library.Data.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    [Migration("20220303160808_Initial")]
+    [Migration("20220303163536_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -72,8 +72,8 @@ namespace E_Library.Data.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,4)");
 
-                    b.Property<DateTime>("Release")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("Release")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()

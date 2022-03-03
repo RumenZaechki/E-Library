@@ -123,7 +123,7 @@ namespace E_Library.Data.Migrations
                     Description = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Release = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Release = table.Column<int>(type: "int", nullable: false),
                     AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     CartId = table.Column<string>(type: "nvarchar(36)", nullable: false)

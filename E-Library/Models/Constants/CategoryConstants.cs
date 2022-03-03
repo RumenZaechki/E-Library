@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace E_Library.Data.Constants
+namespace E_Library.Models.Constants
 {
-    public class AuthorConstants
+    public class CategoryConstants
     {
-        public const int AuthorNameMaxLength = 40;
+        public const int CategoryNameMaxLength = 40;
     }
 }

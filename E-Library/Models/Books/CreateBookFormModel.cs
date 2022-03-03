@@ -1,19 +1,28 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using E_Library.Models.Constants;
+using System.ComponentModel.DataAnnotations;
 
 namespace E_Library.Models.Books
 {
     public class CreateBookFormModel
     {
+        [Required]
+        [MaxLength(BookConstants.TitleMaxLength)]
         public string Title { get; set; }
+        [Required]
+        [MaxLength(BookConstants.DescriptionMaxLength)]
         public string Description { get; set; }
-        //public string Category { get; set; }
+        [Required]
         public decimal Price { get; set; }
         [Display(Name = "Image URL")]
+        [Required]
         public string ImageUrl { get; set; }
-        public string Release { get; set; }
+        [Required]
+        public int Release { get; set; }
+        [Required]
+        [MaxLength(AuthorConstants.AuthorNameMaxLength)]
         public string Author { get; set; }
         [Display(Name = "Category")]
-        public string CategoryId { get; set; }
+        public int CategoryId { get; set; }
         public IEnumerable<BookCategoryViewModel> Categories { get; set; }
     }
 }

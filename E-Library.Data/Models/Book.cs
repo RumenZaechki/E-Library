@@ -20,7 +20,7 @@ namespace E_Library.Data.Models
         [Required]
         public string ImageUrl { get; set; }
         [Required]
-        public DateTime Release { get; set; }
+        public int Release { get; set; }
         [Required]
         public string AuthorId { get; set; }
         [Required]

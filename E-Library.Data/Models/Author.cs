@@ -9,9 +9,6 @@ namespace E_Library.Data.Models
         public string Id { get; set; } = Guid.NewGuid().ToString();
         [Required]
         [StringLength(AuthorConstants.AuthorNameMaxLength)]
-        public string FirstName { get; set; }
-        [Required]
-        [StringLength(AuthorConstants.AuthorNameMaxLength)]
-        public string LastName { get; set; }
+        public string Name { get; set; }
     }
 }
