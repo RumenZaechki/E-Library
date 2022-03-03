@@ -11,7 +11,7 @@ namespace E_Library.Data.Models
     public class Category
     {
         [Key]
-        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public int Id { get; set; }
         [Required]
         [StringLength(CategoryConstants.CategoryNameMaxLength)]
         public string Name { get; set; }

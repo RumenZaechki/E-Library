@@ -6,13 +6,17 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v6.0": {
-      "E-Library.Services/1.0.0": {
+      "E-Library/1.0.0": {
         "dependencies": {
-          "E-Library": "1.0.0",
-          "E-Library.Data": "1.0.0"
+          "E-Library.Data": "1.0.0",
+          "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "6.0.2",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "6.0.2",
+          "Microsoft.AspNetCore.Identity.UI": "6.0.2",
+          "Microsoft.EntityFrameworkCore.SqlServer": "6.0.2",
+          "Microsoft.EntityFrameworkCore.Tools": "6.0.2"
         },
         "runtime": {
-          "E-Library.Services.dll": {}
+          "E-Library.dll": {}
         }
       },
       "Humanizer.Core/2.8.26": {
@@ -528,19 +532,6 @@
           }
         }
       },
-      "E-Library/1.0.0": {
-        "dependencies": {
-          "E-Library.Data": "1.0.0",
-          "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "6.0.2",
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "6.0.2",
-          "Microsoft.AspNetCore.Identity.UI": "6.0.2",
-          "Microsoft.EntityFrameworkCore.SqlServer": "6.0.2",
-          "Microsoft.EntityFrameworkCore.Tools": "6.0.2"
-        },
-        "runtime": {
-          "E-Library.dll": {}
-        }
-      },
       "E-Library.Data/1.0.0": {
         "dependencies": {
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "6.0.2",
@@ -556,7 +547,7 @@
     }
   },
   "libraries": {
-    "E-Library.Services/1.0.0": {
+    "E-Library/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -924,11 +915,6 @@
       "sha512": "sha512-CeWTdRNfRaSh0pm2gDTJFwVaXfTq6Xwv/sA887iwPTneW7oMtMlpvDIO+U60+3GWTB7Aom6oQwv5VZVUhQRdPQ==",
       "path": "system.windows.extensions/4.7.0",
       "hashPath": "system.windows.extensions.4.7.0.nupkg.sha512"
-    },
-    "E-Library/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
     },
     "E-Library.Data/1.0.0": {
       "type": "project",

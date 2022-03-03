@@ -23,6 +23,10 @@ namespace E_Library.Data.Models
         public DateTime Release { get; set; }
         [Required]
         public string AuthorId { get; set; }
+        [Required]
+        public int CategoryId { get; set; }
+        [ForeignKey(nameof(CategoryId))]
+        public Category Category { get; set; }
 
         [ForeignKey(nameof(AuthorId))]
         public Author Author { get; set; }
@@ -30,5 +34,6 @@ namespace E_Library.Data.Models
 
         [ForeignKey(nameof(CartId))]
         public Cart Cart { get; set; }
+        public ICollection<Review> Reviews { get; set; } = new List<Review>();
     }
 }
