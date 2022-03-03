@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace E_Library.Data.Models
 {
@@ -7,8 +8,6 @@ namespace E_Library.Data.Models
         [Key]
         [StringLength(36)]
         public string Id { get; set; } = Guid.NewGuid().ToString();
-
-        public User User { get; set; }
 
         public ICollection<Book> Books { get; set; } = new List<Book>();
     }
