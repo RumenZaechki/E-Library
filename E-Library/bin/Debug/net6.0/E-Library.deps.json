@@ -8,7 +8,6 @@
     ".NETCoreApp,Version=v6.0": {
       "E-Library/1.0.0": {
         "dependencies": {
-          "E-Library.Data": "1.0.0",
           "E-Library.Services": "1.0.0",
           "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "6.0.2",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "6.0.2",

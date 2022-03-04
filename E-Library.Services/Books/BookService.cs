@@ -1,5 +1,6 @@
 ﻿using E_Library.Data;
 using E_Library.Data.Models;
+using E_Library.Services.Books.Models;
 using E_Library.Services.Contracts;
 
 namespace E_Library.Services
@@ -10,6 +11,22 @@ namespace E_Library.Services
         public BookService(LibraryDbContext data)
         {
             this.data = data;
+        }
+        public IEnumerable<BookServiceModel> GetBooks()
+        {
+            return this.data.Books
+                .Select(x => new BookServiceModel
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Description = x.Description,
+                    Price = x.Price,
+                    ImageUrl = x.ImageUrl,
+                    Release = x.Release,
+                    Author = x.Author.Name,
+                    Category = x.Category.Name
+                })
+                .ToList();
         }
         public void Create(string title, string description, decimal price, string imageUrl, int release, string author, int categoryId)
         {

@@ -122,6 +122,7 @@ namespace E_Library.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("BookId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
@@ -385,9 +386,13 @@ namespace E_Library.Data.Migrations
 
             modelBuilder.Entity("E_Library.Data.Models.Review", b =>
                 {
-                    b.HasOne("E_Library.Data.Models.Book", null)
+                    b.HasOne("E_Library.Data.Models.Book", "Book")
                         .WithMany("Reviews")
-                        .HasForeignKey("BookId");
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

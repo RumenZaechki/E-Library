@@ -1,4 +1,5 @@
-﻿using System;
+﻿using E_Library.Services.Books.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,5 +11,7 @@ namespace E_Library.Services.Contracts
     {
         public Dictionary<int, string> GetBookCategories();
         public void Create(string title, string description, decimal price, string imageUrl, int release, string author, int categoryId);
+        public IEnumerable<BookServiceModel> GetBooks();
+
     }
 }
