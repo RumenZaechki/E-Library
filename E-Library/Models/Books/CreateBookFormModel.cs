@@ -23,6 +23,6 @@ namespace E_Library.Models.Books
         public string Author { get; set; }
         [Display(Name = "Category")]
         public int CategoryId { get; set; }
-        public IEnumerable<BookCategoryViewModel> Categories { get; set; }
+        public IEnumerable<BookCategoryViewModel>? Categories { get; set; }
     }
 }

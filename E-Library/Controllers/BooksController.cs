@@ -19,7 +19,6 @@ namespace E_Library.Controllers
         [HttpPost]
         public IActionResult Create(CreateBookFormModel book)
         {
-            book.Categories = GetBookCategories();
             if (!ModelState.IsValid)
             {
                 book.Categories = GetBookCategories();
@@ -32,8 +31,10 @@ namespace E_Library.Controllers
                 {
                     Name = book.Author
                 };
+                this.data.Authors.Add(author);
+                this.data.SaveChanges();
             }
-            author = this.data.Authors.FirstOrDefault(a => a.Name == book.Author);
+            author = this.data.Authors.Where(a => a.Name == book.Author).FirstOrDefault();
             var bookToAdd = new Book
             {
                 Title = book.Title,
