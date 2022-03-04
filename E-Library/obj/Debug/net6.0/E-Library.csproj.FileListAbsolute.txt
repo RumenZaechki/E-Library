@@ -70,3 +70,5 @@ C:\Users\My Lord\Source\Repos\E-Library\E-Library\obj\Debug\net6.0\E-Library.gen
 C:\Users\My Lord\Source\Repos\E-Library\E-Library\obj\Debug\net6.0\ref\E-Library.dll
 C:\Users\My Lord\Source\Repos\E-Library\E-Library\bin\Debug\net6.0\E-Library.Data.dll
 C:\Users\My Lord\Source\Repos\E-Library\E-Library\bin\Debug\net6.0\E-Library.Data.pdb
+C:\Users\My Lord\source\repos\E-Library\E-Library\bin\Debug\net6.0\E-Library.Services.dll
+C:\Users\My Lord\source\repos\E-Library\E-Library\bin\Debug\net6.0\E-Library.Services.pdb

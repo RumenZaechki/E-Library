@@ -12,7 +12,4 @@
   <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <SourceRoot Include="C:\Users\My Lord\.nuget\packages\" />
   </ItemGroup>
-  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <PkgMicrosoft_EntityFrameworkCore_Tools Condition=" '$(PkgMicrosoft_EntityFrameworkCore_Tools)' == '' ">C:\Users\My Lord\.nuget\packages\microsoft.entityframeworkcore.tools\6.0.2</PkgMicrosoft_EntityFrameworkCore_Tools>
-  </PropertyGroup>
 </Project>

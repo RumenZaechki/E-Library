@@ -781,6 +781,19 @@
         "runtime": {
           "bin/placeholder/E-Library.Data.dll": {}
         }
+      },
+      "E-Library.Services/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "E-Library.Data": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/E-Library.Services.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/E-Library.Services.dll": {}
+        }
       }
     }
   },
@@ -2275,11 +2288,17 @@
       "type": "project",
       "path": "../E-Library.Data/E-Library.Data.csproj",
       "msbuildProject": "../E-Library.Data/E-Library.Data.csproj"
+    },
+    "E-Library.Services/1.0.0": {
+      "type": "project",
+      "path": "../E-Library.Services/E-Library.Services.csproj",
+      "msbuildProject": "../E-Library.Services/E-Library.Services.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0": [
       "E-Library.Data >= 1.0.0",
+      "E-Library.Services >= 1.0.0",
       "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore >= 6.0.2",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 6.0.2",
       "Microsoft.AspNetCore.Identity.UI >= 6.0.2",
@@ -2316,6 +2335,9 @@
           "projectReferences": {
             "C:\\Users\\My Lord\\source\\repos\\E-Library\\E-Library.Data\\E-Library.Data.csproj": {
               "projectPath": "C:\\Users\\My Lord\\source\\repos\\E-Library\\E-Library.Data\\E-Library.Data.csproj"
+            },
+            "C:\\Users\\My Lord\\source\\repos\\E-Library\\E-Library.Services\\E-Library.Services.csproj": {
+              "projectPath": "C:\\Users\\My Lord\\source\\repos\\E-Library\\E-Library.Services\\E-Library.Services.csproj"
             }
           }
         }

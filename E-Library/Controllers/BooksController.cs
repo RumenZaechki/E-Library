@@ -1,64 +1,45 @@
 ﻿using E_Library.Data;
+using E_Library.Services;
 using E_Library.Data.Models;
 using E_Library.Models.Books;
 using Microsoft.AspNetCore.Mvc;
+using E_Library.Services.Contracts;
 
 namespace E_Library.Controllers
 {
     public class BooksController : Controller
     {
         private readonly LibraryDbContext data;
-        public BooksController(LibraryDbContext data)
+        private readonly IBookService bookService;
+        public BooksController(LibraryDbContext data, IBookService bookService)
         {
             this.data = data;
+            this.bookService = bookService;
         }
         public IActionResult Create() => View(new CreateBookFormModel
         {
-            Categories = GetBookCategories()
+            Categories = GetCategories()
         });
         [HttpPost]
         public IActionResult Create(CreateBookFormModel book)
         {
             if (!ModelState.IsValid)
             {
-                book.Categories = GetBookCategories();
+                book.Categories = GetCategories();
                 return View(book);
             }
-            Author author = null;
-            if (!this.data.Authors.Any(a => a.Name == book.Author))
-            {
-                author = new Author
-                {
-                    Name = book.Author
-                };
-                this.data.Authors.Add(author);
-                this.data.SaveChanges();
-            }
-            author = this.data.Authors.Where(a => a.Name == book.Author).FirstOrDefault();
-            var bookToAdd = new Book
-            {
-                Title = book.Title,
-                Description = book.Description,
-                Price = book.Price,
-                ImageUrl = book.ImageUrl,
-                Release = book.Release,
-                CategoryId = book.CategoryId,
-                AuthorId = author.Id,
-            };
-            this.data.Books.Add(bookToAdd);
-            this.data.SaveChanges();
+            bookService.Create(book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author, book.CategoryId);
             return RedirectToAction("Index", "Home");
         }
-        public IEnumerable<BookCategoryViewModel> GetBookCategories()
+
+        private IEnumerable<BookCategoryViewModel> GetCategories()
         {
-            return this.data
-                .Categories
-                .Select(c => new BookCategoryViewModel
-                {
-                    Id = c.Id,
-                    Name = c.Name,
-                })
-                .ToList();
+            var categoriesObj = this.bookService.GetBookCategories();
+            return categoriesObj.Select(c => new BookCategoryViewModel
+            {
+                Id = c.Key,
+                Name = c.Value,
+            });
         }
     }
 }

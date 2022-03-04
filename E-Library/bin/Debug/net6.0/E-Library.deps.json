@@ -9,6 +9,7 @@
       "E-Library/1.0.0": {
         "dependencies": {
           "E-Library.Data": "1.0.0",
+          "E-Library.Services": "1.0.0",
           "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "6.0.2",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "6.0.2",
           "Microsoft.AspNetCore.Identity.UI": "6.0.2",
@@ -543,6 +544,14 @@
         "runtime": {
           "E-Library.Data.dll": {}
         }
+      },
+      "E-Library.Services/1.0.0": {
+        "dependencies": {
+          "E-Library.Data": "1.0.0"
+        },
+        "runtime": {
+          "E-Library.Services.dll": {}
+        }
       }
     }
   },
@@ -917,6 +926,11 @@
       "hashPath": "system.windows.extensions.4.7.0.nupkg.sha512"
     },
     "E-Library.Data/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "E-Library.Services/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

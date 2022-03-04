@@ -1,5 +1,7 @@
 using E_Library.Data;
 using E_Library.Infrastructure;
+using E_Library.Services;
+using E_Library.Services.Contracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,6 +22,11 @@ builder.Services
     })
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<LibraryDbContext>();
+
+//this is for adding the services, or at least I think so
+builder.Services.AddScoped<IBookService, BookService>();
+
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

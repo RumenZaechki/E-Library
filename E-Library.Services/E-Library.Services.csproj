@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\E-Library.Data\E-Library.Data.csproj" />
-    <ProjectReference Include="..\E-Library\E-Library.csproj" />
   </ItemGroup>
 
 </Project>
