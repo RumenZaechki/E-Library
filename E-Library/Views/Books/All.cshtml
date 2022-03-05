@@ -1,4 +1,7 @@
 ﻿@model AllBooksQueryModel
+@{
+    ViewData["Title"] = "All Books";
+}
 
 <form method="get">
     <div class="row">
@@ -36,4 +39,23 @@
             </div>
         </div>
     }
+</div>
+<div style="width:20px; height:20px"></div>
+<div class="row">
+    <div class="col-md-6">
+        <a class="btn btn-primary"
+        asp-controller="Books"
+        asp-action="All"
+        asp-route-currentPage="@(Model.CurrentPage - 1)"
+        asp-route-selectedCategory="@Model.SelectedCategory"
+        asp-route-searchTerm="@Model.SearchTerm">Previous</a>
+    </div>
+    <div class="col-md-6">
+        <a class="btn btn-primary" style="float:right;"
+        asp-controller="Books" 
+        asp-action="All"
+        asp-route-currentPage="@(Model.CurrentPage + 1)"
+        asp-route-selectedCategory="@Model.SelectedCategory"
+        asp-route-searchTerm="@Model.SearchTerm">Next</a>
+    </div>
 </div>

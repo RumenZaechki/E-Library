@@ -12,13 +12,15 @@ namespace E_Library.Controllers
             this.bookService = bookService;
         }
 
-        public IActionResult All(string selectedCategory, string searchTerm)
+        public IActionResult All([FromQuery] AllBooksQueryModel query)
         {
             var categories = this.bookService.GetBookCategories();
-            if (!string.IsNullOrWhiteSpace(searchTerm))
+            if (!string.IsNullOrWhiteSpace(query.SearchTerm))
             {
                 var soughtBooks = this.bookService
-                    .FindBooks(searchTerm)
+                    .FindBooks(query.SearchTerm)
+                    .Skip((query.CurrentPage - 1) * AllBooksQueryModel.BooksPerPage)
+                    .Take(AllBooksQueryModel.BooksPerPage)
                     .Select(b => new BookListingViewModel
                     {
                         Id = b.Id,
@@ -30,23 +32,24 @@ namespace E_Library.Controllers
                         Author = b.Author,
                         Category = b.Category
                     });
-                if (!string.IsNullOrWhiteSpace(selectedCategory))
+                if (!string.IsNullOrWhiteSpace(query.SelectedCategory))
                 {
-                    soughtBooks = soughtBooks.Where(b => b.Category == selectedCategory);
+                    soughtBooks = soughtBooks.Where(b => b.Category == query.SelectedCategory);
                 }
                 return View(new AllBooksQueryModel
                 {
                     AllBooks = soughtBooks,
-                    SearchTerm = searchTerm,
-                    SelectedCategory = selectedCategory,
-                    Categories = categories
+                    SearchTerm = query.SearchTerm,
+                    SelectedCategory = query.SelectedCategory,
+                    Categories = categories,
                 });
             }
             else
             {
-
                 var books = this.bookService
                     .GetBooks()
+                    .Skip((query.CurrentPage - 1) * AllBooksQueryModel.BooksPerPage)
+                    .Take(AllBooksQueryModel.BooksPerPage)
                     .Select(b => new BookListingViewModel
                     {
                         Id = b.Id,
@@ -59,16 +62,16 @@ namespace E_Library.Controllers
                         Category = b.Category
                     })
                     .ToList();
-                if (!string.IsNullOrWhiteSpace(selectedCategory))
+                if (!string.IsNullOrWhiteSpace(query.SelectedCategory))
                 {
-                    books = books.Where(b => b.Category == selectedCategory).ToList();
+                    books = books.Where(b => b.Category == query.SelectedCategory).ToList();
                 }
                 return View(new AllBooksQueryModel
                 {
                     AllBooks = books,
-                    SearchTerm = searchTerm,
-                    SelectedCategory = selectedCategory,
-                    Categories = categories
+                    SearchTerm = query.SearchTerm,
+                    SelectedCategory = query.SelectedCategory,
+                    Categories = categories,
                 });
             }
         }
