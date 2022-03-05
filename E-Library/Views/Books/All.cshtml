@@ -3,6 +3,17 @@
 <form method="get">
     <div class="row">
         <div class="col-md-3">
+            <label asp-for="SelectedCategory"></label>
+            <select id="select" asp-for="SelectedCategory" class="form-control">
+                <option value="">All</option>
+                @foreach (var category in Model.Categories)
+                {
+                    <option value="@category.Value">@category.Value</option>
+                }
+            </select>
+        </div>
+
+        <div class="col-md-3">
             <div class="form-group">
                 <label asp-for="SearchTerm">Search</label>
                 <input class="form-control" asp-for="SearchTerm">

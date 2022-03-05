@@ -12,9 +12,10 @@ namespace E_Library.Controllers
             this.bookService = bookService;
         }
 
-        public IActionResult All(string searchTerm)
+        public IActionResult All(string selectedCategory, string searchTerm)
         {
-            if (!string.IsNullOrEmpty(searchTerm))
+            var categories = this.bookService.GetBookCategories();
+            if (!string.IsNullOrWhiteSpace(searchTerm))
             {
                 var soughtBooks = this.bookService
                     .FindBooks(searchTerm)
@@ -29,33 +30,45 @@ namespace E_Library.Controllers
                         Author = b.Author,
                         Category = b.Category
                     });
+                if (!string.IsNullOrWhiteSpace(selectedCategory))
+                {
+                    soughtBooks = soughtBooks.Where(b => b.Category == selectedCategory);
+                }
                 return View(new AllBooksQueryModel
                 {
                     AllBooks = soughtBooks,
-                    SearchTerm = searchTerm
+                    SearchTerm = searchTerm,
+                    SelectedCategory = selectedCategory,
+                    Categories = categories
                 });
             }
             else
             {
 
-                var books= this.bookService
+                var books = this.bookService
                     .GetBooks()
                     .Select(b => new BookListingViewModel
-                {
-                    Id = b.Id,
-                    Title = b.Title,
-                    Description = b.Description,
-                    Price = b.Price,
-                    ImageUrl = b.ImageUrl,
-                    Release = b.Release,
-                    Author = b.Author,
-                    Category = b.Category
-                })
+                    {
+                        Id = b.Id,
+                        Title = b.Title,
+                        Description = b.Description,
+                        Price = b.Price,
+                        ImageUrl = b.ImageUrl,
+                        Release = b.Release,
+                        Author = b.Author,
+                        Category = b.Category
+                    })
                     .ToList();
+                if (!string.IsNullOrWhiteSpace(selectedCategory))
+                {
+                    books = books.Where(b => b.Category == selectedCategory).ToList();
+                }
                 return View(new AllBooksQueryModel
                 {
                     AllBooks = books,
-                    SearchTerm = searchTerm
+                    SearchTerm = searchTerm,
+                    SelectedCategory = selectedCategory,
+                    Categories = categories
                 });
             }
         }
