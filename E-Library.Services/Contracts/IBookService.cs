@@ -12,6 +12,7 @@ namespace E_Library.Services.Contracts
         public Dictionary<int, string> GetBookCategories();
         public void Create(string title, string description, decimal price, string imageUrl, int release, string author, int categoryId);
         public IEnumerable<BookServiceModel> GetBooks();
-
+        public int GetTotalUsers();
+        public int GetTotalBooks();
     }
 }

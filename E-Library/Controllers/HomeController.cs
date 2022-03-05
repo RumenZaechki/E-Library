@@ -1,5 +1,6 @@
 ﻿using E_Library.Models;
 using E_Library.Models.Books;
+using E_Library.Models.Home;
 using E_Library.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -18,6 +19,8 @@ namespace E_Library.Controllers
 
         public IActionResult Index()
         {
+            var totalBooks = this.bookService.GetTotalBooks();
+            var totalUsers = this.bookService.GetTotalUsers();
             var books = this.bookService.GetBooks();
             var booksToShow = books.Select(b => new BookListingViewModel
             {
@@ -33,7 +36,12 @@ namespace E_Library.Controllers
                 .OrderByDescending(c => c.Id)
                 .Take(3)
                 .ToList();
-            return View(booksToShow);
+            return View(new IndexViewModel
+            {
+                TotalBooks = totalBooks,
+                TotalUsers = totalUsers,
+                RecentlyAddedBooks = booksToShow,
+            });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

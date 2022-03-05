@@ -12,6 +12,14 @@ namespace E_Library.Services
         {
             this.data = data;
         }
+        public int GetTotalBooks()
+        {
+            return this.data.Books.Count();
+        }
+        public int GetTotalUsers()
+        {
+            return this.data.Users.Count();
+        }
         public IEnumerable<BookServiceModel> GetBooks()
         {
             return this.data.Books
