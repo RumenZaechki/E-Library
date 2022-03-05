@@ -14,5 +14,6 @@ namespace E_Library.Services.Contracts
         public IEnumerable<BookServiceModel> GetBooks();
         public int GetTotalUsers();
         public int GetTotalBooks();
+        public IEnumerable<BookServiceModel> FindBooks(string searchTerm);
     }
 }

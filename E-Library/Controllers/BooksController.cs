@@ -12,22 +12,52 @@ namespace E_Library.Controllers
             this.bookService = bookService;
         }
 
-        public IActionResult All()
+        public IActionResult All(string searchTerm)
         {
-            var books = this.bookService.GetBooks();
-            var booksToShow = books.Select(b => new BookListingViewModel
+            if (!string.IsNullOrEmpty(searchTerm))
             {
-                Id = b.Id,
-                Title = b.Title,
-                Description = b.Description,
-                Price = b.Price,
-                ImageUrl = b.ImageUrl,
-                Release = b.Release,
-                Author = b.Author,
-                Category = b.Category
-            })
-                .ToList();
-            return View(booksToShow);
+                var soughtBooks = this.bookService
+                    .FindBooks(searchTerm)
+                    .Select(b => new BookListingViewModel
+                    {
+                        Id = b.Id,
+                        Title = b.Title,
+                        Description = b.Description,
+                        Price = b.Price,
+                        ImageUrl = b.ImageUrl,
+                        Release = b.Release,
+                        Author = b.Author,
+                        Category = b.Category
+                    });
+                return View(new AllBooksQueryModel
+                {
+                    AllBooks = soughtBooks,
+                    SearchTerm = searchTerm
+                });
+            }
+            else
+            {
+
+                var books= this.bookService
+                    .GetBooks()
+                    .Select(b => new BookListingViewModel
+                {
+                    Id = b.Id,
+                    Title = b.Title,
+                    Description = b.Description,
+                    Price = b.Price,
+                    ImageUrl = b.ImageUrl,
+                    Release = b.Release,
+                    Author = b.Author,
+                    Category = b.Category
+                })
+                    .ToList();
+                return View(new AllBooksQueryModel
+                {
+                    AllBooks = books,
+                    SearchTerm = searchTerm
+                });
+            }
         }
 
         public IActionResult Create() => View(new CreateBookFormModel

@@ -12,6 +12,21 @@ namespace E_Library.Services
         {
             this.data = data;
         }
+        public IEnumerable<BookServiceModel> FindBooks(string searchTerm)
+        {
+            return this.data.Books
+                .Where(b => b.Title.ToLower().Contains(searchTerm.ToLower()))
+                .Select(b => new BookServiceModel
+                {
+                    Title = b.Title,
+                    Description = b.Description,
+                    Price = b.Price,
+                    ImageUrl = b.ImageUrl,
+                    Release = b.Release,
+                    Author = b.Author.Name,
+                    Category = b.Category.Name
+                });
+        }
         public int GetTotalBooks()
         {
             return this.data.Books.Count();

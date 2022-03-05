@@ -1,14 +1,26 @@
-﻿@model IEnumerable<BookListingViewModel>
+﻿@model AllBooksQueryModel
 
+<form method="get">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label asp-for="SearchTerm">Search</label>
+                <input class="form-control" asp-for="SearchTerm">
+            </div>
+        </div>
+    </div>
+</form>
+<div style="width:20px; height:20px"></div>
 <div class="row">
-    @foreach (var book in Model)
+    @foreach (var book in Model.AllBooks)
     {
         <div class="card" style="width: 18rem; margin:0 auto;[B]padding:20px 0;[/B]">
             <img src="@book.ImageUrl" class="card-img-top" alt="@book.Author">
             <div class="card-body">
                 <h5 class="card-title">@book.Title</h5>
-                <p class="card-text">@book.Author
-                Released: @book.Release</p>
+                <p class="card-text">
+                    @book.Author       Released: @book.Release
+                </p>
                 <a asp-controller="Books" asp-action="Details" asp-route-id="@book.Id" class="btn btn-primary">Details</a>
             </div>
         </div>
