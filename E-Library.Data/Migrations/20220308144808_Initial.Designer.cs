@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Library.Data.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    [Migration("20220304105646_Initial")]
+    [Migration("20220308144808_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,7 +49,6 @@ namespace E_Library.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CartId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(36)");
 
                     b.Property<int>("CategoryId")
@@ -369,9 +368,7 @@ namespace E_Library.Data.Migrations
 
                     b.HasOne("E_Library.Data.Models.Cart", "Cart")
                         .WithMany("Books")
-                        .HasForeignKey("CartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CartId");
 
                     b.HasOne("E_Library.Data.Models.Category", "Category")
                         .WithMany()

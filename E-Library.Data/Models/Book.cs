@@ -30,10 +30,10 @@ namespace E_Library.Data.Models
 
         [ForeignKey(nameof(AuthorId))]
         public Author Author { get; set; }
-        public string CartId { get; set; }
+        public string? CartId { get; set; }
 
         [ForeignKey(nameof(CartId))]
-        public Cart Cart { get; set; }
+        public Cart? Cart { get; set; }
         public ICollection<Review> Reviews { get; set; } = new List<Review>();
     }
 }

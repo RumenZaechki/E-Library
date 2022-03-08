@@ -1,6 +1,7 @@
 ﻿using E_Library.Models.Books;
 using Microsoft.AspNetCore.Mvc;
 using E_Library.Services.Contracts;
+using Microsoft.AspNetCore.Authorization;
 
 namespace E_Library.Controllers
 {
@@ -76,13 +77,13 @@ namespace E_Library.Controllers
             }
         }
 
-        public IActionResult Create() => View(new CreateBookFormModel
+        public IActionResult Create() => View(new BookFormModel
         {
             Categories = GetCategories()
         });
 
         [HttpPost]
-        public IActionResult Create(CreateBookFormModel book)
+        public IActionResult Create(BookFormModel book)
         {
             if (!ModelState.IsValid)
             {
@@ -91,6 +92,41 @@ namespace E_Library.Controllers
             }
             bookService.Create(book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author, book.CategoryId);
             return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize]
+        public IActionResult Edit(string id)
+        {
+            var book = this.bookService.Details(id);
+            return View(new BookFormModel
+            {
+                Title = book.Title,
+                Description = book.Description,
+                Price = book.Price,
+                ImageUrl = book.ImageUrl,
+                Release = book.Release, 
+                Author = book.Author,
+                Categories = this.bookService
+                    .GetBookCategories()
+                    .Select(b => new BookCategoryViewModel
+                    {
+                        Id = b.Key,
+                        Name = b.Value
+                    })
+            });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Edit(string id, BookFormModel book)
+        {
+            if (!ModelState.IsValid)
+            {
+                book.Categories = GetCategories();
+                return View(book);
+            }
+            this.bookService.Edit(id, book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author, book.CategoryId);
+            return RedirectToAction(nameof(All));
         }
 
         private IEnumerable<BookCategoryViewModel> GetCategories()

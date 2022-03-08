@@ -12,6 +12,44 @@ namespace E_Library.Services
         {
             this.data = data;
         }
+
+        public void Edit(string id, string title, string description, decimal price, string imageUrl, int release, string author, int categoryId)
+        {
+            Book book = this.data.Books.FirstOrDefault(b => b.Id == id);
+            Author authorToEdit = this.data.Authors.FirstOrDefault(a => a.Id == book.AuthorId);
+
+
+            book.Title = title;
+            book.Description = description;
+            book.Price = price;
+            book.ImageUrl = imageUrl;
+            book.Release = release;
+            book.CategoryId = categoryId;
+            book.Author.Name = author;
+            authorToEdit.Name = author;
+            this.data.Books.Update(book);
+            this.data.Authors.Update(authorToEdit);
+            this.data.SaveChanges();
+        }
+
+
+        public BookServiceModel Details(string id)
+        {
+            return this.data.Books
+                .Where(x => x.Id == id)
+                .Select(b => new BookServiceModel
+                {
+                    Title = b.Title,
+                    Description = b.Description,
+                    Price = b.Price,
+                    ImageUrl = b.ImageUrl,
+                    Release = b.Release,
+                    Author = b.Author.Name,
+                    Category = b.Category.Name
+                })
+                .FirstOrDefault();
+        }
+
         public IEnumerable<BookServiceModel> FindBooks(string searchTerm)
         {
             return this.data.Books
@@ -73,6 +111,7 @@ namespace E_Library.Services
                 Release = release,
                 CategoryId = categoryId,
                 AuthorId = authorToAdd.Id,
+                Author = authorToAdd
             };
             this.data.Books.Add(bookToAdd);
             this.data.SaveChanges();

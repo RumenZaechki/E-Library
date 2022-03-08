@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace E_Library.Models.Books
 {
-    public class CreateBookFormModel
+    public class BookFormModel
     {
         [Required]
         [MaxLength(BookConstants.TitleMaxLength)]
