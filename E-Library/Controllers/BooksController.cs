@@ -129,6 +129,12 @@ namespace E_Library.Controllers
             return RedirectToAction(nameof(All));
         }
 
+        public IActionResult Delete(string id)
+        {
+            this.bookService.Delete(id);
+            return RedirectToAction(nameof(All));
+        }
+
         private IEnumerable<BookCategoryViewModel> GetCategories()
         {
             var categoriesObj = this.bookService.GetBookCategories();

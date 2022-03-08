@@ -1,9 +1,4 @@
 ﻿using E_Library.Services.Books.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace E_Library.Services.Contracts
 {
@@ -17,5 +12,6 @@ namespace E_Library.Services.Contracts
         public IEnumerable<BookServiceModel> FindBooks(string searchTerm);
         public BookServiceModel Details(string id);
         public void Edit(string id, string title, string description, decimal price, string imageUrl, int release, string author, int categoryId);
+        public void Delete(string id);
     }
 }
