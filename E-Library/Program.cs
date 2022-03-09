@@ -54,6 +54,15 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+
+//this is for adding admin area, I think
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapDefaultAreaRoute();
+    endpoints.MapDefaultControllerRoute();
+    endpoints.MapRazorPages();
+});
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

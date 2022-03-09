@@ -1,4 +1,5 @@
-﻿using E_Library.Data;
+﻿using E_Library.Areas.Admin;
+using E_Library.Data;
 using E_Library.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -24,13 +25,13 @@ namespace E_Library.Infrastructure
             Task
                 .Run(async () =>
                 {
-                    if (await roleManager.RoleExistsAsync("Administrator"))
+                    if (await roleManager.RoleExistsAsync(AdminConstants.AdminRoleName))
                     {
                         return;
                     }
                     await roleManager.CreateAsync(new IdentityRole
                     {
-                        Name = "Administrator"
+                        Name = AdminConstants.AdminRoleName
                     });
                     const string adminPassword = "admin123";
                     var user = new IdentityUser
@@ -39,7 +40,7 @@ namespace E_Library.Infrastructure
                         UserName = "admin@mail.com"
                     };
                     await userManager.CreateAsync(user, adminPassword);
-                    await userManager.AddToRoleAsync(user, "Administrator");
+                    await userManager.AddToRoleAsync(user, AdminConstants.AdminRoleName);
                 })
                 .GetAwaiter()
                 .GetResult();
