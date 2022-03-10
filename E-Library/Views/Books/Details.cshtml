@@ -1,0 +1,43 @@
+﻿@model BookDetailsViewModel
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="container" style="text-align:center">
+    <h2>@Model.Title</h2>
+
+    <div class="row">
+        <h5 class="font-weight-light mb-1"><b class="font-weight-bold"></b> <i>@Model.Release</i></h5>
+    </div>
+
+    <hr class="mt-2 mb-3" style="height:3px;border:none;" />
+
+    <div class="row" style="width:20rem; margin: auto;">
+        <div class="col-3">
+            <img src="@Model.ImageUrl" class="rounded" alt="Portrait"/>
+        </div>
+    </div>
+
+    <hr class="mt-2 mb-3" style="height:3px;border:none;" />
+
+    <div class="font-weight-light">
+        <h4 class="text-left font-weight-bold" style="font-size:large">
+            Author: <i class="font-weight-light">@Model.Author</i>
+        </h4>
+        <h4 class="text-left font-weight-bold" style="font-size:large">
+            Category: <i class="font-weight-light">@Model.Category</i>
+        </h4>
+        <h4 class="text-left font-weight-bold" style="font-size:large">
+            Price: <i class="font-weight-light">@Model.Price $</i>
+        </h4>
+
+        <p class="text-left" style="font-size:large">
+            @Model.Description
+        </p>
+    </div>
+
+    <hr class="mb-2" style="height:3px;border:none;" />
+
+    <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@Model.Id" class="btn btn-primary">Add To Cart</a>
+</div>

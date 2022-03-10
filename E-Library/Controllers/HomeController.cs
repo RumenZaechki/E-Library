@@ -26,8 +26,6 @@ namespace E_Library.Controllers
             {
                 Id = b.Id,
                 Title = b.Title,
-                Description = b.Description,
-                Price = b.Price,
                 ImageUrl = b.ImageUrl,
                 Release = b.Release,
                 Author = b.Author,

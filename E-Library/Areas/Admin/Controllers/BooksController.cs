@@ -12,6 +12,7 @@ namespace E_Library.Areas.Admin.Controllers
         {
             this.bookService = bookService;
         }
+        [Area(AdminConstants.AreaName)]
         public IActionResult All([FromQuery] AllBooksQueryModel query)
         {
             var categories = this.bookService.GetBookCategories();
@@ -25,8 +26,6 @@ namespace E_Library.Areas.Admin.Controllers
                     {
                         Id = b.Id,
                         Title = b.Title,
-                        Description = b.Description,
-                        Price = b.Price,
                         ImageUrl = b.ImageUrl,
                         Release = b.Release,
                         Author = b.Author,
@@ -54,8 +53,6 @@ namespace E_Library.Areas.Admin.Controllers
                     {
                         Id = b.Id,
                         Title = b.Title,
-                        Description = b.Description,
-                        Price = b.Price,
                         ImageUrl = b.ImageUrl,
                         Release = b.Release,
                         Author = b.Author,

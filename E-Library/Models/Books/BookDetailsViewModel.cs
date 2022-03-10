@@ -1,9 +1,11 @@
 ﻿namespace E_Library.Models.Books
 {
-    public class BookListingViewModel
+    public class BookDetailsViewModel
     {
         public string Id { get; set; }
         public string Title { get; set; }
+        public string Description { get; set; }
+        public string Price { get; set; }
         public string ImageUrl { get; set; }
         public int Release { get; set; }
         public string Author { get; set; }

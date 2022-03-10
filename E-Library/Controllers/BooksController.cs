@@ -26,12 +26,9 @@ namespace E_Library.Controllers
                     {
                         Id = b.Id,
                         Title = b.Title,
-                        Description = b.Description,
-                        Price = b.Price,
                         ImageUrl = b.ImageUrl,
                         Release = b.Release,
                         Author = b.Author,
-                        Category = b.Category
                     });
                 if (!string.IsNullOrWhiteSpace(query.SelectedCategory))
                 {
@@ -55,12 +52,10 @@ namespace E_Library.Controllers
                     {
                         Id = b.Id,
                         Title = b.Title,
-                        Description = b.Description,
-                        Price = b.Price,
                         ImageUrl = b.ImageUrl,
                         Release = b.Release,
                         Author = b.Author,
-                        Category = b.Category
+                        Category = b.Category,
                     })
                     .ToList();
                 if (!string.IsNullOrWhiteSpace(query.SelectedCategory))
@@ -133,6 +128,22 @@ namespace E_Library.Controllers
         {
             this.bookService.Delete(id);
             return RedirectToAction(nameof(All));
+        }
+
+        public IActionResult Details(string id)
+        {
+            var book = this.bookService.Details(id);
+            return View(new BookDetailsViewModel
+            {
+                Id = book.Id,
+                Title = book.Title,
+                Description = book.Description,
+                Price = book.Price.ToString("F2"),
+                ImageUrl = book.ImageUrl,
+                Release = book.Release,
+                Author = book.Author,
+                Category = book.Category
+            });
         }
 
         private IEnumerable<BookCategoryViewModel> GetCategories()

@@ -6,7 +6,7 @@
         {
             endpoints.MapControllerRoute(
                         name: "Areas",
-                        pattern: "{area:exists}/{controller=Books}/{action=All}/{id?}");
+                        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
         }
     }
 }
