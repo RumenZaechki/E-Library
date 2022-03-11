@@ -1,4 +1,5 @@
 using E_Library.Data;
+using E_Library.Data.Models;
 using E_Library.Infrastructure;
 using E_Library.Services;
 using E_Library.Services.Contracts;
@@ -9,11 +10,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<LibraryDbContext>(options =>
+    options.UseSqlServer(connectionString));
+//builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+//    .AddEntityFrameworkStores<LibraryDbContext>();
 builder.Services
     .AddDbContext<LibraryDbContext>(options =>
             options.UseSqlServer(connectionString))
     .AddDatabaseDeveloperPageExceptionFilter()
-    .AddDefaultIdentity<IdentityUser>(options =>
+    .AddIdentity<User, IdentityRole>(options =>
     {
         options.Password.RequireDigit = false;
         options.Password.RequireLowercase = false;
@@ -28,6 +33,8 @@ builder.Services.AddScoped<IBookService, BookService>();
 
 
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 

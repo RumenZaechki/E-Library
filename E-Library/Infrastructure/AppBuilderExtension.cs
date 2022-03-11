@@ -20,7 +20,7 @@ namespace E_Library.Infrastructure
         }
         private static void SeedAdministratior(IServiceProvider services)
         {
-            var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+            var userManager = services.GetRequiredService<UserManager<User>>();
             var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
             Task
                 .Run(async () =>
@@ -34,11 +34,18 @@ namespace E_Library.Infrastructure
                         Name = AdminConstants.AdminRoleName
                     });
                     const string adminPassword = "admin123";
-                    var user = new IdentityUser
+                    var user = new User
                     {
                         Email = "admin@mail.com",
                         UserName = "admin@mail.com"
                     };
+                    var cart = new Cart
+                    {
+                        UserId = user.Id,
+                        User = user,
+                    };
+                    user.CartId = cart.Id;
+                    user.Cart = cart;
                     await userManager.CreateAsync(user, adminPassword);
                     await userManager.AddToRoleAsync(user, AdminConstants.AdminRoleName);
                 })

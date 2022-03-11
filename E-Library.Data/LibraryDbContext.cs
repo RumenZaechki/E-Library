@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace E_Library.Data
 {
-    public class LibraryDbContext : IdentityDbContext
+    public class LibraryDbContext : IdentityDbContext<User>
     {
-        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<Book> Books { get; set; }
@@ -18,6 +18,12 @@ namespace E_Library.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>(u =>
+            {
+                u.HasOne(u => u.Cart)
+                 .WithOne(c => c.User)
+                 .HasForeignKey<Cart>(c => c.UserId);
+            });
             base.OnModelCreating(modelBuilder);
         }
     }
