@@ -60,66 +60,61 @@ namespace E_Library.Services
             this.data.SaveChanges();
         }
 
-        public IEnumerable<BookServiceModel> GetIndexBooks()
-        {
-            return this.data.Books
-                .Select(x => new BookServiceModel
-                {
-                    Id = x.Id,
-                    Title = x.Title,
-                    Description = x.Description,
-                    Price = x.Price,
-                    ImageUrl = x.ImageUrl,
-                    Release = x.Release,
-                    Author = x.Author.Name,
-                    Category = x.Category.Name
-                })
-                .ToList();
-        }
-
-        public IEnumerable<BookServiceModel> GetBooks(int currentPage, int booksPerPage)
-        {
-            return this.data.Books
-                .Skip((currentPage - 1) * booksPerPage)
-                .Take(booksPerPage)
-                .Select(x => new BookServiceModel
-                {
-                    Id = x.Id,
-                    Title = x.Title,
-                    Description = x.Description,
-                    Price = x.Price,
-                    ImageUrl = x.ImageUrl,
-                    Release = x.Release,
-                    Author = x.Author.Name,
-                    Category = x.Category.Name
-                })
-                .ToList();
-        }
-
-        public int GetTotalUsers()
-        {
-            return this.data.Users.Count();
-        }
-        public int GetTotalBooks()
-        {
-            return this.data.Books.Count();
-        }
         public IEnumerable<BookServiceModel> FindBooks(string searchTerm, int currentPage, int booksPerPage)
         {
+            if (searchTerm != null)
+            {
+                return this.data.Books
+                    .Where(b => b.Title.ToLower().Contains(searchTerm.ToLower()))
+                    .Skip((currentPage - 1) * booksPerPage)
+                    .Take(booksPerPage)
+                    .Select(b => new BookServiceModel
+                    {
+                        Title = b.Title,
+                        Description = b.Description,
+                        Price = b.Price,
+                        ImageUrl = b.ImageUrl,
+                        Release = b.Release,
+                        Author = b.Author.Name,
+                        Category = b.Category.Name
+                    });
+            }
+            else
+            {
+                return this.data.Books
+                    .Skip((currentPage - 1) * booksPerPage)
+                    .Take(booksPerPage)
+                    .Select(x => new BookServiceModel
+                    {
+                        Id = x.Id,
+                        Title = x.Title,
+                        Description = x.Description,
+                        Price = x.Price,
+                        ImageUrl = x.ImageUrl,
+                        Release = x.Release,
+                        Author = x.Author.Name,
+                        Category = x.Category.Name
+                    })
+                    .ToList();
+            }
+        }
+
+        public IEnumerable<BookServiceModel> FindBooksThatMatchCategory(string category)
+        {
             return this.data.Books
-                .Where(b => b.Title.ToLower().Contains(searchTerm.ToLower()))
-                .Skip((currentPage - 1) * booksPerPage)
-                .Take(booksPerPage)
-                .Select(b => new BookServiceModel
+                .Where(b => b.Category.Name == category)
+                .Select(x => new BookServiceModel
                 {
-                    Title = b.Title,
-                    Description = b.Description,
-                    Price = b.Price,
-                    ImageUrl = b.ImageUrl,
-                    Release = b.Release,
-                    Author = b.Author.Name,
-                    Category = b.Category.Name
-                });
+                    Id = x.Id,
+                    Title = x.Title,
+                    Description = x.Description,
+                    Price = x.Price,
+                    ImageUrl = x.ImageUrl,
+                    Release = x.Release,
+                    Author = x.Author.Name,
+                    Category = x.Category.Name
+                })
+                .ToList();
         }
 
         public BookServiceModel Details(string id)

@@ -10,18 +10,18 @@ namespace E_Library.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IBookService bookService;
-        public HomeController(ILogger<HomeController> logger, IBookService bookService)
+        private readonly IHomeService homeService;
+        public HomeController(ILogger<HomeController> logger, IHomeService homeService)
         {
             _logger = logger;
-            this.bookService = bookService;
+            this.homeService = homeService;
         }
 
         public IActionResult Index()
         {
-            var totalBooks = this.bookService.GetTotalBooks();
-            var totalUsers = this.bookService.GetTotalUsers();
-            var books = this.bookService.GetIndexBooks();
+            var totalBooks = this.homeService.GetTotalBooks();
+            var totalUsers = this.homeService.GetTotalUsers();
+            var books = this.homeService.GetBooks();
             var booksToShow = books.Select(b => new BookListingViewModel
             {
                 Id = b.Id,
@@ -32,7 +32,6 @@ namespace E_Library.Controllers
                 Category = b.Category
             })
                 .OrderByDescending(c => c.Id)
-                .Take(3)
                 .ToList();
             return View(new IndexViewModel
             {

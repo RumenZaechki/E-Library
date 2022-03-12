@@ -16,10 +16,20 @@ namespace E_Library.Controllers
         public IActionResult All([FromQuery] AllBooksQueryModel query)
         {
             var categories = this.bookService.GetBookCategories();
-            if (!string.IsNullOrWhiteSpace(query.SearchTerm))
+            var books = this.bookService
+                .FindBooks(query.SearchTerm, query.CurrentPage, AllBooksQueryModel.BooksPerPage)
+                .Select(b => new BookListingViewModel
+                {
+                    Id = b.Id,
+                    Title = b.Title,
+                    ImageUrl = b.ImageUrl,
+                    Release = b.Release,
+                    Author = b.Author,
+                });
+            if (!string.IsNullOrWhiteSpace(query.SelectedCategory))
             {
-                var soughtBooks = this.bookService
-                    .FindBooks(query.SearchTerm, query.CurrentPage, AllBooksQueryModel.BooksPerPage)
+                books = this.bookService
+                    .FindBooksThatMatchCategory(query.SelectedCategory)
                     .Select(b => new BookListingViewModel
                     {
                         Id = b.Id,
@@ -28,46 +38,15 @@ namespace E_Library.Controllers
                         Release = b.Release,
                         Author = b.Author,
                     });
-                if (!string.IsNullOrWhiteSpace(query.SelectedCategory))
-                {
-                    soughtBooks = soughtBooks.Where(b => b.Category == query.SelectedCategory);
-                }
-                return View(new AllBooksQueryModel
-                {
-                    AllBooks = soughtBooks,
-                    SearchTerm = query.SearchTerm,
-                    SelectedCategory = query.SelectedCategory,
-                    Categories = categories,
-                    BooksCount = this.bookService.GetBooksCount()
-                });
             }
-            else
+            return View(new AllBooksQueryModel
             {
-                var books = this.bookService
-                    .GetBooks(query.CurrentPage, AllBooksQueryModel.BooksPerPage)
-                    .Select(b => new BookListingViewModel
-                    {
-                        Id = b.Id,
-                        Title = b.Title,
-                        ImageUrl = b.ImageUrl,
-                        Release = b.Release,
-                        Author = b.Author,
-                        Category = b.Category,
-                    })
-                    .ToList();
-                if (!string.IsNullOrWhiteSpace(query.SelectedCategory))
-                {
-                    books = books.Where(b => b.Category == query.SelectedCategory).ToList();
-                }
-                return View(new AllBooksQueryModel
-                {
-                    AllBooks = books,
-                    SearchTerm = query.SearchTerm,
-                    SelectedCategory = query.SelectedCategory,
-                    Categories = categories,
-                    BooksCount = this.bookService.GetBooksCount()
-                });
-            }
+                AllBooks = books,
+                SearchTerm = query.SearchTerm,
+                SelectedCategory = query.SelectedCategory,
+                Categories = categories,
+                BooksCount = this.bookService.GetBooksCount()
+            });
         }
 
         public IActionResult Create() => View(new BookFormModel

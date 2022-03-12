@@ -3,6 +3,7 @@ using E_Library.Data.Models;
 using E_Library.Infrastructure;
 using E_Library.Services;
 using E_Library.Services.Contracts;
+using E_Library.Services.Home;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,8 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<LibraryDbContext>(options =>
     options.UseSqlServer(connectionString));
-//builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
-//    .AddEntityFrameworkStores<LibraryDbContext>();
+
 builder.Services
     .AddDbContext<LibraryDbContext>(options =>
             options.UseSqlServer(connectionString))
@@ -30,6 +30,7 @@ builder.Services
 
 //this is for adding the services, or at least I think so
 builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<IHomeService, HomeService>();
 
 
 builder.Services.AddControllersWithViews();
@@ -49,7 +50,6 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
