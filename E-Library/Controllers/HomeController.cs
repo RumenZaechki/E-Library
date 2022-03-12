@@ -21,7 +21,7 @@ namespace E_Library.Controllers
         {
             var totalBooks = this.bookService.GetTotalBooks();
             var totalUsers = this.bookService.GetTotalUsers();
-            var books = this.bookService.GetBooks();
+            var books = this.bookService.GetIndexBooks();
             var booksToShow = books.Select(b => new BookListingViewModel
             {
                 Id = b.Id,

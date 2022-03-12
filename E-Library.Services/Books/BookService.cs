@@ -13,6 +13,11 @@ namespace E_Library.Services
             this.data = data;
         }
 
+        public int GetBooksCount()
+        {
+            return this.data.Books.Count();
+        }
+
         public Dictionary<int, string> GetBookCategories()
         {
             var data = this.data
@@ -55,9 +60,28 @@ namespace E_Library.Services
             this.data.SaveChanges();
         }
 
-        public IEnumerable<BookServiceModel> GetBooks()
+        public IEnumerable<BookServiceModel> GetIndexBooks()
         {
             return this.data.Books
+                .Select(x => new BookServiceModel
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Description = x.Description,
+                    Price = x.Price,
+                    ImageUrl = x.ImageUrl,
+                    Release = x.Release,
+                    Author = x.Author.Name,
+                    Category = x.Category.Name
+                })
+                .ToList();
+        }
+
+        public IEnumerable<BookServiceModel> GetBooks(int currentPage, int booksPerPage)
+        {
+            return this.data.Books
+                .Skip((currentPage - 1) * booksPerPage)
+                .Take(booksPerPage)
                 .Select(x => new BookServiceModel
                 {
                     Id = x.Id,
@@ -80,10 +104,12 @@ namespace E_Library.Services
         {
             return this.data.Books.Count();
         }
-        public IEnumerable<BookServiceModel> FindBooks(string searchTerm)
+        public IEnumerable<BookServiceModel> FindBooks(string searchTerm, int currentPage, int booksPerPage)
         {
             return this.data.Books
                 .Where(b => b.Title.ToLower().Contains(searchTerm.ToLower()))
+                .Skip((currentPage - 1) * booksPerPage)
+                .Take(booksPerPage)
                 .Select(b => new BookServiceModel
                 {
                     Title = b.Title,

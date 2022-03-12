@@ -11,5 +11,6 @@ namespace E_Library.Models.Books
         public Dictionary<int,string> Categories { get; set; }
         public string SearchTerm { get; set; }
         public IEnumerable<BookListingViewModel> AllBooks { get; set; }
+        public int BooksCount { get; set; }
     }
 }

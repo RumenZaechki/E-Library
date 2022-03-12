@@ -19,9 +19,7 @@ namespace E_Library.Controllers
             if (!string.IsNullOrWhiteSpace(query.SearchTerm))
             {
                 var soughtBooks = this.bookService
-                    .FindBooks(query.SearchTerm)
-                    .Skip((query.CurrentPage - 1) * AllBooksQueryModel.BooksPerPage)
-                    .Take(AllBooksQueryModel.BooksPerPage)
+                    .FindBooks(query.SearchTerm, query.CurrentPage, AllBooksQueryModel.BooksPerPage)
                     .Select(b => new BookListingViewModel
                     {
                         Id = b.Id,
@@ -40,14 +38,13 @@ namespace E_Library.Controllers
                     SearchTerm = query.SearchTerm,
                     SelectedCategory = query.SelectedCategory,
                     Categories = categories,
+                    BooksCount = this.bookService.GetBooksCount()
                 });
             }
             else
             {
                 var books = this.bookService
-                    .GetBooks()
-                    .Skip((query.CurrentPage - 1) * AllBooksQueryModel.BooksPerPage)
-                    .Take(AllBooksQueryModel.BooksPerPage)
+                    .GetBooks(query.CurrentPage, AllBooksQueryModel.BooksPerPage)
                     .Select(b => new BookListingViewModel
                     {
                         Id = b.Id,
@@ -68,6 +65,7 @@ namespace E_Library.Controllers
                     SearchTerm = query.SearchTerm,
                     SelectedCategory = query.SelectedCategory,
                     Categories = categories,
+                    BooksCount = this.bookService.GetBooksCount()
                 });
             }
         }
