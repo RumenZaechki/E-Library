@@ -1,4 +1,6 @@
-﻿using E_Library.Services.Contracts;
+﻿using E_Library.Models.Carts;
+using E_Library.Services.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -11,11 +13,29 @@ namespace E_Library.Controllers
         {
             this.cartService = cartService;
         }
+        [Authorize]
         public IActionResult AddToCart(string bookId)
         {
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = GetUserId();
             this.cartService.AddBookToCart(userId, bookId);
-            return RedirectToAction("All","Books");
+            return RedirectToAction("MyCart", "Carts");
+        }
+        public IActionResult MyCart()
+        {
+            var userId = GetUserId();
+            var books = this.cartService.GetBooksFromCart(userId);
+            var cartDetails = books
+                .Select(b => new CartDetailsViewModel
+                {
+                    Title = b.Title,
+                    Price = b.Price,
+                })
+               .ToList();
+            return View(cartDetails);
+        }
+        private string GetUserId()
+        {
+            return this.User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
     }
 }

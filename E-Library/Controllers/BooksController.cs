@@ -49,10 +49,13 @@ namespace E_Library.Controllers
             });
         }
 
-        public IActionResult Create() => View(new BookFormModel
+        public IActionResult Create()
         {
-            Categories = GetCategories()
-        });
+            return View(new BookFormModel
+            {
+                Categories = GetCategories()
+            });
+        }
 
         [HttpPost]
         public IActionResult Create(BookFormModel book)
@@ -76,7 +79,7 @@ namespace E_Library.Controllers
                 Description = book.Description,
                 Price = book.Price,
                 ImageUrl = book.ImageUrl,
-                Release = book.Release, 
+                Release = book.Release,
                 Author = book.Author,
                 Categories = this.bookService
                     .GetBookCategories()
