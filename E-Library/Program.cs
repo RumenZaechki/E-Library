@@ -2,6 +2,7 @@ using E_Library.Data;
 using E_Library.Data.Models;
 using E_Library.Infrastructure;
 using E_Library.Services;
+using E_Library.Services.Carts;
 using E_Library.Services.Contracts;
 using E_Library.Services.Home;
 using Microsoft.AspNetCore.Identity;
@@ -31,6 +32,7 @@ builder.Services
 //this is for adding the services, or at least I think so
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IHomeService, HomeService>();
+builder.Services.AddScoped<ICartService, CartService>();
 
 
 builder.Services.AddControllersWithViews();

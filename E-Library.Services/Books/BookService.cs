@@ -123,6 +123,7 @@ namespace E_Library.Services
                 .Where(x => x.Id == id)
                 .Select(b => new BookServiceModel
                 {
+                    Id = b.Id,
                     Title = b.Title,
                     Description = b.Description,
                     Price = b.Price,

@@ -15,7 +15,7 @@
 
     <div class="row" style="width:20rem; margin: auto;">
         <div class="col-3">
-            <img src="@Model.ImageUrl" class="rounded" alt="Portrait"/>
+            <img src="@Model.ImageUrl" class="rounded" alt="Portrait" />
         </div>
     </div>
 
@@ -39,5 +39,5 @@
 
     <hr class="mb-2" style="height:3px;border:none;" />
 
-    <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@Model.Id" class="btn btn-primary">Add To Cart</a>
+    <a class="btn btn-primary" href="/Carts/AddToCart?bookId=@Model.Id">Add To Cart</a>
 </div>
