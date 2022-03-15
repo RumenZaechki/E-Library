@@ -42,6 +42,12 @@
         </nav>
     </header>
     <div class="container">
+        @if (TempData.ContainsKey(WebConstants.GlobalMessageKey))
+        {
+            <div id="notificationBox" class="alert alert-success" role="alert" style="float:right">
+                @TempData[WebConstants.GlobalMessageKey]
+            </div>
+        }
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -58,3 +64,12 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+
+<script>
+    let box = document.getElementById('notificationBox');
+    box.style.display = 'block';
+    setTimeout(() =>{
+        box.style.display = 'none';
+    }, 3000);
+</script>

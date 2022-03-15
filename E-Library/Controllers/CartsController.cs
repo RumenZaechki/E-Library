@@ -3,6 +3,8 @@ using E_Library.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using static E_Library.WebConstants;
+
 
 namespace E_Library.Controllers
 {
@@ -18,6 +20,7 @@ namespace E_Library.Controllers
         {
             var userId = GetUserId();
             this.cartService.AddBookToCart(userId, bookId);
+            this.TempData[GlobalMessageKey] = "Successfully added book to cart.";
             return RedirectToAction("MyCart", "Carts");
         }
         public IActionResult MyCart()
@@ -38,12 +41,14 @@ namespace E_Library.Controllers
         {
             var userId = GetUserId();
             this.cartService.RemoveBookFromCart(bookId, userId);
+            this.TempData[GlobalMessageKey] = "Successfully removed book from cart.";
             return RedirectToAction("MyCart", "Carts");
         }
         public IActionResult Buy()
         {
             var userId = GetUserId();
             this.cartService.Buy(userId);
+            this.TempData[GlobalMessageKey] = "Successfully bought books.";
             return RedirectToAction("MyCart", "Carts");
         }
         private string GetUserId()

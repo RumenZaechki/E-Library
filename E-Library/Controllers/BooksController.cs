@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using E_Library.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 
+using static E_Library.WebConstants;
+
 namespace E_Library.Controllers
 {
     public class BooksController : Controller
@@ -66,6 +68,7 @@ namespace E_Library.Controllers
                 return View(book);
             }
             bookService.Create(book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author, book.CategoryId);
+            this.TempData[GlobalMessageKey] = "Successfully created book.";
             return RedirectToAction("Index", "Home");
         }
 
@@ -101,12 +104,14 @@ namespace E_Library.Controllers
                 return View(book);
             }
             this.bookService.Edit(id, book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author, book.CategoryId);
+            this.TempData[GlobalMessageKey] = "Successfully edited book.";
             return RedirectToAction(nameof(All));
         }
 
         public IActionResult Delete(string id)
         {
             this.bookService.Delete(id);
+            this.TempData[GlobalMessageKey] = "Successfully removed book.";
             return RedirectToAction(nameof(All));
         }
 
