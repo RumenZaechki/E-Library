@@ -12,18 +12,21 @@ namespace E_Library.Data
         public DbSet<Book> Books { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<BookCart> BookCarts { get; set; }
         public LibraryDbContext(DbContextOptions<LibraryDbContext> options)
             : base(options)
         {
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>(u =>
-            {
-                u.HasOne(u => u.Cart)
-                 .WithOne(c => c.User)
-                 .HasForeignKey<Cart>(c => c.UserId);
-            });
+            modelBuilder.Entity<BookCart>()
+                .HasKey(k => new { k.BookId, k.CartId });
+
+            modelBuilder.Entity<User>()
+                .HasOne(c => c.Cart)
+                .WithOne(u => u.User)
+                .HasForeignKey<Cart>(c => c.UserId);
+
             base.OnModelCreating(modelBuilder);
         }
     }

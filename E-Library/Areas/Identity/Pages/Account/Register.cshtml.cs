@@ -159,14 +159,12 @@ namespace E_Library.Areas.Identity.Pages.Account
         {
             try
             {
-                var cart = new Cart();
-                var user = new User
+                var user = new User();
+                var cart = new Cart
                 {
-                    CartId = cart.Id,
-                    Cart = cart
+                    User = user
                 };
-                cart.UserId = user.Id;
-                cart.User = user;
+                user.Cart = cart;
                 return user;    
                 //return Activator.CreateInstance<User>();
             }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace E_Library.Data.Models
 {
@@ -11,8 +12,10 @@ namespace E_Library.Data.Models
 
         [Required]
         public string UserId { get; set; }
+        [Required]
+        [ForeignKey(nameof(UserId))]
         public User User { get; set; }
 
-        public ICollection<Book> Books { get; set; } = new List<Book>();
+        public ICollection<BookCart> CartBooks { get; set; } = new List<BookCart>();
     }
 }

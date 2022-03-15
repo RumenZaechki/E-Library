@@ -45,7 +45,6 @@ namespace E_Library.Infrastructure
                         UserId = user.Id,
                         User = user,
                     };
-                    user.CartId = cart.Id;
                     user.Cart = cart;
                     await userManager.CreateAsync(user, adminPassword);
                     await userManager.AddToRoleAsync(user, AdminConstants.AdminRoleName);
@@ -80,7 +79,7 @@ namespace E_Library.Infrastructure
                     Title ="Lord Of The Rings",
                     Description = "The Lord of the Rings is an epic high-fantasy novel by English author and scholar J. R. R. Tolkien. Set in Middle-earth, intended to be Earth at some distant time in the past, the story began as a sequel to Tolkien's 1937 children's book The Hobbit, but eventually developed into a much larger work.",
                     Price = 40m,
-                    ImageUrl = "https://bookcorner.nyc3.digitaloceanspaces.com/uploads/original/5c72aadbecf131551018715.jpg",
+                    ImageUrl = "https://m.media-amazon.com/images/P/0618640150.01._SCLZZZZZZZ_SX500_.jpg",
                     Release = 1954,
                     AuthorId = Guid.NewGuid().ToString(),
                     Author = new Author

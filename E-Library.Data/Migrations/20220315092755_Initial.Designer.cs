@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Library.Data.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    [Migration("20220311154428_Initial")]
+    [Migration("20220315092755_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,9 +48,6 @@ namespace E_Library.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CartId")
-                        .HasColumnType("nvarchar(36)");
-
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
@@ -78,11 +75,24 @@ namespace E_Library.Data.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.HasIndex("CartId");
-
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Books");
+                });
+
+            modelBuilder.Entity("E_Library.Data.Models.BookCart", b =>
+                {
+                    b.Property<string>("BookId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CartId")
+                        .HasColumnType("nvarchar(36)");
+
+                    b.HasKey("BookId", "CartId");
+
+                    b.HasIndex("CartId");
+
+                    b.ToTable("BookCarts");
                 });
 
             modelBuilder.Entity("E_Library.Data.Models.Cart", b =>
@@ -151,10 +161,6 @@ namespace E_Library.Data.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
-
-                    b.Property<string>("CartId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -354,10 +360,6 @@ namespace E_Library.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("E_Library.Data.Models.Cart", "Cart")
-                        .WithMany("Books")
-                        .HasForeignKey("CartId");
-
                     b.HasOne("E_Library.Data.Models.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
@@ -366,9 +368,26 @@ namespace E_Library.Data.Migrations
 
                     b.Navigation("Author");
 
-                    b.Navigation("Cart");
-
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("E_Library.Data.Models.BookCart", b =>
+                {
+                    b.HasOne("E_Library.Data.Models.Book", "Book")
+                        .WithMany("BookCarts")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("E_Library.Data.Models.Cart", "Cart")
+                        .WithMany("CartBooks")
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("Cart");
                 });
 
             modelBuilder.Entity("E_Library.Data.Models.Cart", b =>
@@ -446,12 +465,14 @@ namespace E_Library.Data.Migrations
 
             modelBuilder.Entity("E_Library.Data.Models.Book", b =>
                 {
+                    b.Navigation("BookCarts");
+
                     b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("E_Library.Data.Models.Cart", b =>
                 {
-                    b.Navigation("Books");
+                    b.Navigation("CartBooks");
                 });
 
             modelBuilder.Entity("E_Library.Data.Models.User", b =>
