@@ -40,6 +40,12 @@ namespace E_Library.Controllers
             this.cartService.RemoveBookFromCart(bookId, userId);
             return RedirectToAction("MyCart", "Carts");
         }
+        public IActionResult Buy()
+        {
+            var userId = GetUserId();
+            this.cartService.Buy(userId);
+            return RedirectToAction("MyCart", "Carts");
+        }
         private string GetUserId()
         {
             return this.User.FindFirstValue(ClaimTypes.NameIdentifier);

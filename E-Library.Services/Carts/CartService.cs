@@ -11,6 +11,16 @@ namespace E_Library.Services.Carts
         {
             this.data = data;
         }
+        public void Buy(string userId)
+        {
+            var cart = this.data.Carts.Where(x => x.User.Id == userId).FirstOrDefault();
+            var bookCarts = this.data.BookCarts.Where(bc => bc.Cart == cart);
+            foreach (var item in bookCarts)
+            {
+                this.data.BookCarts.Remove(item);
+            }
+            this.data.SaveChanges();
+        }
         public void RemoveBookFromCart(string bookId, string userId)
         {
             var cart = this.data.Carts.Where(x => x.User.Id == userId).FirstOrDefault();
