@@ -11,10 +11,17 @@ namespace E_Library.Services.Carts
         {
             this.data = data;
         }
+        public void RemoveBookFromCart(string bookId, string userId)
+        {
+            var cart = this.data.Carts.Where(x => x.User.Id == userId).FirstOrDefault();
+            var bookCart = this.data.BookCarts.Where(bc => bc.Cart == cart).FirstOrDefault();
+            this.data.BookCarts.Remove(bookCart);
+            this.data.SaveChanges();
+        }
         public void AddBookToCart(string userId, string bookId)
         {
             var book = this.data.Books.Where(x => x.Id == bookId).FirstOrDefault();
-            var user = this.data.Users.Where(u => u.Id == userId).FirstOrDefault(); 
+            var user = this.data.Users.Where(u => u.Id == userId).FirstOrDefault();
             var cart = this.data.Carts.Where(x => x.User == user).FirstOrDefault();
             this.data.BookCarts.Add(new BookCart
             {
@@ -33,6 +40,7 @@ namespace E_Library.Services.Carts
             return bookCarts
                 .Select(x => new CartBookModel
                 {
+                    Id = x.Book.Id,
                     Title = x.Book.Title,
                     Price = x.Book.Price.ToString("F2")
                 })

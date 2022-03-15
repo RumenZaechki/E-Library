@@ -27,11 +27,18 @@ namespace E_Library.Controllers
             var cartDetails = books
                 .Select(b => new CartDetailsViewModel
                 {
+                    Id = b.Id,
                     Title = b.Title,
                     Price = b.Price,
                 })
                .ToList();
             return View(cartDetails);
+        }
+        public IActionResult Remove(string bookId)
+        {
+            var userId = GetUserId();
+            this.cartService.RemoveBookFromCart(bookId, userId);
+            return RedirectToAction("MyCart", "Carts");
         }
         private string GetUserId()
         {

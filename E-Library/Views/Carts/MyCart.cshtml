@@ -10,25 +10,29 @@
         <h3 class="text-center">My Cart</h3>
         @if (Model.Count() > 0)
         {
-            <table class="table table-hover table-striped text-center">
+            <table class="table table-hover table-striped text-center align-content-center" style="margin-left:15rem;margin-right:25rem;">
                 <thead>
                     <tr class="row">
-                        <th scope="col" class="col-lg-5">Name</th>
-                        <th scope="col" class="col-lg-5">Price</th>
+                        <th scope="col" class="col-md-3">Name</th>
+                        <th scope="col" class="col-md-3">Price</th>
+                        <th scope="col" class="col-md-1">Remove</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model)
                     {
                         <tr class="row">
-                            <td class="col-lg-5">@item.Title</td>
-                            <td class="col-lg-5">@item.Price</td>
+                            <td class="col-md-3">@item.Title</td>
+                            <td class="col-md-3">@item.Price</td>
+                            <td class="col-md-1">
+                                <a class="btn btn-danger" href="/Carts/Remove?id=@item.Id">Remove</a>
+                            </td>
                         </tr>
                     }
                 </tbody>
             </table>
             <div class="button-holder text-center">
-                <a href="/Carts/Buy" class="btn btn-outline-primary">Buy</a>
+                <a href="/Carts/Buy" class="btn btn-outline-primary">Proceed To Checkout</a>
             </div>
         }
         else
