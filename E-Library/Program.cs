@@ -10,7 +10,6 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<LibraryDbContext>(options =>
     options.UseSqlServer(connectionString));
@@ -29,7 +28,6 @@ builder.Services
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<LibraryDbContext>();
 
-//this is for adding the services, or at least I think so
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IHomeService, HomeService>();
 builder.Services.AddScoped<ICartService, CartService>();
@@ -43,7 +41,6 @@ var app = builder.Build();
 
 app.PrepareDatabase();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
@@ -64,7 +61,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 
-//this is for adding admin area, I think
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
@@ -74,9 +70,7 @@ app.UseEndpoints(endpoints =>
     endpoints.MapRazorPages();
 });
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapDefaultAreaRoute();
 app.MapRazorPages();
 
 app.Run();

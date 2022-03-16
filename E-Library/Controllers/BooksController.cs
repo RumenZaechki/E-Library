@@ -1,7 +1,6 @@
 ﻿using E_Library.Models.Books;
 using Microsoft.AspNetCore.Mvc;
 using E_Library.Services.Contracts;
-using Microsoft.AspNetCore.Authorization;
 
 using static E_Library.WebConstants;
 
@@ -49,63 +48,6 @@ namespace E_Library.Controllers
                 Categories = categories,
                 BooksCount = this.bookService.GetBooksCount()
             });
-        }
-
-        public IActionResult Create()
-        {
-            return View(new BookFormModel
-            {
-                Categories = GetCategories()
-            });
-        }
-
-        [HttpPost]
-        public IActionResult Create(BookFormModel book)
-        {
-            if (!ModelState.IsValid)
-            {
-                book.Categories = GetCategories();
-                return View(book);
-            }
-            bookService.Create(book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author, book.CategoryId);
-            this.TempData[GlobalMessageKey] = "Successfully created book.";
-            return RedirectToAction("Index", "Home");
-        }
-
-        [Authorize]
-        public IActionResult Edit(string id)
-        {
-            var book = this.bookService.Details(id);
-            return View(new BookFormModel
-            {
-                Title = book.Title,
-                Description = book.Description,
-                Price = book.Price,
-                ImageUrl = book.ImageUrl,
-                Release = book.Release,
-                Author = book.Author,
-                Categories = this.bookService
-                    .GetBookCategories()
-                    .Select(b => new BookCategoryViewModel
-                    {
-                        Id = b.Key,
-                        Name = b.Value
-                    })
-            });
-        }
-
-        [HttpPost]
-        [Authorize]
-        public IActionResult Edit(string id, BookFormModel book)
-        {
-            if (!ModelState.IsValid)
-            {
-                book.Categories = GetCategories();
-                return View(book);
-            }
-            this.bookService.Edit(id, book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author, book.CategoryId);
-            this.TempData[GlobalMessageKey] = "Successfully edited book.";
-            return RedirectToAction(nameof(All));
         }
 
         public IActionResult Delete(string id)

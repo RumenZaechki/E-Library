@@ -23,18 +23,21 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        @if (User.IsInRole("Administrator"))
+                        @if (User.IsInRole(AdminConstants.AdminRoleName))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Books" asp-action="Create">Add New Book To Library</a>
+                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Books" asp-action="Create">Add New Book To Library</a>
                             </li>
                         }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Books" asp-action="All">Books</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Carts" asp-action="MyCart">My Cart</a>
-                        </li>
+                        @if (!User.IsInRole(AdminConstants.AdminRoleName) && User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Carts" asp-action="MyCart">My Cart</a>
+                            </li>
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

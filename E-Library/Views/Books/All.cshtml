@@ -41,7 +41,7 @@
                 <a asp-controller="Books" asp-action="Details" asp-route-id="@book.Id" class="btn btn-primary">Details</a>
                 @if (User.IsInRole(AdminConstants.AdminRoleName))
                 {
-                    <a asp-controller="Books" asp-action="Edit" asp-route-id="@book.Id" class="btn btn-warning">Edit</a>
+                    <a asp-area="Admin" asp-controller="Books" asp-action="Edit" asp-route-id="@book.Id" class="btn btn-warning">Edit</a>
                     <a class="btn btn-block btn-danger" href="/Books/Delete?id=@book.Id">Delete</a>
                 }
             </div>

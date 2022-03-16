@@ -38,6 +38,8 @@
     </div>
 
     <hr class="mb-2" style="height:3px;border:none;" />
-
-    <a class="btn btn-primary" href="/Carts/AddToCart?bookId=@Model.Id">Add To Cart</a>
+    @if (!User.IsInRole(AdminConstants.AdminRoleName))
+    {
+        <a class="btn btn-primary" href="/Carts/AddToCart?bookId=@Model.Id">Add To Cart</a>
+    }
 </div>
