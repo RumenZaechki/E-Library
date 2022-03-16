@@ -38,7 +38,7 @@
     </div>
 
     <hr class="mb-2" style="height:3px;border:none;" />
-    @if (!User.IsInRole(AdminConstants.AdminRoleName))
+    @if (!User.IsInRole(AdminConstants.AdminRoleName) && User.Identity.IsAuthenticated)
     {
         <a class="btn btn-primary" href="/Carts/AddToCart?bookId=@Model.Id">Add To Cart</a>
     }
