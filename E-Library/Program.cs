@@ -5,6 +5,7 @@ using E_Library.Services;
 using E_Library.Services.Carts;
 using E_Library.Services.Contracts;
 using E_Library.Services.Home;
+using E_Library.Services.Statistics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,6 +32,7 @@ builder.Services
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IHomeService, HomeService>();
 builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<IStatisticsService, StatisticsService>();
 
 
 builder.Services.AddControllersWithViews();

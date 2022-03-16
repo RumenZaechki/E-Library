@@ -19,8 +19,6 @@ namespace E_Library.Controllers
 
         public IActionResult Index()
         {
-            var totalBooks = this.homeService.GetTotalBooks();
-            var totalUsers = this.homeService.GetTotalUsers();
             var books = this.homeService.GetBooks();
             var booksToShow = books.Select(b => new BookListingViewModel
             {
@@ -35,8 +33,6 @@ namespace E_Library.Controllers
                 .ToList();
             return View(new IndexViewModel
             {
-                TotalBooks = totalBooks,
-                TotalUsers = totalUsers,
                 RecentlyAddedBooks = booksToShow,
             });
         }

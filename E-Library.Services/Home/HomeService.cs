@@ -28,14 +28,5 @@ namespace E_Library.Services.Home
                 })
                 .ToList();
         }
-
-        public int GetTotalUsers()
-        {
-            return this.data.Users.Count();
-        }
-        public int GetTotalBooks()
-        {
-            return this.data.Books.Count();
-        }
     }
 }
