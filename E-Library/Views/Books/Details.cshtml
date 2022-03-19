@@ -23,7 +23,7 @@
 
     <div class="font-weight-light">
         <h4 class="text-left font-weight-bold" style="font-size:large">
-            Author: <i class="font-weight-light">@Model.Author</i>
+            Author: <a class="font-weight-light" asp-controller="Authors" asp-action="Details" asp-route-authorId="@Model.AuthorId">@Model.Author</a>
         </h4>
         <h4 class="text-left font-weight-bold" style="font-size:large">
             Category: <i class="font-weight-light">@Model.Category</i>

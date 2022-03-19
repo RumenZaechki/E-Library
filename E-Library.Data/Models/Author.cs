@@ -10,5 +10,7 @@ namespace E_Library.Data.Models
         [Required]
         [StringLength(AuthorConstants.AuthorNameMaxLength)]
         public string Name { get; set; }
+        public string Description { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

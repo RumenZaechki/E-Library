@@ -68,6 +68,7 @@ namespace E_Library.Controllers
                 Price = book.Price.ToString("F2"),
                 ImageUrl = book.ImageUrl,
                 Release = book.Release,
+                AuthorId = book.AuthorId,
                 Author = book.Author,
                 Category = book.Category
             });

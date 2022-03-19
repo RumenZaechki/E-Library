@@ -32,14 +32,16 @@ namespace E_Library.Services
             return dict;
         }
 
-        public void Create(string title, string description, decimal price, string imageUrl, int release, string author, int categoryId)
+        public void Create(string title, string description, decimal price, string imageUrl, int release, string author, string authorDescription, string authorImage, int categoryId)
         {
             Author authorToAdd = null;
             if (!this.data.Authors.Any(a => a.Name == author))
             {
                 authorToAdd = new Author
                 {
-                    Name = author
+                    Name = author,
+                    Description = authorDescription,
+                    ImageUrl = authorImage
                 };
                 this.data.Authors.Add(authorToAdd);
                 this.data.SaveChanges();
@@ -129,6 +131,9 @@ namespace E_Library.Services
                     Price = b.Price,
                     ImageUrl = b.ImageUrl,
                     Release = b.Release,
+                    AuthorId = b.Author.Id,
+                    AuthorDescription = b.Author.Description,
+                    AuthorImage = b.Author.ImageUrl,
                     Author = b.Author.Name,
                     Category = b.Category.Name
                 })
@@ -136,7 +141,7 @@ namespace E_Library.Services
         }
 
 
-        public void Edit(string id, string title, string description, decimal price, string imageUrl, int release, string author, int categoryId)
+        public void Edit(string id, string title, string description, decimal price, string imageUrl, int release, string author, string authorDescription, string authorImage, int categoryId)
         {
             Book book = this.data.Books.FirstOrDefault(b => b.Id == id);
             Author authorToEdit = this.data.Authors.FirstOrDefault(a => a.Id == book.AuthorId);
@@ -150,6 +155,8 @@ namespace E_Library.Services
             book.CategoryId = categoryId;
             book.Author.Name = author;
             authorToEdit.Name = author;
+            authorToEdit.Description = authorDescription;
+            authorToEdit.ImageUrl = authorImage;
             this.data.Books.Update(book);
             this.data.Authors.Update(authorToEdit);
             this.data.SaveChanges();

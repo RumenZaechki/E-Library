@@ -14,7 +14,10 @@ namespace E_Library.Services.Books.Models
         public decimal Price { get; set; }
         public string ImageUrl { get; set; }
         public int Release { get; set; }
+        public string AuthorId { get; set; }
         public string Author { get; set; }
+        public string AuthorDescription { get; set; }
+        public string AuthorImage { get; set; }
         public string Category { get; set; }
     }
 }

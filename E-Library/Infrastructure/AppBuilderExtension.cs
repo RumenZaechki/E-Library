@@ -70,7 +70,9 @@ namespace E_Library.Infrastructure
                     AuthorId = Guid.NewGuid().ToString(),
                     Author = new Author
                     {
-                        Name = "Robert Pantano"
+                        Name = "Robert Pantano",
+                        Description = "Robert Pantano is the creator of the YouTube channel and production house known as Pursuit of Wonder, which covers similar topics of philosophy, science, and literature through short stories, guided experiences, video essays, and more.",
+                        ImageUrl = "https://yt3.ggpht.com/ytc/AKedOLSOgx4aSr0YiJreg-4ReQwO4hKw_wbVSKcrIf5JCQ=s900-c-k-c0x00ffffff-no-rj"
                     },
                     CategoryId = 3,
                 },
@@ -84,7 +86,9 @@ namespace E_Library.Infrastructure
                     AuthorId = Guid.NewGuid().ToString(),
                     Author = new Author
                     {
-                        Name = "John Tolkien"
+                        Name = "John Tolkien",
+                        Description = "John Ronald Reuel Tolkien was an English writer, poet, philologist, and academic, best known as the author of the high fantasy works The Hobbit and The Lord of the Rings. From 1925-45, Tolkien was the Rawlinson and Bosworth Professor of Anglo-Saxon and a Fellow of Pembroke College, both at the University of Oxford. He then moved within the same university, to become the Merton Professor of English Language and Literature and Fellow of Merton College, positions he held from 1945 until his retirement in 1959. Tolkien was a close friend of C. S. Lewis, a co-member of the informal literary discussion group The Inklings. He was appointed a Commander of the Order of the British Empire by Queen Elizabeth II on 28 March 1972.",
+                        ImageUrl = "https://m.media-amazon.com/images/M/MV5BMGMxMmRkNzctMWQzYy00MTY3LWEzMDAtMzEzMDhkZWI4MjZlXkEyXkFqcGdeQXVyNDUzOTQ5MjY@._V1_.jpg"
                     },
                     CategoryId = 1,
                 },
@@ -98,7 +102,9 @@ namespace E_Library.Infrastructure
                     AuthorId = Guid.NewGuid().ToString(),
                     Author = new Author
                     {
-                        Name = "Marcus Aurelius"
+                        Name = "Marcus Aurelius",
+                        Description = "Marcus Aurelius Antoninus was Roman emperor from 161 to 180 and a Stoic philosopher. He was the last of the rulers known as the Five Good Emperors (a term coined some 13 centuries later by Niccolò Machiavelli), and the last emperor of the Pax Romana, an age of relative peace and stability for the Roman Empire lasting from 27 BCE to 180 CE. He served as Roman consul in 140, 145, and 161.",
+                        ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9OsS0Bl4dOwm0DFcR5U0H8neR_fyJ9J_ePQ&usqp=CAU"
                     },
                     CategoryId = 8,
                 },
@@ -112,7 +118,9 @@ namespace E_Library.Infrastructure
                     AuthorId = Guid.NewGuid().ToString(),
                     Author = new Author
                     {
-                        Name = "Sun Tzu"
+                        Name = "Sun Tzu",
+                        Description = "Sun Tzu was a Chinese general, military strategist, writer, and philosopher who lived in the Eastern Zhou period of ancient China. Sun Tzu is traditionally credited as the author of The Art of War, an influential work of military strategy that has affected both Western and East Asian philosophy and military thinking.",
+                        ImageUrl = "https://game-change.com/wp-content/uploads/2021/08/Sun-Tzu-3.jpg"
                     },
                     CategoryId = 7,
                 },
@@ -153,11 +161,27 @@ namespace E_Library.Infrastructure
                 },
                 new Category
                 {
-                    Name = "Historical Fiction"
+                    Name = "History"
                 },
                 new Category
                 {
                     Name = "Philosophy"
+                },
+                new Category
+                {
+                    Name = "Arts"
+                },
+                new Category
+                {
+                    Name = "Science"
+                },
+                new Category
+                {
+                    Name = "Children's"
+                },
+                new Category
+                {
+                    Name = "Fiction"
                 },
             });
             data.SaveChanges();
