@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace E_Library.Services.Books.Models
+﻿namespace E_Library.Services.Books.Models
 {
     public class BookServiceModel
     {
@@ -18,6 +12,8 @@ namespace E_Library.Services.Books.Models
         public string Author { get; set; }
         public string AuthorDescription { get; set; }
         public string AuthorImage { get; set; }
+        public string PublisherId { get; set; }
+        public string Publisher { get; set; }
         public string Category { get; set; }
     }
 }

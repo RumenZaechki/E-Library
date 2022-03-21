@@ -42,7 +42,7 @@
                 @if (User.IsInRole(AdminConstants.AdminRoleName))
                 {
                     <a asp-area="Admin" asp-controller="Books" asp-action="Edit" asp-route-id="@book.Id" class="btn btn-warning">Edit</a>
-                    <a class="btn btn-block btn-danger" href="/Books/Delete?id=@book.Id">Delete</a>
+                    <a asp-area="Admin" asp-controller="Books" asp-action="Delete" asp-route-id="@book.Id" class="btn btn-danger">Delete</a>
                 }
             </div>
         </div>

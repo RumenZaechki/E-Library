@@ -6,6 +6,7 @@ using E_Library.Services.Authors;
 using E_Library.Services.Carts;
 using E_Library.Services.Contracts;
 using E_Library.Services.Home;
+using E_Library.Services.Publishers;
 using E_Library.Services.Statistics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -35,6 +36,7 @@ builder.Services.AddScoped<IHomeService, HomeService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IStatisticsService, StatisticsService>();
 builder.Services.AddScoped<IAuthorService, AuthorService>();
+builder.Services.AddScoped<IPublishersService, PublishersService>();
 
 
 builder.Services.AddControllersWithViews();

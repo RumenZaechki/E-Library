@@ -25,6 +25,7 @@ namespace E_Library.Models.Books
         [Required]
         [MaxLength(AuthorConstants.AuthorDescriptionMaxLength)]
         public string AuthorDescription { get; set; }
+        public string Publisher { get; set; }
         [Display(Name = "Category")]
         public int CategoryId { get; set; }
         public IEnumerable<BookCategoryViewModel>? Categories { get; set; }

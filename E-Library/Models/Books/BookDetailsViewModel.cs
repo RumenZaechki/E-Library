@@ -10,6 +10,8 @@
         public int Release { get; set; }
         public string AuthorId { get; set; }
         public string Author { get; set; }
+        public string PublisherId { get; set; }
+        public string Publisher { get; set; }
         public string Category { get; set; }
     }
 }

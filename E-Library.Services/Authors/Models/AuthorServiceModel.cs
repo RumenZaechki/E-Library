@@ -5,6 +5,6 @@
         public string Name { get; set; }
         public string Description { get; set; }
         public string ImageUrl { get; set; }
-        public ICollection<BookServiceModel> Books { get; set; } = new List<BookServiceModel>();
+        public ICollection<AuthorBookServiceModel> Books { get; set; } = new List<AuthorBookServiceModel>();
     }
 }

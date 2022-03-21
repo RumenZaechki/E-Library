@@ -1,0 +1,49 @@
+﻿@model PublisherViewModel
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="container" style="text-align:center">
+    <h2>@Model.Name</h2>
+
+    <strong>
+        <span>@Model.Books.Count Works</span>
+    </strong>
+
+    <hr class="mt-2 mb-3" style="height:3px;border:none;" />
+
+    <div class="row">
+        @foreach (var book in Model.Books)
+        {
+            <div class="col-2" style="margin-left:auto; margin-right:auto;">
+                <a asp-controller="Books" asp-action="Details" asp-route-id="@book.Id"><img class="rounded" src="@book.ImageUrl" height="275" width="200" style="margin-left:auto; margin-right:auto;"></a>
+            </div>
+        }
+    </div>
+
+    <hr class="mt-2 mb-3" style="height:3px;border:none;" />
+
+    <h3>Authors</h3>
+    <div class="smallest lightgreen sansserif">published most by this publisher</div>
+
+    <div class="list-group">
+        @foreach (var author in Model.Authors)
+        {
+            <a asp-controller="Authors" asp-action="Details" asp-route-authorId="@author.Id" class="font-weight-light">@author.Name</a>
+        }
+    </div>
+</div>
+
+@section Scripts{
+<script>
+            $(document).ready(function(){
+
+    $('.items').slick({
+    infinite: true,
+    slidesToShow: 3,
+    slidesToScroll: 3
+    });
+    });
+</script>
+}

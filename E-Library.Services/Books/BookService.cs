@@ -32,7 +32,7 @@ namespace E_Library.Services
             return dict;
         }
 
-        public void Create(string title, string description, decimal price, string imageUrl, int release, string author, string authorDescription, string authorImage, int categoryId)
+        public void Create(string title, string description, decimal price, string imageUrl, int release, string author, string authorDescription, string authorImage, string publisher, int categoryId)
         {
             Author authorToAdd = null;
             if (!this.data.Authors.Any(a => a.Name == author))
@@ -46,7 +46,24 @@ namespace E_Library.Services
                 this.data.Authors.Add(authorToAdd);
                 this.data.SaveChanges();
             }
-            authorToAdd = this.data.Authors.Where(a => a.Name == author).FirstOrDefault();
+            authorToAdd = this.data.Authors
+                .Where(a => a.Name == author)
+                .FirstOrDefault();
+
+            Publisher publisherToAdd = null;
+            if (!this.data.Publishers.Any(a => a.Name == publisher))
+            {
+                publisherToAdd = new Publisher
+                {
+                    Name = publisher
+                };
+                this.data.Publishers.Add(publisherToAdd);
+                this.data.SaveChanges();
+            }
+            publisherToAdd = this.data.Publishers
+                .Where(p => p.Name == publisher)
+                .FirstOrDefault();
+
             var bookToAdd = new Book
             {
                 Title = title,
@@ -56,7 +73,9 @@ namespace E_Library.Services
                 Release = release,
                 CategoryId = categoryId,
                 AuthorId = authorToAdd.Id,
-                Author = authorToAdd
+                Author = authorToAdd,
+                PublisherId = publisherToAdd.Id,
+                Publisher = publisherToAdd
             };
             this.data.Books.Add(bookToAdd);
             this.data.SaveChanges();
@@ -135,13 +154,15 @@ namespace E_Library.Services
                     AuthorDescription = b.Author.Description,
                     AuthorImage = b.Author.ImageUrl,
                     Author = b.Author.Name,
+                    PublisherId = b.PublisherId,
+                    Publisher = b.Publisher.Name,
                     Category = b.Category.Name
                 })
                 .FirstOrDefault();
         }
 
 
-        public void Edit(string id, string title, string description, decimal price, string imageUrl, int release, string author, string authorDescription, string authorImage, int categoryId)
+        public void Edit(string id, string title, string description, decimal price, string imageUrl, int release, string author, string authorDescription, string authorImage, string publisher, int categoryId)
         {
             Book book = this.data.Books.FirstOrDefault(b => b.Id == id);
             Author authorToEdit = this.data.Authors.FirstOrDefault(a => a.Id == book.AuthorId);
@@ -157,6 +178,7 @@ namespace E_Library.Services
             authorToEdit.Name = author;
             authorToEdit.Description = authorDescription;
             authorToEdit.ImageUrl = authorImage;
+            book.Publisher.Name = publisher;
             this.data.Books.Update(book);
             this.data.Authors.Update(authorToEdit);
             this.data.SaveChanges();

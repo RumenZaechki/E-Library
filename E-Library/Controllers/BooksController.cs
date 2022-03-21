@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using E_Library.Services.Contracts;
 
-using static E_Library.WebConstants;
-
 namespace E_Library.Controllers
 {
     public class BooksController : Controller
@@ -50,13 +48,6 @@ namespace E_Library.Controllers
             });
         }
 
-        public IActionResult Delete(string id)
-        {
-            this.bookService.Delete(id);
-            this.TempData[GlobalMessageKey] = "Successfully removed book.";
-            return RedirectToAction(nameof(All));
-        }
-
         public IActionResult Details(string id)
         {
             var book = this.bookService.Details(id);
@@ -70,17 +61,9 @@ namespace E_Library.Controllers
                 Release = book.Release,
                 AuthorId = book.AuthorId,
                 Author = book.Author,
+                PublisherId = book.PublisherId,
+                Publisher = book.Publisher,
                 Category = book.Category
-            });
-        }
-
-        private IEnumerable<BookCategoryViewModel> GetCategories()
-        {
-            var categoriesObj = this.bookService.GetBookCategories();
-            return categoriesObj.Select(c => new BookCategoryViewModel
-            {
-                Id = c.Key,
-                Name = c.Value,
             });
         }
     }

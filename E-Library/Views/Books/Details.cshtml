@@ -26,6 +26,9 @@
             Author: <a asp-controller="Authors" asp-action="Details" asp-route-authorId="@Model.AuthorId" class="font-weight-light">@Model.Author</a>
         </h4>
         <h4 class="text-left font-weight-bold" style="font-size:large">
+            Published By: <a asp-controller="Publishers" asp-action="Details" asp-route-publisherId="@Model.PublisherId" class="font-weight-light">@Model.Publisher</a>
+        </h4>
+        <h4 class="text-left font-weight-bold" style="font-size:large">
             Category: <i class="font-weight-light">@Model.Category</i>
         </h4>
         <h4 class="text-left font-weight-bold" style="font-size:large">

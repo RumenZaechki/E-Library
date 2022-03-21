@@ -1,6 +1,6 @@
 ﻿namespace E_Library.Services.Authors.Models
 {
-    public class BookServiceModel
+    public class AuthorBookServiceModel
     {
         public string Id { get; set; }
         public string Title { get; set; }
