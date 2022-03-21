@@ -15,7 +15,7 @@
 
     <div class="row" style="width:20rem; margin: auto;">
         <div class="col-3">
-            <img src="@Model.ImageUrl" class="rounded" alt="Portrait" />
+            <img src="@Model.ImageUrl" style="margin-left:auto; margin-right:auto;"/>
         </div>
     </div>
 
@@ -23,7 +23,7 @@
 
     <div class="font-weight-light">
         <h4 class="text-left font-weight-bold" style="font-size:large">
-            Author: <a class="font-weight-light" asp-controller="Authors" asp-action="Details" asp-route-authorId="@Model.AuthorId">@Model.Author</a>
+            Author: <a asp-controller="Authors" asp-action="Details" asp-route-authorId="@Model.AuthorId" class="font-weight-light">@Model.Author</a>
         </h4>
         <h4 class="text-left font-weight-bold" style="font-size:large">
             Category: <i class="font-weight-light">@Model.Category</i>

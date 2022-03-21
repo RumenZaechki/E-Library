@@ -30,6 +30,10 @@ namespace E_Library.Data.Models
 
         [ForeignKey(nameof(AuthorId))]
         public Author Author { get; set; }
+        [Required]
+        public string PublisherId { get; set; }
+        [ForeignKey(nameof(PublisherId))]
+        public Publisher Publisher { get; set; }
         public ICollection<BookCart> BookCarts { get; set; } = new List<BookCart>();
     }
 }
