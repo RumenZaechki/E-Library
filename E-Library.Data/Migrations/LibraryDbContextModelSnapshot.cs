@@ -137,29 +137,6 @@ namespace E_Library.Data.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("E_Library.Data.Models.Review", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("BookId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookId");
-
-                    b.ToTable("Reviews");
-                });
-
             modelBuilder.Entity("E_Library.Data.Models.User", b =>
                 {
                     b.Property<string>("Id")
@@ -407,17 +384,6 @@ namespace E_Library.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("E_Library.Data.Models.Review", b =>
-                {
-                    b.HasOne("E_Library.Data.Models.Book", "Book")
-                        .WithMany("Reviews")
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Book");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -472,8 +438,6 @@ namespace E_Library.Data.Migrations
             modelBuilder.Entity("E_Library.Data.Models.Book", b =>
                 {
                     b.Navigation("BookCarts");
-
-                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("E_Library.Data.Models.Cart", b =>

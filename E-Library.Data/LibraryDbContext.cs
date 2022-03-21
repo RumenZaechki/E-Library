@@ -11,7 +11,6 @@ namespace E_Library.Data
         public DbSet<Cart> Carts { get; set; }
         public DbSet<Book> Books { get; set; }
         public DbSet<Author> Authors { get; set; }
-        public DbSet<Review> Reviews { get; set; }
         public DbSet<BookCart> BookCarts { get; set; }
         public LibraryDbContext(DbContextOptions<LibraryDbContext> options)
             : base(options)

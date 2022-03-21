@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Library.Data.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    [Migration("20220319194755_Initial")]
+    [Migration("20220321085105_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -137,29 +137,6 @@ namespace E_Library.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("E_Library.Data.Models.Review", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("BookId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookId");
-
-                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("E_Library.Data.Models.User", b =>
@@ -409,17 +386,6 @@ namespace E_Library.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("E_Library.Data.Models.Review", b =>
-                {
-                    b.HasOne("E_Library.Data.Models.Book", "Book")
-                        .WithMany("Reviews")
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Book");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -474,8 +440,6 @@ namespace E_Library.Data.Migrations
             modelBuilder.Entity("E_Library.Data.Models.Book", b =>
                 {
                     b.Navigation("BookCarts");
-
-                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("E_Library.Data.Models.Cart", b =>
