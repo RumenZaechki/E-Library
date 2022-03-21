@@ -17,7 +17,32 @@ namespace E_Library.Infrastructure
             SeedCategories(data);
             SeedBooks(data);
             SeedAdministratior(serviceProvider);
+            SeedUser(serviceProvider);
             return app;
+        }
+        private static void SeedUser(IServiceProvider services)
+        {
+            var userManager = services.GetRequiredService<UserManager<User>>();
+            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+            Task
+                .Run(async () =>
+                {
+                    const string adminPassword = "123456";
+                    var user = new User
+                    {
+                        Email = "user@mail.com",
+                        UserName = "user@mail.com"
+                    };
+                    var cart = new Cart
+                    {
+                        UserId = user.Id,
+                        User = user,
+                    };
+                    user.Cart = cart;
+                    await userManager.CreateAsync(user, adminPassword);
+                })
+                .GetAwaiter()
+                .GetResult();
         }
         private static void SeedAdministratior(IServiceProvider services)
         {
@@ -74,6 +99,11 @@ namespace E_Library.Infrastructure
                         Description = "Robert Pantano is the creator of the YouTube channel and production house known as Pursuit of Wonder, which covers similar topics of philosophy, science, and literature through short stories, guided experiences, video essays, and more.",
                         ImageUrl = "https://yt3.ggpht.com/ytc/AKedOLSOgx4aSr0YiJreg-4ReQwO4hKw_wbVSKcrIf5JCQ=s900-c-k-c0x00ffffff-no-rj"
                     },
+                    PublisherId = Guid.NewGuid().ToString(),
+                    Publisher = new Publisher
+                    {
+                        Name = "Independently published"
+                    },
                     CategoryId = 3,
                 },
                 new Book
@@ -89,6 +119,11 @@ namespace E_Library.Infrastructure
                         Name = "John Tolkien",
                         Description = "John Ronald Reuel Tolkien was an English writer, poet, philologist, and academic, best known as the author of the high fantasy works The Hobbit and The Lord of the Rings. From 1925-45, Tolkien was the Rawlinson and Bosworth Professor of Anglo-Saxon and a Fellow of Pembroke College, both at the University of Oxford. He then moved within the same university, to become the Merton Professor of English Language and Literature and Fellow of Merton College, positions he held from 1945 until his retirement in 1959. Tolkien was a close friend of C. S. Lewis, a co-member of the informal literary discussion group The Inklings. He was appointed a Commander of the Order of the British Empire by Queen Elizabeth II on 28 March 1972.",
                         ImageUrl = "https://m.media-amazon.com/images/M/MV5BMGMxMmRkNzctMWQzYy00MTY3LWEzMDAtMzEzMDhkZWI4MjZlXkEyXkFqcGdeQXVyNDUzOTQ5MjY@._V1_.jpg"
+                    },
+                    PublisherId = Guid.NewGuid().ToString(),
+                    Publisher = new Publisher
+                    {
+                        Name = "William Morrow Paperbacks"
                     },
                     CategoryId = 1,
                 },
@@ -106,6 +141,11 @@ namespace E_Library.Infrastructure
                         Description = "Marcus Aurelius Antoninus was Roman emperor from 161 to 180 and a Stoic philosopher. He was the last of the rulers known as the Five Good Emperors, and the last emperor of the Pax Romana, an age of relative peace and stability for the Roman Empire lasting from 27 BCE to 180 CE.",
                         ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9OsS0Bl4dOwm0DFcR5U0H8neR_fyJ9J_ePQ&usqp=CAU"
                     },
+                    PublisherId = Guid.NewGuid().ToString(),
+                    Publisher = new Publisher
+                    {
+                        Name = "CreateSpace Independent Publishing Platform"
+                    },
                     CategoryId = 8,
                 },
                 new Book
@@ -121,6 +161,11 @@ namespace E_Library.Infrastructure
                         Name = "Sun Tzu",
                         Description = "Sun Tzu was a Chinese general, military strategist, writer, and philosopher who lived in the Eastern Zhou period of ancient China. Sun Tzu is traditionally credited as the author of The Art of War, an influential work of military strategy that has affected both Western and East Asian philosophy and military thinking.",
                         ImageUrl = "https://game-change.com/wp-content/uploads/2021/08/Sun-Tzu-3.jpg"
+                    },
+                    PublisherId = Guid.NewGuid().ToString(),
+                    Publisher = new Publisher
+                    {
+                        Name = "Filiquarian"
                     },
                     CategoryId = 7,
                 },
