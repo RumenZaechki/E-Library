@@ -18,7 +18,14 @@ namespace E_Library.Controllers
             {
                 Name = author.Name,
                 Description = author.Description,
-                ImageUrl = author.ImageUrl
+                ImageUrl = author.ImageUrl,
+                Books = author.Books
+                        .Select(b => new BookViewModel
+                        {
+                            Id = b.Id,
+                            Title = b.Title
+                        })
+                        .ToList()
             });
         }
     }

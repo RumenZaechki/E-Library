@@ -14,12 +14,23 @@ namespace E_Library.Services.Authors
         }
         public AuthorServiceModel GetAuthor(string id)
         {
-            Author author = this.data.Authors.FirstOrDefault(a => a.Id == id);
+            Author author = this.data.Authors
+                .FirstOrDefault(a => a.Id == id);
+            var books = this.data.Books
+                .Where(a => a.AuthorId == id)
+                .Select(b => new BookServiceModel
+                {
+                    Id = b.Id,
+                    Title = b.Title
+                })
+                .ToList();
+
             return new AuthorServiceModel
             {
                 Name = author.Name,
                 Description = author.Description,
                 ImageUrl = author.ImageUrl,
+                Books = books
             };
         }
     }

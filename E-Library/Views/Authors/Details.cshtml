@@ -5,21 +5,30 @@
 }
 
 <div class="container" style="text-align:center">
+
     <h2>@Model.Name</h2>
 
     <hr class="mt-2 mb-3" style="height:3px;border:none;" />
 
     <div class="row" style="width:20rem; margin: auto;">
         <div class="col-3">
-            <img src="@Model.ImageUrl" class="rounded" alt="Portrait" width="450" height="450" />
+            <img src="@Model.ImageUrl" class="rounded" alt="Portrait" width="450" height="450" style="display: block;margin-left: auto;margin-right: auto;" />
         </div>
     </div>
 
     <hr class="mt-2 mb-3" style="height:3px;border:none;" />
 
-
     <p class="text-left" style="font-size:large">
         @Model.Description
     </p>
-</div>
+
+    <hr class="mt-2 mb-3" style="height:3px;border:none;" />
+
+    <h2>@(Model.Books.Count) Works</h2>
+    <div class="list-group">
+        @foreach (var book in Model.Books)
+        {
+            <a asp-controller="Books" asp-action="Details" asp-route-id="@book.Id" class="list-group-item list-group-item-action active" aria-current="true">@book.Title</a>
+        }
+    </div>
 </div>
