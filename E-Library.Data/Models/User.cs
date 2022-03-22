@@ -7,5 +7,7 @@ namespace E_Library.Data.Models
     {
         [Required]
         public Cart Cart { get; set; }
+        [Required]
+        public ICollection<Review> Reviews { get; set; } = new List<Review>();
     }
 }

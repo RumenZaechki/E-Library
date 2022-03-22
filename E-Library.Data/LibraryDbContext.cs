@@ -13,6 +13,7 @@ namespace E_Library.Data
         public DbSet<Author> Authors { get; set; }
         public DbSet<BookCart> BookCarts { get; set; }
         public DbSet<Publisher> Publishers { get; set; }
+        public DbSet<Review> Reviews { get; set; }
         public LibraryDbContext(DbContextOptions<LibraryDbContext> options)
             : base(options)
         {

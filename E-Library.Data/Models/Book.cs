@@ -35,5 +35,6 @@ namespace E_Library.Data.Models
         [ForeignKey(nameof(PublisherId))]
         public Publisher Publisher { get; set; }
         public ICollection<BookCart> BookCarts { get; set; } = new List<BookCart>();
+        public ICollection<Review> Reviews { get; set; } = new List<Review>();
     }
 }
