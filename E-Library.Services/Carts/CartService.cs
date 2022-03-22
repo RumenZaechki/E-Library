@@ -28,20 +28,27 @@ namespace E_Library.Services.Carts
             this.data.BookCarts.Remove(bookCart);
             this.data.SaveChanges();
         }
-        public void AddBookToCart(string userId, string bookId)
+        public string AddBookToCart(string userId, string bookId)
         {
             var book = this.data.Books.Where(x => x.Id == bookId).FirstOrDefault();
             var user = this.data.Users.Where(u => u.Id == userId).FirstOrDefault();
             var cart = this.data.Carts.Where(x => x.User == user).FirstOrDefault();
-            this.data.BookCarts.Add(new BookCart
+            if (this.data.BookCarts.Any(bc => bc.CartId == cart.Id && bc.BookId == book.Id))
             {
-                BookId = bookId,
-                Book = book,
-                CartId = cart.Id,
-                Cart = cart
-            });
-
-            this.data.SaveChanges();
+                return "Item already added to cart!";
+            }
+            else
+            {
+                this.data.BookCarts.Add(new BookCart
+                {
+                    BookId = bookId,
+                    Book = book,
+                    CartId = cart.Id,
+                    Cart = cart
+                });
+                this.data.SaveChanges();
+                return null;
+            }
         }
         public IEnumerable<CartBookModel> GetBooksFromCart(string userId)
         {

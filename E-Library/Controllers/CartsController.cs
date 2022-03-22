@@ -19,9 +19,17 @@ namespace E_Library.Controllers
         public IActionResult AddToCart(string bookId)
         {
             var userId = GetUserId();
-            this.cartService.AddBookToCart(userId, bookId);
-            this.TempData[GlobalMessageKey] = "Successfully added book to cart.";
-            return RedirectToAction("MyCart", "Carts");
+            var message = this.cartService.AddBookToCart(userId, bookId);
+            if (message != null)
+            {
+                this.TempData[GlobalMessageKey] = message;
+                return RedirectToAction("All", "Books");
+            }
+            else
+            {
+                this.TempData[GlobalMessageKey] = "Successfully added book to cart.";   
+                return RedirectToAction("MyCart", "Carts");
+            }
         }
         public IActionResult MyCart()
         {

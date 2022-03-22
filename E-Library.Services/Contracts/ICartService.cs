@@ -1,5 +1,4 @@
-﻿
-using E_Library.Services.Carts;
+﻿using E_Library.Services.Carts;
 
 namespace E_Library.Services.Contracts
 {
@@ -7,7 +6,7 @@ namespace E_Library.Services.Contracts
     {
         public void Buy(string userId);
         public void RemoveBookFromCart(string bookId, string userId);
-        public void AddBookToCart(string userId, string bookId);
+        public string AddBookToCart(string userId, string bookId);
         public IEnumerable<CartBookModel> GetBooksFromCart(string userId);
     }
 }
