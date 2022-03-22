@@ -48,7 +48,7 @@ namespace E_Library.Controllers
             string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             this.reviewsService.AddReview(reviewModel.BookId, userId, reviewModel.Rating, reviewModel.Description);
             this.TempData[GlobalMessageKey] = "Successfully added review to the book.";
-            return RedirectToAction("All", "Reviews");
+            return RedirectToAction("All", "Reviews", new { bookId = reviewModel.BookId });
         }
     }
 }

@@ -12,6 +12,16 @@ namespace E_Library.Services.Reviews
         {
             this.data = data;
         }
+        public void DeleteReview(string reviewId)
+        {
+            Review review = this.data.Reviews.FirstOrDefault(r => r.Id == reviewId);
+            User user = this.data.Users.FirstOrDefault(u => u.Id == review.UserId);
+            Book book = this.data.Books.FirstOrDefault(b => b.Id == review.BookId);
+            user.Reviews.Remove(review);
+            book.Reviews.Remove(review);
+            this.data.Reviews.Remove(review);
+            this.data.SaveChanges();
+        }
         public void AddReview(string bookId, string userId, int rating, string description)
         {
             Book book = this.data.Books.FirstOrDefault(b => b.Id == bookId);

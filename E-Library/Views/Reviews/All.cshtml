@@ -15,9 +15,9 @@
 
             <div style="white-space: pre-wrap; font-size:large;" class="font-weight-light text-left mt-2 mb-1">@comment.Description</div>
 
-            @if (User.IsInRole(AdminConstants.AdminRoleName) && User.Identity.IsAuthenticated)
+            @if (User.IsInRole(AdminConstants.AdminRoleName))
             {
-                <a class="btn btn-danger">Delete review</a>
+                <a asp-area="Admin" asp-controller="Reviews" asp-action="Delete" asp-route-commentId="@comment.Id" asp-route-bookId="@Model.BookId" class="btn btn-danger">Delete review</a>
             }
         </div>
         <hr class="mt-2 mb-3" style="height:3px;border:none;" />
@@ -26,7 +26,7 @@
 else
 {
     <div class="jumbotron">
-        <p class="lead text-center">There are no reviews of this book as of yet.</p>
+        <p class="lead">There are no reviews of this book as of yet.</p>
         <hr class="my-4">
     </div>
 }
