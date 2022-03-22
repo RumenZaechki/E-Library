@@ -1,0 +1,37 @@
+﻿@model ReviewViewModel
+
+@{
+    ViewData["Title"] = "All Reviews";
+}
+
+@if (Model.Comments.Any())
+{
+    @foreach (var comment in Model.Comments)
+    {
+        <hr class="mt-2 mb-3" style="height:3px;border:none;" />
+        <div class="text-justify mt-2">
+            <h5 style="font-size:x-large">★ <span style="font-size:large">@comment.Rating</span><span style="font-size:small">/10</span></h5>
+            <h5 style="font-size:medium;">by @comment.User</h5>
+
+            <div style="white-space: pre-wrap; font-size:large;" class="font-weight-light text-left mt-2 mb-1">@comment.Description</div>
+
+            @if (User.IsInRole(AdminConstants.AdminRoleName) && User.Identity.IsAuthenticated)
+            {
+                <a class="btn btn-danger">Delete review</a>
+            }
+        </div>
+        <hr class="mt-2 mb-3" style="height:3px;border:none;" />
+    }
+}
+else
+{
+    <div class="jumbotron">
+        <p class="lead text-center">There are no reviews of this book as of yet.</p>
+        <hr class="my-4">
+    </div>
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    <a asp-controller="Reviews" asp-action="AddReview" asp-route-bookId="@Model.BookId" class="btn btn-primary" style="margin-top:10px">Add a review</a>
+}

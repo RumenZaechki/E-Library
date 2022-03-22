@@ -14,9 +14,7 @@
     <hr class="mt-2 mb-3" style="height:3px;border:none;" />
 
     <div class="row" style="width:20rem; margin: auto;">
-        <div class="col-3">
-            <img src="@Model.ImageUrl" style="margin-left:auto; margin-right:auto;"/>
-        </div>
+            <img src="@Model.ImageUrl" style="margin-left:auto; margin-right:auto;" />
     </div>
 
     <hr class="mt-2 mb-3" style="height:3px;border:none;" />
@@ -41,8 +39,10 @@
     </div>
 
     <hr class="mb-2" style="height:3px;border:none;" />
+    <a asp-controller="Reviews" asp-action="All" asp-route-bookId="@Model.Id" class="btn btn-primary">See Reviews</a>
     @if (!User.IsInRole(AdminConstants.AdminRoleName) && User.Identity.IsAuthenticated)
     {
-        <a class="btn btn-primary" href="/Carts/AddToCart?bookId=@Model.Id">Add To Cart</a>
+        <a asp-controller="Carts" asp-action="AddToCart" asp-route-bookId="@Model.Id" class="btn btn-primary">Add To Cart</a>
     }
+
 </div>
