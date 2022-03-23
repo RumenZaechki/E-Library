@@ -15,17 +15,26 @@ namespace E_Library.Services
 
         public int GetBooksCount(string searchTerm, string selectedCategory)
         {
+            int count = 0;
+            if (searchTerm != null && selectedCategory != null)
+            {
+                return this.data.Books
+                    .Where(b => b.Title.ToLower().Contains(searchTerm.ToLower()) && b.Category.Name.ToLower() == selectedCategory.ToLower())
+                    .Count();
+            }
+            if (selectedCategory != null)
+            {
+                count += FindBooksThatMatchCategory(selectedCategory)
+                        .Count();
+            }
             if (searchTerm != null)
             {
-                int count = 0;
-                if (selectedCategory != null)
-                {
-                    count += FindBooksThatMatchCategory(selectedCategory)
-                            .Count();
-                }
                 count += this.data.Books
                         .Where(b => b.Title.ToLower().Contains(searchTerm.ToLower()))
                         .Count();
+            }
+            if (searchTerm != null || selectedCategory != null)
+            {
                 return count;
             }
             return this.data.Books.Count();
@@ -77,7 +86,7 @@ namespace E_Library.Services
                 .Where(p => p.Name == publisher)
                 .FirstOrDefault();
 
-            var bookToAdd = new Book
+            Book bookToAdd = new Book
             {
                 Title = title,
                 Description = description,
@@ -94,16 +103,17 @@ namespace E_Library.Services
             this.data.SaveChanges();
         }
 
-        public IEnumerable<BookServiceModel> FindBooks(string searchTerm, int currentPage, int booksPerPage)
+        public IEnumerable<BookServiceModel> FindBooks(string searchTerm, string selectedCategory, int currentPage, int booksPerPage)
         {
-            if (searchTerm != null)
+            if (selectedCategory != null && searchTerm != null)
             {
-                return this.data.Books
-                    .Where(b => b.Title.ToLower().Contains(searchTerm.ToLower()))
+                var books = this.data.Books
+                    .Where(b => b.Title.ToLower().Contains(searchTerm.ToLower()) && b.Category.Name.ToLower() == selectedCategory.ToLower())
                     .Skip((currentPage - 1) * booksPerPage)
                     .Take(booksPerPage)
                     .Select(b => new BookServiceModel
                     {
+                        Id = b.Id,
                         Title = b.Title,
                         Description = b.Description,
                         Price = b.Price,
@@ -111,7 +121,32 @@ namespace E_Library.Services
                         Release = b.Release,
                         Author = b.Author.Name,
                         Category = b.Category.Name
-                    });
+                    })
+                    .ToList();
+                return books;
+            }
+            else if (selectedCategory != null || searchTerm != null)
+            {
+                var booksFromSelectedCategory = selectedCategory == null ? null : FindBooksThatMatchCategory(selectedCategory)
+                                                .ToList();
+                var booksFromSearchTerm = searchTerm == null ? null : this.data.Books
+                        .Where(b => b.Title.ToLower().Contains(searchTerm.ToLower()))
+                        .Skip((currentPage - 1) * booksPerPage)
+                        .Take(booksPerPage)
+                        .Select(b => new BookServiceModel
+                        {
+                            Id = b.Id,
+                            Title = b.Title,
+                            Description = b.Description,
+                            Price = b.Price,
+                            ImageUrl = b.ImageUrl,
+                            Release = b.Release,
+                            Author = b.Author.Name,
+                            Category = b.Category.Name
+                        })
+                        .ToList();
+                var result = booksFromSearchTerm ?? Enumerable.Empty<BookServiceModel>().Union(booksFromSelectedCategory ?? Enumerable.Empty<BookServiceModel>());
+                return result;
             }
             else
             {
@@ -131,24 +166,6 @@ namespace E_Library.Services
                     })
                     .ToList();
             }
-        }
-
-        public IEnumerable<BookServiceModel> FindBooksThatMatchCategory(string category)
-        {
-            return this.data.Books
-                .Where(b => b.Category.Name == category)
-                .Select(x => new BookServiceModel
-                {
-                    Id = x.Id,
-                    Title = x.Title,
-                    Description = x.Description,
-                    Price = x.Price,
-                    ImageUrl = x.ImageUrl,
-                    Release = x.Release,
-                    Author = x.Author.Name,
-                    Category = x.Category.Name
-                })
-                .ToList();
         }
 
         public BookServiceModel Details(string id)
@@ -173,7 +190,6 @@ namespace E_Library.Services
                 })
                 .FirstOrDefault();
         }
-
 
         public void Edit(string id, string title, string description, decimal price, string imageUrl, int release, string author, string authorDescription, string authorImage, string publisher, int categoryId)
         {
@@ -201,6 +217,23 @@ namespace E_Library.Services
             Book book = this.data.Books.FirstOrDefault(b => b.Id == id);
             this.data.Books.Remove(book);
             this.data.SaveChanges();
+        }
+        private IEnumerable<BookServiceModel> FindBooksThatMatchCategory(string category)
+        {
+            return this.data.Books
+                .Where(b => b.Category.Name == category)
+                .Select(x => new BookServiceModel
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Description = x.Description,
+                    Price = x.Price,
+                    ImageUrl = x.ImageUrl,
+                    Release = x.Release,
+                    Author = x.Author.Name,
+                    Category = x.Category.Name
+                })
+                .ToList();
         }
     }
 }

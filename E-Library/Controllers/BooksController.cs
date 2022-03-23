@@ -16,7 +16,7 @@ namespace E_Library.Controllers
         {
             var categories = this.bookService.GetBookCategories();
             var books = this.bookService
-                .FindBooks(query.SearchTerm, query.CurrentPage, AllBooksQueryModel.BooksPerPage)
+                .FindBooks(query.SearchTerm, query.SelectedCategory, query.CurrentPage, AllBooksQueryModel.BooksPerPage)
                 .Select(b => new BookListingViewModel
                 {
                     Id = b.Id,
@@ -25,19 +25,6 @@ namespace E_Library.Controllers
                     Release = b.Release,
                     Author = b.Author,
                 });
-            if (!string.IsNullOrWhiteSpace(query.SelectedCategory))
-            {
-                books = this.bookService
-                    .FindBooksThatMatchCategory(query.SelectedCategory)
-                    .Select(b => new BookListingViewModel
-                    {
-                        Id = b.Id,
-                        Title = b.Title,
-                        ImageUrl = b.ImageUrl,
-                        Release = b.Release,
-                        Author = b.Author,
-                    });
-            }
             return View(new AllBooksQueryModel
             {
                 AllBooks = books,

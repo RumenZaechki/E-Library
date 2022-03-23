@@ -30,7 +30,7 @@
 
 @if (!Model.AllBooks.Any())
 {
-    <h2 class="text-center">No books found by the given criteria!</h2>
+    <h2 class="text-center mt-5">No books found by the given criteria!</h2>
 }
 
 <div style="width:20px; height:20px"></div>
@@ -38,18 +38,21 @@
     @foreach (var book in Model.AllBooks)
     {
         <div class="card" style="width: 18rem; margin:0 auto;[B]padding:20px 0;[/B]">
-            <img src="@book.ImageUrl" class="card-img-top" alt="@book.Author"  style="width:250px; height:370px; margin:auto; margin-top:15px;">
+            <img src="@book.ImageUrl" class="card-img-top" alt="@book.Author" style="width:250px; height:370px; margin:auto; margin-top:15px;">
             <div class="card-body">
-                <h5 class="card-title">@book.Title</h5>
-                <p class="card-text">
-                    @book.Author       Released: @book.Release
-                </p>
-                <a asp-controller="Books" asp-action="Details" asp-route-id="@book.Id" class="btn btn-primary">Details</a>
-                @if (User.IsInRole(AdminConstants.AdminRoleName))
-                {
-                    <a asp-area="Admin" asp-controller="Books" asp-action="Edit" asp-route-id="@book.Id" class="btn btn-warning">Edit</a>
-                    <a asp-area="Admin" asp-controller="Books" asp-action="Delete" asp-route-id="@book.Id" class="btn btn-danger">Delete</a>
-                }
+                <div class="mb-2">
+                    <h5 class="card-title">@book.Title</h5>
+                    <p class="card-text mb-0">@book.Author</p>
+                    <p class="card-text mb-0">Released: @book.Release</p>
+                </div>
+                <div class="mt-2">
+                    <a asp-controller="Books" asp-action="Details" asp-route-id="@book.Id" class="btn btn-primary">Details</a>
+                    @if (User.IsInRole(AdminConstants.AdminRoleName))
+                    {
+                        <a asp-area="Admin" asp-controller="Books" asp-action="Edit" asp-route-id="@book.Id" class="btn btn-warning">Edit</a>
+                        <a asp-area="Admin" asp-controller="Books" asp-action="Delete" asp-route-id="@book.Id" class="btn btn-danger">Delete</a>
+                    }
+                </div>
             </div>
         </div>
     }
