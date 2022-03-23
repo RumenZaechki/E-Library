@@ -3,7 +3,7 @@ namespace E_Library.Data.Constants
 {
     public class BookConstants
     {
-        public const int TitleMaxLength = 50;
-        public const int DescriptionMaxLength = 300;
+        public const int TitleMaxLength = 100;
+        public const int DescriptionMaxLength = 1000;
     }
 }
