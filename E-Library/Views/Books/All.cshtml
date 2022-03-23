@@ -27,12 +27,18 @@
         </div>
     </div>
 </form>
+
+@if (!Model.AllBooks.Any())
+{
+    <h2 class="text-center">No books found by the given criteria!</h2>
+}
+
 <div style="width:20px; height:20px"></div>
 <div class="row">
     @foreach (var book in Model.AllBooks)
     {
         <div class="card" style="width: 18rem; margin:0 auto;[B]padding:20px 0;[/B]">
-            <img src="@book.ImageUrl" class="card-img-top" alt="@book.Author">
+            <img src="@book.ImageUrl" class="card-img-top" alt="@book.Author"  style="width:250px; height:370px; margin:auto; margin-top:15px;">
             <div class="card-body">
                 <h5 class="card-title">@book.Title</h5>
                 <p class="card-text">
@@ -62,7 +68,7 @@
 <div style="width:20px; height:20px"></div>
 <div class="row">
     <div class="col-md-6">
-        <a class="btn btn-primary"
+        <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
            asp-controller="Books"
            asp-action="All"
            asp-route-currentPage="@previousPage"
@@ -76,7 +82,7 @@
     }
 
     <div class="col-md-6">
-        <a class="btn btn-primary" style="float:right;"
+        <a class="btn btn-primary @(shouldButtonBeDisabled ? "disabled" : string.Empty)" style="float:right;"
            asp-controller="Books"
            asp-action="All"
            asp-route-currentPage="@(Model.CurrentPage + 1)"
@@ -84,8 +90,3 @@
            asp-route-searchTerm="@Model.SearchTerm">Next</a>
     </div>
 </div>
-
-@if (!Model.AllBooks.Any())
-{
-    <h2 class="text-center">No books found by the given criteria!</h2>
-}

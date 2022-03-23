@@ -44,7 +44,8 @@ namespace E_Library.Controllers
                 SearchTerm = query.SearchTerm,
                 SelectedCategory = query.SelectedCategory,
                 Categories = categories,
-                BooksCount = this.bookService.GetBooksCount()
+                BooksCount = this.bookService.GetBooksCount(query.SearchTerm, query.SelectedCategory),
+                CurrentPage = query.CurrentPage,
             });
         }
 

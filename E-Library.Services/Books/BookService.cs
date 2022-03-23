@@ -13,8 +13,21 @@ namespace E_Library.Services
             this.data = data;
         }
 
-        public int GetBooksCount()
+        public int GetBooksCount(string searchTerm, string selectedCategory)
         {
+            if (searchTerm != null)
+            {
+                int count = 0;
+                if (selectedCategory != null)
+                {
+                    count += FindBooksThatMatchCategory(selectedCategory)
+                            .Count();
+                }
+                count += this.data.Books
+                        .Where(b => b.Title.ToLower().Contains(searchTerm.ToLower()))
+                        .Count();
+                return count;
+            }
             return this.data.Books.Count();
         }
 
