@@ -14,6 +14,7 @@ namespace E_Library.Services.Home
         public IEnumerable<BookServiceModel> GetBooks()
         {
             return this.data.Books
+                .OrderByDescending(x => x.Id)
                 .Take(3)
                 .Select(x => new BookServiceModel
                 {
