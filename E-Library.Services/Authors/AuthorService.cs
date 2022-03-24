@@ -14,8 +14,14 @@ namespace E_Library.Services.Authors
         }
         public AuthorServiceModel GetAuthor(string id)
         {
+            if (string.IsNullOrEmpty(id))
+            {
+                return null;
+            }
+
             Author author = this.data.Authors
                 .FirstOrDefault(a => a.Id == id);
+
             var books = this.data.Books
                 .Where(a => a.AuthorId == id)
                 .Select(b => new AuthorBookServiceModel
