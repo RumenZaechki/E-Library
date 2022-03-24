@@ -195,7 +195,7 @@ namespace E_Library.Services
         {
             Book book = this.data.Books.FirstOrDefault(b => b.Id == id);
             Author authorToEdit = this.data.Authors.FirstOrDefault(a => a.Id == book.AuthorId);
-
+            Publisher publisherToEdit = this.data.Publishers.FirstOrDefault(p => p.Id == book.PublisherId);
 
             book.Title = title;
             book.Description = description;
@@ -207,9 +207,10 @@ namespace E_Library.Services
             authorToEdit.Name = author;
             authorToEdit.Description = authorDescription;
             authorToEdit.ImageUrl = authorImage;
-            book.Publisher.Name = publisher;
+            publisherToEdit.Name = publisher;
             this.data.Books.Update(book);
             this.data.Authors.Update(authorToEdit);
+            this.data.Publishers.Update(publisherToEdit);
             this.data.SaveChanges();
         }
         public void Delete(string id)
