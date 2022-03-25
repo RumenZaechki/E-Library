@@ -4,6 +4,6 @@ namespace E_Library.Services.Contracts
 {
     public interface IHomeService
     {
-        public IEnumerable<BookServiceModel> GetBooks();
+        public List<BookServiceModel> GetRecentBooks();
     }
 }

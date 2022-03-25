@@ -9,17 +9,15 @@ namespace E_Library.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly IHomeService homeService;
-        public HomeController(ILogger<HomeController> logger, IHomeService homeService)
+        public HomeController(IHomeService homeService)
         {
-            _logger = logger;
             this.homeService = homeService;
         }
 
         public IActionResult Index()
         {
-            var books = this.homeService.GetBooks();
+            var books = this.homeService.GetRecentBooks();
             var booksToShow = books.Select(b => new BookListingViewModel
             {
                 Id = b.Id,
@@ -27,9 +25,8 @@ namespace E_Library.Controllers
                 ImageUrl = b.ImageUrl,
                 Release = b.Release,
                 Author = b.Author,
-                Category = b.Category
+                //Category = b.Category
             })
-                .OrderByDescending(c => c.Id)
                 .ToList();
             return View(new IndexViewModel
             {

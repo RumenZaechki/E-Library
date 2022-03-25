@@ -11,23 +11,25 @@ namespace E_Library.Services.Home
         {
             this.data = data;
         }
-        public IEnumerable<BookServiceModel> GetBooks()
+        public List<BookServiceModel> GetRecentBooks()
         {
-            return this.data.Books
+            var books = this.data.Books
                 .OrderByDescending(x => x.Id)
-                .Take(3)
-                .Select(x => new BookServiceModel
-                {
-                    Id = x.Id,
-                    Title = x.Title,
-                    Description = x.Description,
-                    Price = x.Price,
-                    ImageUrl = x.ImageUrl,
-                    Release = x.Release,
-                    Author = x.Author.Name,
-                    Category = x.Category.Name
-                })
-                .ToList();
+                .Take(3);
+
+            var booksToReturn = books
+                 .Select(x => new BookServiceModel
+                 {
+                     Id = x.Id,
+                     Title = x.Title,
+                     Description = x.Description,
+                     Price = x.Price,
+                     ImageUrl = x.ImageUrl,
+                     Release = x.Release,
+                     Author = x.Author.Name,
+                     //Category = x.Category.Name
+                 });
+            return booksToReturn.ToList();
         }
     }
 }
