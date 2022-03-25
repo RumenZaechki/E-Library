@@ -13,23 +13,21 @@ namespace E_Library.Services.Home
         }
         public List<BookServiceModel> GetRecentBooks()
         {
-            var books = this.data.Books
+            return this.data.Books
                 .OrderByDescending(x => x.Id)
-                .Take(3);
-
-            var booksToReturn = books
-                 .Select(x => new BookServiceModel
-                 {
-                     Id = x.Id,
-                     Title = x.Title,
-                     Description = x.Description,
-                     Price = x.Price,
-                     ImageUrl = x.ImageUrl,
-                     Release = x.Release,
-                     Author = x.Author.Name,
-                     //Category = x.Category.Name
-                 });
-            return booksToReturn.ToList();
+                .Take(3)
+                .Select(x => new BookServiceModel
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Description = x.Description,
+                    Price = x.Price,
+                    ImageUrl = x.ImageUrl,
+                    Release = x.Release,
+                    Author = x.Author.Name,
+                    //Category = x.Category.Name
+                }).
+                ToList();
         }
     }
 }

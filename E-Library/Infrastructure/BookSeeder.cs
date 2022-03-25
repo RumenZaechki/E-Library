@@ -97,28 +97,6 @@ namespace E_Library.Infrastructure
                     },
                     CategoryId = 7,
                 },
-                //new Book
-                //{
-                //    Title ="The Silmarillion",
-                //    Description = "Set primarily in the First Age of Middle-earth, The Silmarillion contains the legend of the creation of the world and an account of the Elder Days. It is the ancient drama remembered by Elrond and Galadriel in The Lord of the Rings, and the harrowing origin of the adventure that ends ages later with Frodo and the One Ring.",
-                //    Price = 9.99m,
-                //    ImageUrl = "https://images-na.ssl-images-amazon.com/images/I/51kA5deyOBL._SX298_BO1,204,203,200_.jpg",
-                //    Release = 1977,
-                //    AuthorId = GetAuthor("John Tolkien", data),
-                //    PublisherId = GetPublisher("William Morrow Paperbacks", data),
-                //    CategoryId = 1,
-                //},
-                //new Book
-                //{
-                //    Title ="The Hidden Story of Every Person: & Other Short Stories",
-                //    Description = "Originally published as videos seen by millions on Robert Pantano’s popular YouTube channel Pursuit of Wonder, The Hidden Story of Every Person contains thirty-one of Pantano’s short fiction stories, including The Nova Effect, The Last Thought You’ll Ever Have, and The Beginning & End of Humanity. The collection offers wide-ranging reimaginations of reality, both familiar and distant, comfortable and unsettling, each story probing into different science and philosophically driven themes, including the essence of self, the nature of reality, the role of chance in life, the implications of technology, humanity’s place in the cosmos, the experience of anxiety, regret, compassion, and much more.",
-                //    Price = 10.99m,
-                //    ImageUrl = "https://images-na.ssl-images-amazon.com/images/I/31RKxacOAlS._SX322_BO1,204,203,200_.jpg",
-                //    Release = 2021,
-                //    AuthorId = GetAuthor("Robert Pantano", data),
-                //    PublisherId = GetPublisher("Independently published", data),
-                //    CategoryId = 12,
-                //},
                 new Book
                 {
                     Title ="Sapiens: A Brief History of Humankind",
