@@ -12,6 +12,8 @@ namespace E_Library.Infrastructure
             var serviceProvider = scopedServices.ServiceProvider;
             data.Database.Migrate();
             CategorySeeder.SeedCategories(data);
+            PublisherSeeder.SeedPublishers(data);
+            AuthorSeeder.SeedAuthors(data);
             BookSeeder.SeedBooks(data);
             UserSeeder.SeedAdministratior(serviceProvider);
             UserSeeder.SeedUser(serviceProvider);

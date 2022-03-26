@@ -41,7 +41,13 @@ namespace E_Library.Data.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
 
+                    b.Property<string>("PublisherId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("PublisherId");
 
                     b.ToTable("Authors");
                 });
@@ -386,10 +392,21 @@ namespace E_Library.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("E_Library.Data.Models.Author", b =>
+                {
+                    b.HasOne("E_Library.Data.Models.Publisher", "Publisher")
+                        .WithMany("Authors")
+                        .HasForeignKey("PublisherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Publisher");
+                });
+
             modelBuilder.Entity("E_Library.Data.Models.Book", b =>
                 {
                     b.HasOne("E_Library.Data.Models.Author", "Author")
-                        .WithMany()
+                        .WithMany("Books")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -401,9 +418,9 @@ namespace E_Library.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("E_Library.Data.Models.Publisher", "Publisher")
-                        .WithMany()
+                        .WithMany("Books")
                         .HasForeignKey("PublisherId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Author");
@@ -513,6 +530,11 @@ namespace E_Library.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("E_Library.Data.Models.Author", b =>
+                {
+                    b.Navigation("Books");
+                });
+
             modelBuilder.Entity("E_Library.Data.Models.Book", b =>
                 {
                     b.Navigation("BookCarts");
@@ -523,6 +545,13 @@ namespace E_Library.Data.Migrations
             modelBuilder.Entity("E_Library.Data.Models.Cart", b =>
                 {
                     b.Navigation("CartBooks");
+                });
+
+            modelBuilder.Entity("E_Library.Data.Models.Publisher", b =>
+                {
+                    b.Navigation("Authors");
+
+                    b.Navigation("Books");
                 });
 
             modelBuilder.Entity("E_Library.Data.Models.User", b =>

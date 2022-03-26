@@ -23,13 +23,13 @@ namespace E_Library.Data.Models
         public int Release { get; set; }
         [Required]
         public string AuthorId { get; set; }
+        [ForeignKey(nameof(AuthorId))]
+        public Author Author { get; set; }
         [Required]
         public int CategoryId { get; set; }
         [ForeignKey(nameof(CategoryId))]
         public Category Category { get; set; }
 
-        [ForeignKey(nameof(AuthorId))]
-        public Author Author { get; set; }
         [Required]
         public string PublisherId { get; set; }
         [ForeignKey(nameof(PublisherId))]

@@ -20,6 +20,12 @@ namespace E_Library.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Book>()
+                .HasOne(b => b.Publisher)
+                .WithMany(p => p.Books)
+                .HasForeignKey(b => b.PublisherId)
+                .OnDelete(DeleteBehavior.NoAction);
+
             modelBuilder.Entity<BookCart>()
                 .HasKey(k => new { k.BookId, k.CartId });
 
