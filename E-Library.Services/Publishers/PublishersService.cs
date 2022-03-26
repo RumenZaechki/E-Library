@@ -16,6 +16,12 @@ namespace E_Library.Services.Publishers
         {
             Publisher publisher = this.data.Publishers
                 .FirstOrDefault(p => p.Id == publisherId);
+
+            if (publisher == null)
+            {
+                return null;
+            }
+
             var books = this.data.Books
                 .Where(p => p.PublisherId == publisherId)
                 .Select(b => new PublisherBookServiceModel
@@ -25,6 +31,7 @@ namespace E_Library.Services.Publishers
                     ImageUrl = b.ImageUrl
                 })
                 .ToList();
+
             var authors = this.data.Books
                 .Where(b => b.PublisherId == publisherId)
                 .Select(b => new PublisherAuthorServiceModel
@@ -34,6 +41,7 @@ namespace E_Library.Services.Publishers
                 })
                 .Distinct()
                 .ToList();
+
             PublisherServiceModel model = new PublisherServiceModel
             {
                 Name = publisher.Name,
