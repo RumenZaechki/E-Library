@@ -99,6 +99,11 @@ namespace E_Library.Services
                 PublisherId = publisherToAdd.Id,
                 Publisher = publisherToAdd
             };
+
+            authorToAdd.Books.Add(bookToAdd);
+            publisherToAdd.Books.Add(bookToAdd);
+            publisherToAdd.Authors.Add(authorToAdd);
+
             this.data.Books.Add(bookToAdd);
             this.data.SaveChanges();
         }

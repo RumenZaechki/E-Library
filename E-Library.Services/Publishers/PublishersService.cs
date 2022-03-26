@@ -23,7 +23,29 @@ namespace E_Library.Services.Publishers
             }
 
             var books = this.data.Books
-                .Where(p => p.PublisherId == publisherId)
+                .Where(p => p.PublisherId == publisherId);
+
+            var authors = this.data.Books
+                .Where(b => b.PublisherId == publisherId)
+                .Select(b => b.Author);
+
+            if (publisher.Books.Count == 0 && books.Count() > 0)
+            {
+                publisher.Books
+                    .ToList()
+                    .AddRange(books);
+                this.data.SaveChanges();
+            }
+
+            if (publisher.Authors.Count == 0 && authors.Count() > 0)
+            {
+                publisher.Authors
+                    .ToList()
+                    .AddRange(authors);
+                this.data.SaveChanges();
+            }
+
+            var booksService = books
                 .Select(b => new PublisherBookServiceModel
                 {
                     Id = b.Id,
@@ -32,12 +54,11 @@ namespace E_Library.Services.Publishers
                 })
                 .ToList();
 
-            var authors = this.data.Books
-                .Where(b => b.PublisherId == publisherId)
+            var authorsService = authors
                 .Select(b => new PublisherAuthorServiceModel
                 {
-                    Id= b.AuthorId,
-                    Name = b.Author.Name
+                    Id = b.Id,
+                    Name = b.Name
                 })
                 .Distinct()
                 .ToList();
@@ -45,8 +66,8 @@ namespace E_Library.Services.Publishers
             PublisherServiceModel model = new PublisherServiceModel
             {
                 Name = publisher.Name,
-                Books = books,
-                Authors = authors
+                Books = booksService,
+                Authors = authorsService
             };
             return model;
         }

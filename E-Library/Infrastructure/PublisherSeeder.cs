@@ -15,35 +15,51 @@ namespace E_Library.Infrastructure
             {
                 new Publisher
                 {
-                    Name = "Independently published"
+                    Name = "Independently published",
+                    Books = data.Books.Where(b => b.Publisher.Name == "Independently published").ToList(),
+                    Authors = data.Authors.Where(b => b.Publisher.Name == "Independently Published").ToList()
                 },
                 new Publisher
                 {
-                    Name = "William Morrow Paperbacks"
+                    Name = "William Morrow Paperbacks",
+                    Books = data.Books.Where(b => b.Publisher.Name == "William Morrow Paperbacks").ToList(),
+                    Authors = data.Authors.Where(b => b.Publisher.Name == "William Morrow Paperbacks").ToList()
                 },
                 new Publisher
                 {
-                    Name = "CreateSpace Independent Publishing Platform"
+                    Name = "CreateSpace Independent Publishing Platform",
+                    Books = data.Books.Where(b => b.Publisher.Name == "CreateSpace Independent Publishing Platform").ToList(),
+                    Authors = data.Authors.Where(b => b.Publisher.Name == "CreateSpace Independent Publishing Platform").ToList()
                 },
                 new Publisher
                 {
-                    Name = "Filiquarian"
+                    Name = "Filiquarian",
+                    Books = data.Books.Where(b => b.Publisher.Name == "Filiquarian").ToList(),
+                    Authors = data.Authors.Where(b => b.Publisher.Name == "Filiquarian").ToList()
                 },
                 new Publisher
                 {
-                    Name = "Dvir Publishing House Ltd."
+                    Name = "Dvir Publishing House Ltd.",
+                    Books = data.Books.Where(b => b.Publisher.Name == "Dvir Publishing House Ltd.").ToList(),
+                    Authors = data.Authors.Where(b => b.Publisher.Name == "Dvir Publishing House Ltd.").ToList()
                 },
                 new Publisher
                 {
-                    Name = "Harper Perennial"
+                    Name = "Harper Perennial",
+                    Books = data.Books.Where(b => b.Publisher.Name == "Harper Perennial").ToList(),
+                    Authors = data.Authors.Where(b => b.Publisher.Name == "Harper Perennial").ToList()
                 },
                 new Publisher
                 {
-                    Name = "Del Rey"
+                    Name = "Del Rey",
+                    Books = data.Books.Where(b => b.Publisher.Name == "Del Rey").ToList(),
+                    Authors = data.Authors.Where(b => b.Publisher.Name == "Del Rey").ToList()
                 },
                 new Publisher
                 {
-                    Name = "Simon & Schuster"
+                    Name = "Simon & Schuster",
+                    Books = data.Books.Where(b => b.Publisher.Name == "Simon & Schuster").ToList(),
+                    Authors = data.Authors.Where(b => b.Publisher.Name == "Simon & Schuster").ToList()
                 }
             });
             data.SaveChanges();

@@ -23,7 +23,17 @@ namespace E_Library.Services.Authors
                 .FirstOrDefault(a => a.Id == id);
 
             var books = this.data.Books
-                .Where(a => a.AuthorId == id)
+                .Where(a => a.AuthorId == id);
+
+            if (author.Books.Count == 0 && books.Count() > 0)
+            {
+                author.Books
+                    .ToList()
+                    .AddRange(books);
+                this.data.SaveChanges();
+            }
+
+            var booksService = books
                 .Select(b => new AuthorBookServiceModel
                 {
                     Id = b.Id,
@@ -36,7 +46,7 @@ namespace E_Library.Services.Authors
                 Name = author.Name,
                 Description = author.Description,
                 ImageUrl = author.ImageUrl,
-                Books = books
+                Books = booksService
             };
         }
     }
