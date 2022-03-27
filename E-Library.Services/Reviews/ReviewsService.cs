@@ -42,7 +42,7 @@ namespace E_Library.Services.Reviews
         public ICollection<ReviewServiceModel> GetAllReviews(string bookId)
         {
             return this.data.Reviews
-                .Where(x => x.BookId == bookId)
+                .Where(x => x.Book.Id == bookId)
                 .Select(r => new ReviewServiceModel
                 {
                     Id = r.Id,

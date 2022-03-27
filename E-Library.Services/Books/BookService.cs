@@ -102,7 +102,7 @@ namespace E_Library.Services
 
             authorToAdd.Books.Add(bookToAdd);
             publisherToAdd.Books.Add(bookToAdd);
-            publisherToAdd.Authors.Add(authorToAdd);
+            //publisherToAdd.Authors.Add(authorToAdd);
 
             this.data.Books.Add(bookToAdd);
             this.data.SaveChanges();

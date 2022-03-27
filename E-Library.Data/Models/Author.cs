@@ -14,10 +14,6 @@ namespace E_Library.Data.Models
         [StringLength(AuthorConstants.AuthorDescriptionMaxLength)]
         public string Description { get; set; }
         public string ImageUrl { get; set; }
-        [Required]
-        public string PublisherId { get; set; }
-        [ForeignKey(nameof(PublisherId))]
-        public Publisher Publisher { get; set; }
         public ICollection<Book> Books { get; set; } = new List<Book>();
     }
 }

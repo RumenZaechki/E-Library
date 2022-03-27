@@ -33,14 +33,19 @@ namespace E_Library.Test.Services
         }
 
         [Fact]
-        public void GetAuthorShouldReturnNullIfGivenNullInput()
+        public void GetAuthorShouldReturnNullIfGivenInvalidInput()
         {
             var data = DbMock.Instance;
             data.Authors.AddRange(GetAuthors());
             data.SaveChanges();
             IAuthorService authorService = new AuthorService(data);
-            var actual = authorService.GetAuthor(null);
-            Assert.Null(actual);
+
+            var actual = authorService.GetAuthor("invalid");
+
+            Assert.Null(actual.Name);
+            Assert.Null(actual.Description);
+            Assert.Null(actual.ImageUrl);
+            Assert.Equal(0, actual.Books.Count);
         }
 
         private Author[] GetAuthors()
@@ -52,14 +57,14 @@ namespace E_Library.Test.Services
                     Id = "1",
                     Name = "Herman Melville",
                     Description = "random description idk",
-                    ImageUrl = "nonexistent sorry can't be bothered right now"
+                    ImageUrl = "nonexistent sorry can't be bothered right now",
                 },
                 new Author
                 {
                     Id="2",
                     Name = "Flea",
                     Description = "random description idk",
-                    ImageUrl = "nonexistent sorry can't be bothered right now"
+                    ImageUrl = "nonexistent sorry can't be bothered right now",
                 }
             };
         }

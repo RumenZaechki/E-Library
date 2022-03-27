@@ -49,6 +49,20 @@ namespace E_Library.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Authors",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Authors", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
                 {
@@ -198,27 +212,6 @@ namespace E_Library.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Authors",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PublisherId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Authors", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Authors_Publishers_PublisherId",
-                        column: x => x.PublisherId,
-                        principalTable: "Publishers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Books",
                 columns: table => new
                 {
@@ -251,7 +244,8 @@ namespace E_Library.Data.Migrations
                         name: "FK_Books_Publishers_PublisherId",
                         column: x => x.PublisherId,
                         principalTable: "Publishers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -343,11 +337,6 @@ namespace E_Library.Data.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Authors_PublisherId",
-                table: "Authors",
-                column: "PublisherId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BookCarts_CartId",

@@ -14,26 +14,17 @@ namespace E_Library.Services.Authors
         }
         public AuthorServiceModel GetAuthor(string id)
         {
-            if (string.IsNullOrEmpty(id))
-            {
-                return null;
-            }
-
             Author author = this.data.Authors
                 .FirstOrDefault(a => a.Id == id);
 
-            var books = this.data.Books
-                .Where(a => a.AuthorId == id);
-
-            if (author.Books.Count == 0 && books.Count() > 0)
+            if (author == null)
             {
-                author.Books
-                    .ToList()
-                    .AddRange(books);
-                this.data.SaveChanges();
+                var model = new AuthorServiceModel();
+                return model;
             }
 
-            var booksService = books
+            var books = this.data.Books
+                .Where(a => a.AuthorId == id)
                 .Select(b => new AuthorBookServiceModel
                 {
                     Id = b.Id,
@@ -46,7 +37,7 @@ namespace E_Library.Services.Authors
                 Name = author.Name,
                 Description = author.Description,
                 ImageUrl = author.ImageUrl,
-                Books = booksService
+                Books = books
             };
         }
     }

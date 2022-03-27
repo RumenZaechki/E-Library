@@ -8,7 +8,6 @@ namespace E_Library.Data.Models
         public string Id { get; set; } = Guid.NewGuid().ToString();
         [Required]
         public string Name { get; set; }
-        public ICollection<Author> Authors { get; set; } = new List<Author>();
         public ICollection<Book> Books { get; set; } = new List<Book>();
     }
 }

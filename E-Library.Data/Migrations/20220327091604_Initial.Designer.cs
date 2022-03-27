@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Library.Data.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    [Migration("20220326182717_Initial")]
+    [Migration("20220327091604_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,13 +43,7 @@ namespace E_Library.Data.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
 
-                    b.Property<string>("PublisherId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("PublisherId");
 
                     b.ToTable("Authors");
                 });
@@ -394,17 +388,6 @@ namespace E_Library.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("E_Library.Data.Models.Author", b =>
-                {
-                    b.HasOne("E_Library.Data.Models.Publisher", "Publisher")
-                        .WithMany("Authors")
-                        .HasForeignKey("PublisherId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Publisher");
-                });
-
             modelBuilder.Entity("E_Library.Data.Models.Book", b =>
                 {
                     b.HasOne("E_Library.Data.Models.Author", "Author")
@@ -422,7 +405,7 @@ namespace E_Library.Data.Migrations
                     b.HasOne("E_Library.Data.Models.Publisher", "Publisher")
                         .WithMany("Books")
                         .HasForeignKey("PublisherId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Author");
@@ -551,8 +534,6 @@ namespace E_Library.Data.Migrations
 
             modelBuilder.Entity("E_Library.Data.Models.Publisher", b =>
                 {
-                    b.Navigation("Authors");
-
                     b.Navigation("Books");
                 });
 

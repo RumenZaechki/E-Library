@@ -19,31 +19,11 @@ namespace E_Library.Services.Publishers
 
             if (publisher == null)
             {
-                return null;
+                return new PublisherServiceModel();
             }
 
             var books = this.data.Books
                 .Where(p => p.PublisherId == publisherId);
-
-            var authors = this.data.Books
-                .Where(b => b.PublisherId == publisherId)
-                .Select(b => b.Author);
-
-            if (publisher.Books.Count == 0 && books.Count() > 0)
-            {
-                publisher.Books
-                    .ToList()
-                    .AddRange(books);
-                this.data.SaveChanges();
-            }
-
-            if (publisher.Authors.Count == 0 && authors.Count() > 0)
-            {
-                publisher.Authors
-                    .ToList()
-                    .AddRange(authors);
-                this.data.SaveChanges();
-            }
 
             var booksService = books
                 .Select(b => new PublisherBookServiceModel
@@ -54,11 +34,11 @@ namespace E_Library.Services.Publishers
                 })
                 .ToList();
 
-            var authorsService = authors
+            var authorsService = books
                 .Select(b => new PublisherAuthorServiceModel
                 {
-                    Id = b.Id,
-                    Name = b.Name
+                    Id = b.AuthorId,
+                    Name = b.Author.Name
                 })
                 .Distinct()
                 .ToList();
