@@ -14,6 +14,7 @@ namespace E_Library.Data.Models
         [Required]
         [Range(ReviewConstants.ReviewRatingMinValue, ReviewConstants.ReviewRatingMaxValue)]
         public int Rating { get; set; }
+        public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
         [Required]
         public string BookId { get; set; }
         [ForeignKey(nameof(BookId))]

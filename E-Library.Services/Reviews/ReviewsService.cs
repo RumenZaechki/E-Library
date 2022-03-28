@@ -15,6 +15,10 @@ namespace E_Library.Services.Reviews
         public void DeleteReview(string reviewId)
         {
             Review review = this.data.Reviews.FirstOrDefault(r => r.Id == reviewId);
+            if (review == null)
+            {
+                return;
+            }
             User user = this.data.Users.FirstOrDefault(u => u.Id == review.UserId);
             Book book = this.data.Books.FirstOrDefault(b => b.Id == review.BookId);
             user.Reviews.Remove(review);
@@ -26,6 +30,10 @@ namespace E_Library.Services.Reviews
         {
             Book book = this.data.Books.FirstOrDefault(b => b.Id == bookId);
             User user = this.data.Users.FirstOrDefault(u => u.Id == userId);
+            if (book == null || user == null)
+            {
+                return;
+            }
             Review review = new Review
             {
                 BookId = bookId,
@@ -43,6 +51,7 @@ namespace E_Library.Services.Reviews
         {
             return this.data.Reviews
                 .Where(x => x.Book.Id == bookId)
+                .OrderByDescending(r => r.CreatedOn)
                 .Select(r => new ReviewServiceModel
                 {
                     Id = r.Id,

@@ -1,11 +1,8 @@
-﻿using E_Library.Data;
-using E_Library.Data.Models;
+﻿using E_Library.Data.Models;
 using E_Library.Services.Authors;
 using E_Library.Services.Authors.Models;
 using E_Library.Services.Contracts;
 using E_Library.Test.Mocks;
-using Microsoft.EntityFrameworkCore;
-using System;
 using Xunit;
 
 namespace E_Library.Test.Services
