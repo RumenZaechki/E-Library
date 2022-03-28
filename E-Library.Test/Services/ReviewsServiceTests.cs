@@ -162,10 +162,7 @@ namespace E_Library.Test.Services
 
         private User GetUser()
         {
-            return new User
-            {
-                Id = "1"
-            };
+            return new User();
         }
 
         private Book GetBook()
