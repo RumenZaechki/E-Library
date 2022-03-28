@@ -29,7 +29,7 @@ namespace E_Library.Data.Models
         public int CategoryId { get; set; }
         [ForeignKey(nameof(CategoryId))]
         public Category Category { get; set; }
-
+        public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
         [Required]
         public string PublisherId { get; set; }
         [ForeignKey(nameof(PublisherId))]

@@ -26,9 +26,9 @@ namespace E_Library.Test.Services
             Assert.NotNull(actual);
             Assert.Equal(4, data.Books.Count());
             Assert.Equal(3, actual.Count());
-            Assert.Equal(expected[0].Id, actual[0].Id);
-            Assert.Equal(expected[1].Id, actual[1].Id);
-            Assert.Equal(expected[2].Id, actual[2].Id);
+            Assert.Equal(expected[0].Title, actual[0].Title);
+            Assert.Equal(expected[1].Title, actual[1].Title);
+            Assert.Equal(expected[2].Title, actual[2].Title);
         }
 
         [Fact]
@@ -48,15 +48,15 @@ namespace E_Library.Test.Services
             {
                 new BookServiceModel
                 {
-                    Id = "4"
+                    Title ="The Art of War"
                 },
                 new BookServiceModel
                 {
-                    Id = "3"
+                    Title ="Meditations"
                 },
                 new BookServiceModel
                 {
-                    Id = "2"
+                    Title ="Lord Of The Rings"
                 }
             });
         }
@@ -67,7 +67,6 @@ namespace E_Library.Test.Services
             {
                 new Book
                 {
-                    Id = "1",
                     Title ="Notes from the end of everything",
                     Description = "After being diagnosed with a brain tumor, writer John Gallo spends his time confronting his lifelong sense of fraudulence, regret, and self-misunderstanding, all while loosely chronicling the development of his cancer.",
                     Price = 10m,
@@ -89,7 +88,6 @@ namespace E_Library.Test.Services
                 },
                 new Book
                 {
-                    Id = "2",
                     Title ="Lord Of The Rings",
                     Description = "The Lord of the Rings is an epic high-fantasy novel by English author and scholar J. R. R. Tolkien. Set in Middle-earth, intended to be Earth at some distant time in the past, the story began as a sequel to Tolkien's 1937 children's book The Hobbit, but eventually developed into a much larger work.",
                     Price = 40m,
@@ -111,7 +109,6 @@ namespace E_Library.Test.Services
                 },
                 new Book
                 {
-                    Id = "3",
                     Title ="Meditations",
                     Description = "Meditations is a series of personal writings by Marcus Aurelius, Roman Emperor 161–180 CE, setting forth his ideas on Stoic philosophy.Marcus Aurelius wrote the 12 books of the Meditations in Koine Greek as a source for his own guidance and self-improvement.",
                     Price = 15m,
@@ -133,7 +130,6 @@ namespace E_Library.Test.Services
                 },
                 new Book
                 {
-                    Id = "4",
                     Title ="The Art of War",
                     Description = "Sun Tzu is thought to have been a military general and adviser to the king of the Chinese state of Wu during the sixth century BCE. Although some modern scholars have called his authorship into doubt, the world's most influential treatise on military strategy, The Art of War, bears his name.",
                     Price = 11m,

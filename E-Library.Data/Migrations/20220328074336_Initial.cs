@@ -223,6 +223,7 @@ namespace E_Library.Data.Migrations
                     Release = table.Column<int>(type: "int", nullable: false),
                     AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PublisherId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>

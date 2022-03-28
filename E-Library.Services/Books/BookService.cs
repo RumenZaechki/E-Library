@@ -100,10 +100,6 @@ namespace E_Library.Services
                 Publisher = publisherToAdd
             };
 
-            authorToAdd.Books.Add(bookToAdd);
-            publisherToAdd.Books.Add(bookToAdd);
-            //publisherToAdd.Authors.Add(authorToAdd);
-
             this.data.Books.Add(bookToAdd);
             this.data.SaveChanges();
         }

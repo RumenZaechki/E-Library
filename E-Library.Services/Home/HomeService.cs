@@ -14,7 +14,7 @@ namespace E_Library.Services.Home
         public List<BookServiceModel> GetRecentBooks()
         {
             return this.data.Books
-                .OrderByDescending(x => x.Id)
+                .OrderByDescending(x => x.CreatedOn)
                 .Take(3)
                 .Select(x => new BookServiceModel
                 {
