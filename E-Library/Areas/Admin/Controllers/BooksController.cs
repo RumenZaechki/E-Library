@@ -54,8 +54,8 @@ namespace E_Library.Areas.Admin.Controllers
                     .GetBookCategories()
                     .Select(b => new BookCategoryViewModel
                     {
-                        Id = b.Key,
-                        Name = b.Value
+                        Id = b.Id,
+                        Name = b.Name
                     })
             });
         }
@@ -86,8 +86,8 @@ namespace E_Library.Areas.Admin.Controllers
             var categoriesObj = this.bookService.GetBookCategories();
             return categoriesObj.Select(c => new BookCategoryViewModel
             {
-                Id = c.Key,
-                Name = c.Value,
+                Id = c.Id,
+                Name = c.Name,
             });
         }
     }

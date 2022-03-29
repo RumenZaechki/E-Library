@@ -16,46 +16,48 @@ namespace E_Library.Services
         public int GetBooksCount(string searchTerm, string selectedCategory)
         {
             int count = 0;
-            if (searchTerm != null && selectedCategory != null)
+            if (!string.IsNullOrWhiteSpace(searchTerm) && !string.IsNullOrWhiteSpace(selectedCategory))
             {
                 return this.data.Books
                     .Where(b => b.Title.ToLower().Contains(searchTerm.ToLower()) && b.Category.Name.ToLower() == selectedCategory.ToLower())
                     .Count();
             }
-            if (selectedCategory != null)
+            if (!string.IsNullOrWhiteSpace(selectedCategory))
             {
                 count += FindBooksThatMatchCategory(selectedCategory)
                         .Count();
             }
-            if (searchTerm != null)
+            if (!string.IsNullOrWhiteSpace(searchTerm))
             {
                 count += this.data.Books
                         .Where(b => b.Title.ToLower().Contains(searchTerm.ToLower()))
                         .Count();
             }
-            if (searchTerm != null || selectedCategory != null)
+            if (!string.IsNullOrWhiteSpace(searchTerm) || !string.IsNullOrWhiteSpace(selectedCategory))
             {
                 return count;
             }
             return this.data.Books.Count();
         }
 
-        public Dictionary<int, string> GetBookCategories()
+        public IEnumerable<CategoryServiceModel> GetBookCategories()
         {
-            var data = this.data
+            return this.data
                 .Categories
-                .Select(c => new
+                .Select(c => new CategoryServiceModel
                 {
                     Id = c.Id,
                     Name = c.Name,
                 })
                 .ToList();
-            var dict = data.ToDictionary(c => c.Id, c => c.Name);
-            return dict;
         }
 
         public void Create(string title, string description, decimal price, string imageUrl, int release, string author, string authorDescription, string authorImage, string publisher, int categoryId)
         {
+            if (!IsValid(title, description, price, imageUrl, release , author, authorDescription, authorImage, publisher, categoryId))
+            {
+                return;
+            }
             Author authorToAdd = null;
             if (!this.data.Authors.Any(a => a.Name == author))
             {
@@ -104,9 +106,18 @@ namespace E_Library.Services
             this.data.SaveChanges();
         }
 
+
         public IEnumerable<BookServiceModel> FindBooks(string searchTerm, string selectedCategory, int currentPage, int booksPerPage)
         {
-            if (selectedCategory != null && searchTerm != null)
+            if (currentPage <= 0)
+            {
+                currentPage = 1;
+            }
+            if (booksPerPage <= 0)
+            {
+                booksPerPage = 3;
+            }
+            if (!string.IsNullOrWhiteSpace(selectedCategory) && !string.IsNullOrWhiteSpace(searchTerm))
             {
                 var books = this.data.Books
                     .Where(b => b.Title.ToLower().Contains(searchTerm.ToLower()) && b.Category.Name.ToLower() == selectedCategory.ToLower())
@@ -126,11 +137,11 @@ namespace E_Library.Services
                     .ToList();
                 return books;
             }
-            else if (selectedCategory != null || searchTerm != null)
+            else if (!string.IsNullOrWhiteSpace(selectedCategory) || !string.IsNullOrWhiteSpace(searchTerm))
             {
-                var booksFromSelectedCategory = selectedCategory == null ? null : FindBooksThatMatchCategory(selectedCategory)
+                var booksFromSelectedCategory = string.IsNullOrWhiteSpace(selectedCategory) ? null : FindBooksThatMatchCategory(selectedCategory)
                                                 .ToList();
-                var booksFromSearchTerm = searchTerm == null ? null : this.data.Books
+                var booksFromSearchTerm = string.IsNullOrWhiteSpace(searchTerm) ? null : this.data.Books
                         .Where(b => b.Title.ToLower().Contains(searchTerm.ToLower()))
                         .Skip((currentPage - 1) * booksPerPage)
                         .Take(booksPerPage)
@@ -195,8 +206,16 @@ namespace E_Library.Services
         public void Edit(string id, string title, string description, decimal price, string imageUrl, int release, string author, string authorDescription, string authorImage, string publisher, int categoryId)
         {
             Book book = this.data.Books.FirstOrDefault(b => b.Id == id);
+            if (book == null)
+            {
+                return;
+            }
             Author authorToEdit = this.data.Authors.FirstOrDefault(a => a.Id == book.AuthorId);
             Publisher publisherToEdit = this.data.Publishers.FirstOrDefault(p => p.Id == book.PublisherId);
+            if (authorToEdit == null || publisherToEdit == null)
+            {
+                return;
+            }
 
             book.Title = title;
             book.Description = description;
@@ -217,8 +236,25 @@ namespace E_Library.Services
         public void Delete(string id)
         {
             Book book = this.data.Books.FirstOrDefault(b => b.Id == id);
+            if (book == null)
+            {
+                return;
+            }
             this.data.Books.Remove(book);
             this.data.SaveChanges();
+        }
+        private bool IsValid(string title, string description, decimal price, string imageUrl, int release, string author, string authorDescription, string authorImage, string publisher, int categoryId)
+        {
+            string[] arr = new string[] { title, description, imageUrl, author, authorDescription, authorImage, publisher};
+            if (arr.Any(x => string.IsNullOrWhiteSpace(x)) || price < 0m || !this.data.Categories.Any(c => c.Id == categoryId) || release < 0)
+            {
+                return false;
+            }
+            if (this.data.Books.Any(b => b.Title == title))
+            {
+                return false;
+            }
+            return true;
         }
         private IEnumerable<BookServiceModel> FindBooksThatMatchCategory(string category)
         {

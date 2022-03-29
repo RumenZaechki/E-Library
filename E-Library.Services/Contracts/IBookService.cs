@@ -5,7 +5,7 @@ namespace E_Library.Services.Contracts
     public interface IBookService
     {
         public int GetBooksCount(string searchTerm, string selectedCategory);
-        public Dictionary<int, string> GetBookCategories();
+        public IEnumerable<CategoryServiceModel> GetBookCategories();
         public void Create(string title, string description, decimal price, string imageUrl, int release, string author, string authorDescription, string authorImage, string publisher, int categoryId);
         public IEnumerable<BookServiceModel> FindBooks(string searchTerm, string selectedCategory, int currentPage, int booksPerPage);
         public BookServiceModel Details(string id);

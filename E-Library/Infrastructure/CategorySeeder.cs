@@ -60,7 +60,7 @@ namespace E_Library.Infrastructure
                 new Category
                 {
                     Name = "Fiction"
-                },
+                }
             });
             data.SaveChanges();
         }

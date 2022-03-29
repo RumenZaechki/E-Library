@@ -14,7 +14,13 @@ namespace E_Library.Controllers
 
         public IActionResult All([FromQuery] AllBooksQueryModel query)
         {
-            var categories = this.bookService.GetBookCategories();
+            var categories = this.bookService
+                .GetBookCategories()
+                .Select(c => new BookCategoryViewModel
+                {
+                    Id = c.Id,
+                    Name = c.Name
+                });
             var books = this.bookService
                 .FindBooks(query.SearchTerm, query.SelectedCategory, query.CurrentPage, AllBooksQueryModel.BooksPerPage)
                 .Select(b => new BookListingViewModel
