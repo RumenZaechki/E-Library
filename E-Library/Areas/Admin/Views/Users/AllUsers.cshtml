@@ -1,0 +1,33 @@
+﻿@model IEnumerable<UserViewModel>
+
+@{
+    int i = 1;
+}
+
+<div class="container">
+    <div class="jumbotron col-md-5" style="margin-left:auto;margin-right:auto;">
+        <div class="table">
+            <div>
+                <div class="row">
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                </div>
+            </div>
+            <div>
+                <div class="row">
+                    @foreach (var user in Model)
+                    {
+                        <div class="table-secondary">
+                            <h6>@i</h6>
+                        </div>
+                        <div class="table-secondary">
+                            <h6>@user.Username</h6>
+                        </div>
+                        i++;
+                        <a asp-area="Admin" asp-controller="Users" asp-action="DeleteUser" asp-route-userId="@user.Id" class="btn btn-danger mb-3" style="background-color:#e74c3c;">Delete</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -9,6 +9,7 @@ using E_Library.Services.Home;
 using E_Library.Services.Publishers;
 using E_Library.Services.Reviews;
 using E_Library.Services.Statistics;
+using E_Library.Services.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -39,6 +40,7 @@ builder.Services.AddScoped<IStatisticsService, StatisticsService>();
 builder.Services.AddScoped<IAuthorService, AuthorService>();
 builder.Services.AddScoped<IPublishersService, PublishersService>();
 builder.Services.AddScoped<IReviewsService, ReviewsService>();
+builder.Services.AddScoped<IUsersService, UsersService>();
 
 
 builder.Services.AddControllersWithViews();
