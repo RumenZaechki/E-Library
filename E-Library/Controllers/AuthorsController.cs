@@ -16,6 +16,7 @@ namespace E_Library.Controllers
             var author = this.authorService.GetAuthor(authorId);
             return View(new AuthorViewModel
             {
+                Id = author.Id,
                 Name = author.Name,
                 Description = author.Description,
                 ImageUrl = author.ImageUrl,

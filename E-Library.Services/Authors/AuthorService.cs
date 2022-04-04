@@ -34,11 +34,27 @@ namespace E_Library.Services.Authors
 
             return new AuthorServiceModel
             {
+                Id = author.Id,
                 Name = author.Name,
                 Description = author.Description,
                 ImageUrl = author.ImageUrl,
                 Books = books
             };
+        }
+
+        public void Edit(string id, string name, string description, string imageUrl)
+        {
+            var author = this.data.Authors.FirstOrDefault(a => a.Id == id);
+            if (author == null)
+            {
+                return;
+            }
+            author.Name = name;
+            author.Description = description;
+            author.ImageUrl = imageUrl;
+            author.Books = this.data.Books.Where(b => b.AuthorId == id).ToList();
+            this.data.Authors.Update(author);
+            this.data.SaveChanges();
         }
     }
 }

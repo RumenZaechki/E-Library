@@ -96,7 +96,7 @@ namespace E_Library.Test.Services
             data.SaveChanges();
             var booksService = new BookService(data);
 
-            booksService.Edit(book.Id, book.Title, book.Description, 19m, book.ImageUrl, book.Release, book.Author.Name, book.Author.Description, book.Author.ImageUrl, book.Publisher.Name, book.CategoryId);
+            booksService.Edit(book.Id, book.Title, book.Description, 19m, book.ImageUrl, book.Release, book.Author.Name, book.Publisher.Name, book.CategoryId);
             var result = data.Books.FirstOrDefault();
 
             Assert.Equal(book.Title, result.Title);
@@ -122,7 +122,7 @@ namespace E_Library.Test.Services
             data.SaveChanges();
             var booksService = new BookService(data);
 
-            booksService.Edit(book.Id, book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author.Name, book.Author.Description, book.Author.ImageUrl, "incorrectPublisher", book.CategoryId);
+            booksService.Edit(book.Id, book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author.Name, "incorrectPublisher", book.CategoryId);
             var result = data.Books.FirstOrDefault();
 
             Assert.Equal(book.Title, result.Title);
@@ -148,7 +148,7 @@ namespace E_Library.Test.Services
             data.SaveChanges();
             var booksService = new BookService(data);
 
-            booksService.Edit(book.Id, book.Title, book.Description, book.Price, book.ImageUrl, book.Release, "incorrectAuthor", "incorrectAuthorDescription", "incorrectAuthorImage", book.Publisher.Name, book.CategoryId);
+            booksService.Edit(book.Id, book.Title, book.Description, book.Price, book.ImageUrl, book.Release, "incorrectAuthor", book.Publisher.Name, book.CategoryId);
             var result = data.Books.FirstOrDefault();
 
             Assert.Equal(book.Title, result.Title);
@@ -174,7 +174,7 @@ namespace E_Library.Test.Services
             data.SaveChanges();
             var booksService = new BookService(data);
 
-            booksService.Edit("incorrectId", "incorrectTitle", "incorrectDescription", 0m, "incorrectImageUrl", 0, "incorrectAuthor", "incorrectAuthorDescription", "incorrectAuthorImage", "IncorrectPublisher", 0);
+            booksService.Edit("incorrectId", "incorrectTitle", "incorrectDescription", 0m, "incorrectImageUrl", 0, "incorrectAuthor", "IncorrectPublisher", 0);
             var result = data.Books.FirstOrDefault();
 
             Assert.Equal(book.Title, result.Title);
@@ -286,7 +286,7 @@ namespace E_Library.Test.Services
             CategorySeeder.SeedCategories(data);
             var book = GetBook();
             var booksService = new BookService(data);
-            booksService.Create(book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author.Name, book.Author.Description, book.Author.ImageUrl, book.Publisher.Name, book.CategoryId);
+            booksService.Create(book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author.Name, book.Publisher.Name, book.CategoryId);
             var expected = new BookServiceModel
             {
                 Id = book.Id,
@@ -430,7 +430,7 @@ namespace E_Library.Test.Services
             data.SaveChanges();
             var booksService = new BookService(data);
 
-            booksService.Create(book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author.Name, book.Author.Description, book.Author.ImageUrl, book.Publisher.Name, book.CategoryId);
+            booksService.Create(book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author.Name, book.Publisher.Name, book.CategoryId);
 
             Assert.Equal(1, data.Publishers.Count());
             var actual = data.Books.FirstOrDefault().Publisher;
@@ -449,7 +449,7 @@ namespace E_Library.Test.Services
             data.SaveChanges();
             var booksService = new BookService(data);
 
-            booksService.Create(book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author.Name, book.Author.Description, book.Author.ImageUrl, book.Publisher.Name, book.CategoryId);
+            booksService.Create(book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author.Name, book.Publisher.Name, book.CategoryId);
 
             Assert.Equal(1, data.Authors.Count());
             var actual = data.Books.FirstOrDefault().Author;
@@ -467,7 +467,7 @@ namespace E_Library.Test.Services
             var book = GetBook();
             var booksService = new BookService(data);
 
-            booksService.Create(book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author.Name, book.Author.Description, book.Author.ImageUrl, book.Publisher.Name, book.CategoryId);
+            booksService.Create(book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author.Name, book.Publisher.Name, book.CategoryId);
 
             Assert.Equal(1, data.Books.Count());
 
@@ -494,7 +494,7 @@ namespace E_Library.Test.Services
             Assert.Equal(1, data.Books.Count());
 
             var booksService = new BookService(data);
-            booksService.Create(book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author.Name, book.Author.Description, book.Author.ImageUrl, book.Publisher.Name, book.CategoryId);
+            booksService.Create(book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author.Name, book.Publisher.Name, book.CategoryId);
 
             Assert.Equal(1, data.Books.Count());
         }
@@ -505,7 +505,7 @@ namespace E_Library.Test.Services
             var data = DbMock.Instance;
             var booksService = new BookService(data);
 
-            booksService.Create("invalidTitle", "invalidDescription", 0m, "invalidImageUrl", -5, "invalidAuthorName", "invalidAuthorDescription", "invalidAuthorImage", "invalidPublisherName", 16);
+            booksService.Create("invalidTitle", "invalidDescription", 0m, "invalidImageUrl", -5, "invalidAuthorName", "invalidPublisherName", 16);
 
             Assert.Empty(data.Books);
         }

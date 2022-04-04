@@ -11,13 +11,13 @@
     <hr class="mt-2 mb-3" style="height:3px;border:none;" />
 
     <div class="row">
-            <img src="@Model.ImageUrl"style="display:block; width:450px; height:350px; margin-left: auto; margin-right:auto;"/>
+        <img src="@Model.ImageUrl" style="display:block; width:450px; height:350px; margin-left: auto; margin-right:auto;" />
     </div>
 
     <hr class="mt-2 mb-3" style="height:3px;border:none;" />
 
     <p class="text-left" style="font-size:large">
-        @Model.Description
+        @(string.IsNullOrWhiteSpace(Model.Description) ? "There is no description of this author as of yet." : Model.Description)
     </p>
 
     <hr class="mt-2 mb-3" style="height:3px;border:none;" />
@@ -29,4 +29,8 @@
             <a asp-controller="Books" asp-action="Details" asp-route-id="@book.Id" class="font-weight-light">@book.Title</a>
         }
     </div>
+    @if (User.IsInRole(AdminConstants.AdminRoleName))
+    {
+        <a asp-area="Admin" asp-controller="Authors" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning mt-3">Edit</a>
+    }
 </div>

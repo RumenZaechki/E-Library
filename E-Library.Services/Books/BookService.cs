@@ -52,9 +52,9 @@ namespace E_Library.Services
                 .ToList();
         }
 
-        public void Create(string title, string description, decimal price, string imageUrl, int release, string author, string authorDescription, string authorImage, string publisher, int categoryId)
+        public void Create(string title, string description, decimal price, string imageUrl, int release, string author, string publisher, int categoryId)
         {
-            if (!IsValid(title, description, price, imageUrl, release, author, authorDescription, authorImage, publisher, categoryId))
+            if (!IsValid(title, description, price, imageUrl, release, author, publisher, categoryId))
             {
                 return;
             }
@@ -64,8 +64,6 @@ namespace E_Library.Services
                 authorToAdd = new Author
                 {
                     Name = author,
-                    Description = authorDescription,
-                    ImageUrl = authorImage
                 };
                 this.data.Authors.Add(authorToAdd);
                 this.data.SaveChanges();
@@ -203,7 +201,7 @@ namespace E_Library.Services
                 .FirstOrDefault();
         }
 
-        public void Edit(string id, string title, string description, decimal price, string imageUrl, int release, string author, string authorDescription, string authorImage, string publisher, int categoryId)
+        public void Edit(string id, string title, string description, decimal price, string imageUrl, int release, string author, string publisher, int categoryId)
         {
             Book book = this.data.Books.FirstOrDefault(b => b.Id == id);
             if (book == null)
@@ -225,8 +223,6 @@ namespace E_Library.Services
                     authorToEdit = new Author
                     {
                         Name = author,
-                        Description = authorDescription,
-                        ImageUrl = authorImage
                     };
                     this.data.Authors.Add(authorToEdit);
                     this.data.SaveChanges();
@@ -275,9 +271,9 @@ namespace E_Library.Services
             this.data.Books.Remove(book);
             this.data.SaveChanges();
         }
-        private bool IsValid(string title, string description, decimal price, string imageUrl, int release, string author, string authorDescription, string authorImage, string publisher, int categoryId)
+        private bool IsValid(string title, string description, decimal price, string imageUrl, int release, string author, string publisher, int categoryId)
         {
-            string[] arr = new string[] { title, description, imageUrl, author, authorDescription, authorImage, publisher };
+            string[] arr = new string[] { title, description, imageUrl, author, publisher };
             if (arr.Any(x => string.IsNullOrWhiteSpace(x)) || price < 0m || !this.data.Categories.Any(c => c.Id == categoryId) || release < 0)
             {
                 return false;

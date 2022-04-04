@@ -1,9 +1,5 @@
 ﻿@model IEnumerable<UserViewModel>
 
-@{
-    int i = 1;
-}
-
 <div class="container">
     <div class="jumbotron col-md-5" style="margin-left:auto;margin-right:auto;">
         <div class="table">
@@ -17,13 +13,9 @@
                 <div class="row">
                     @foreach (var user in Model)
                     {
-                        <div class="table-secondary">
-                            <h6>@i</h6>
-                        </div>
-                        <div class="table-secondary">
+                        <div class="table-secondary mt-2 mb-1">
                             <h6>@user.Username</h6>
                         </div>
-                        i++;
                         <a asp-area="Admin" asp-controller="Users" asp-action="DeleteUser" asp-route-userId="@user.Id" class="btn btn-danger mb-3" style="background-color:#e74c3c;">Delete</a>
                     }
                 </div>

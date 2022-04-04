@@ -21,10 +21,7 @@ namespace E_Library.Models.Books
         [Required]
         [MaxLength(AuthorConstants.AuthorNameMaxLength)]
         public string Author { get; set; }
-        public string AuthorImage { get; set; }
         [Required]
-        [MaxLength(AuthorConstants.AuthorDescriptionMaxLength)]
-        public string AuthorDescription { get; set; }
         public string Publisher { get; set; }
         [Display(Name = "Category")]
         public int CategoryId { get; set; }

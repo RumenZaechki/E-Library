@@ -31,7 +31,7 @@ namespace E_Library.Areas.Admin.Controllers
                 book.Categories = GetCategories();
                 return View(book);
             }
-            bookService.Create(book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author, book.AuthorDescription, book.AuthorImage, book.Publisher, book.CategoryId);
+            bookService.Create(book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author, book.Publisher, book.CategoryId);
             this.TempData[GlobalMessageKey] = "Successfully created book.";
             return RedirectToAction("Index", "Home", new {area = ""});
         }
@@ -47,8 +47,6 @@ namespace E_Library.Areas.Admin.Controllers
                 ImageUrl = book.ImageUrl,
                 Release = book.Release,
                 Author = book.Author,
-                AuthorDescription = book.AuthorDescription,
-                AuthorImage = book.AuthorImage,
                 Publisher = book.Publisher,
                 Categories = this.bookService
                     .GetBookCategories()
@@ -69,7 +67,7 @@ namespace E_Library.Areas.Admin.Controllers
                 book.Categories = GetCategories();
                 return View(book);
             }
-            this.bookService.Edit(id, book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author, book.AuthorDescription, book.AuthorImage, book.Publisher, book.CategoryId);
+            this.bookService.Edit(id, book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author, book.Publisher, book.CategoryId);
             this.TempData[GlobalMessageKey] = "Successfully edited book.";
             return RedirectToAction("All", "Books", new {area = ""});
         }
