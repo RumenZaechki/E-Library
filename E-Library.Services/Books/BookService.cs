@@ -54,7 +54,7 @@ namespace E_Library.Services
 
         public void Create(string title, string description, decimal price, string imageUrl, int release, string author, string authorDescription, string authorImage, string publisher, int categoryId)
         {
-            if (!IsValid(title, description, price, imageUrl, release , author, authorDescription, authorImage, publisher, categoryId))
+            if (!IsValid(title, description, price, imageUrl, release, author, authorDescription, authorImage, publisher, categoryId))
             {
                 return;
             }
@@ -217,17 +217,49 @@ namespace E_Library.Services
                 return;
             }
 
+            if (authorToEdit.Name != author)
+            {
+                authorToEdit = this.data.Authors.FirstOrDefault(a => a.Name == author);
+                if (authorToEdit == null)
+                {
+                    authorToEdit = new Author
+                    {
+                        Name = author,
+                        Description = authorDescription,
+                        ImageUrl = authorImage
+                    };
+                    this.data.Authors.Add(authorToEdit);
+                    this.data.SaveChanges();
+                }
+            }
+
+            if (publisherToEdit.Name != publisher)
+            {
+                publisherToEdit = this.data.Publishers.FirstOrDefault(p => p.Name == publisher);
+                if (publisherToEdit == null)
+                {
+                    publisherToEdit = new Publisher
+                    {
+                        Name = author
+                    };
+                    this.data.Publishers.Add(publisherToEdit);
+                    this.data.SaveChanges();
+                }
+            }
+
             book.Title = title;
             book.Description = description;
             book.Price = price;
             book.ImageUrl = imageUrl;
             book.Release = release;
             book.CategoryId = categoryId;
-            book.Author.Name = author;
-            authorToEdit.Name = author;
-            authorToEdit.Description = authorDescription;
-            authorToEdit.ImageUrl = authorImage;
-            publisherToEdit.Name = publisher;
+            book.Author = authorToEdit;
+            book.Publisher = publisherToEdit;
+            //book.Author.Name = author;
+            //authorToEdit.Name = author;
+            //authorToEdit.Description = authorDescription;
+            //authorToEdit.ImageUrl = authorImage;
+            //publisherToEdit.Name = publisher;
             this.data.Books.Update(book);
             this.data.Authors.Update(authorToEdit);
             this.data.Publishers.Update(publisherToEdit);
@@ -245,7 +277,7 @@ namespace E_Library.Services
         }
         private bool IsValid(string title, string description, decimal price, string imageUrl, int release, string author, string authorDescription, string authorImage, string publisher, int categoryId)
         {
-            string[] arr = new string[] { title, description, imageUrl, author, authorDescription, authorImage, publisher};
+            string[] arr = new string[] { title, description, imageUrl, author, authorDescription, authorImage, publisher };
             if (arr.Any(x => string.IsNullOrWhiteSpace(x)) || price < 0m || !this.data.Categories.Any(c => c.Id == categoryId) || release < 0)
             {
                 return false;

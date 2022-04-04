@@ -14,6 +14,7 @@ namespace E_Library.Areas.Admin.Controllers
         {
             this.usersService = usersService;
         }
+        [Authorize]
         public IActionResult AllUsers()
         {
             var adminId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
