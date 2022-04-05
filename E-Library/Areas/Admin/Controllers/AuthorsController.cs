@@ -15,6 +15,20 @@ namespace E_Library.Areas.Admin.Controllers
             this.authorService = authorService;
         }
 
+        public IActionResult Add()
+        {
+            return View(new AuthorFormModel());
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Add(AuthorFormModel author)
+        {
+            this.authorService.Add(author.Name, author.Description, author.ImageUrl);
+            this.TempData[GlobalMessageKey] = "Successfully added author.";
+            return RedirectToAction("All", "Books");
+        }
+
         public IActionResult Edit(string id)
         {
             var author = authorService.GetAuthor(id);

@@ -12,6 +12,21 @@ namespace E_Library.Services.Authors
         {
             this.data = data;
         }
+        public void Add(string name, string description, string imageUrl)
+        {
+            if (this.data.Authors.Any(a => a.Name == name))
+            {
+                return;
+            }
+            var author = new Author
+            {
+                Name = name,
+                Description = description,
+                ImageUrl = imageUrl
+            };
+            this.data.Authors.Add(author);
+            this.data.SaveChanges();
+        }
         public AuthorServiceModel GetAuthor(string id)
         {
             Author author = this.data.Authors

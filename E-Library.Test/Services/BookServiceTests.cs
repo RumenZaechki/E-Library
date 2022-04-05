@@ -296,8 +296,6 @@ namespace E_Library.Test.Services
                 ImageUrl = book.ImageUrl,
                 Release = book.Release,
                 AuthorId = book.Author.Id,
-                AuthorDescription = book.Author.Description,
-                AuthorImage = book.Author.ImageUrl,
                 Author = book.Author.Name,
                 PublisherId = book.PublisherId,
                 Publisher = book.Publisher.Name,
@@ -478,8 +476,6 @@ namespace E_Library.Test.Services
             Assert.Equal(book.ImageUrl, actual.ImageUrl);
             Assert.Equal(book.Release, actual.Release);
             Assert.Equal(book.Author.Name, actual.Author.Name);
-            Assert.Equal(book.Author.Description, actual.Author.Description);
-            Assert.Equal(book.Author.ImageUrl, actual.Author.ImageUrl);
             Assert.Equal(book.Publisher.Name, actual.Publisher.Name);
             Assert.Equal(book.CategoryId, actual.CategoryId);
         }
