@@ -31,6 +31,7 @@ namespace E_Library.Controllers
             this.TempData[GlobalMessageKey] = "Successfully added book to cart.";
             return RedirectToAction("MyCart", "Carts");
         }
+        [Authorize]
         public IActionResult MyCart()
         {
             var userId = GetUserId();
@@ -45,6 +46,7 @@ namespace E_Library.Controllers
                .ToList();
             return View(cartDetails);
         }
+        [Authorize]
         public IActionResult Remove(string bookId)
         {
             var userId = GetUserId();
@@ -52,6 +54,7 @@ namespace E_Library.Controllers
             this.TempData[GlobalMessageKey] = "Successfully removed book from cart.";
             return RedirectToAction("MyCart", "Carts");
         }
+        [Authorize]
         public IActionResult Buy()
         {
             var userId = GetUserId();

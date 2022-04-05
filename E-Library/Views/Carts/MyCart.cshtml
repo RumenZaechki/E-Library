@@ -25,14 +25,14 @@
                             <td class="col-md-3">@item.Title</td>
                             <td class="col-md-3">@item.Price</td>
                             <td class="col-md-1">
-                                <a class="btn btn-danger" href="/Carts/Remove?id=@item.Id">Remove</a>
+                                <a asp-controller="Carts" asp-action="Remove" asp-route-bookId="@item.Id" class="btn btn-danger">Remove</a>
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
             <div class="button-holder text-center">
-                <a href="/Carts/Buy" class="btn btn-outline-primary">Proceed To Checkout</a>
+                <a asp-controller="Carts" asp-action="Buy" class="btn btn-outline-primary">Proceed To Checkout</a>
             </div>
         }
         else
