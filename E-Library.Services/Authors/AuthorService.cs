@@ -25,6 +25,14 @@ namespace E_Library.Services.Authors
         }
         public IEnumerable<AuthorServiceModel> GetAuthors(int currentPage, int authorsPerPage, string searchTerm)
         {
+            if (currentPage <= 0)
+            {
+                currentPage = 1;
+            }
+            if (authorsPerPage <= 0)
+            {
+                authorsPerPage = 3;
+            }
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
                 return this.data.Authors
@@ -54,7 +62,7 @@ namespace E_Library.Services.Authors
         }
         public void Add(string name, string description, string imageUrl)
         {
-            if (this.data.Authors.Any(a => a.Name == name))
+            if (this.data.Authors.Any(a => a.Name == name) || !IsValid(name, description, imageUrl))
             {
                 return;
             }
@@ -100,7 +108,7 @@ namespace E_Library.Services.Authors
         public void Edit(string id, string name, string description, string imageUrl)
         {
             var author = this.data.Authors.FirstOrDefault(a => a.Id == id);
-            if (author == null)
+            if (author == null || !IsValid(name, description, imageUrl))
             {
                 return;
             }
@@ -110,6 +118,15 @@ namespace E_Library.Services.Authors
             author.Books = this.data.Books.Where(b => b.AuthorId == id).ToList();
             this.data.Authors.Update(author);
             this.data.SaveChanges();
+        }
+
+        private bool IsValid(string name, string description, string imageUrl)
+        {
+            if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(description) || string.IsNullOrWhiteSpace(imageUrl))
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
