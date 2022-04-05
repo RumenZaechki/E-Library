@@ -11,6 +11,24 @@ namespace E_Library.Controllers
         {
             this.authorService = authorService;
         }
+        public IActionResult All([FromQuery] AllAuthorsQueryModel query)
+        {
+            var authors = this.authorService
+                .GetAuthors(query.CurrentPage, query.AuthorsPerPage, query.SearchTerm)
+                .Select(a => new AuthorListingViewModel
+                {
+                    Id = a.Id,
+                    Name = a.Name,
+                    ImageUrl = a.ImageUrl,
+                });
+            return View(new AllAuthorsQueryModel
+            {
+                AllAuthors = authors,
+                SearchTerm = query.SearchTerm,
+                AuthorsCount = this.authorService.GetAuthorsCount(query.SearchTerm),
+                CurrentPage = query.CurrentPage,
+            });
+        }
         public IActionResult Details(string authorId)
         {
             var author = this.authorService.GetAuthor(authorId);

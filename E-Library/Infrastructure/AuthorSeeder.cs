@@ -17,21 +17,21 @@ namespace E_Library.Infrastructure
                 {
                     Name = "Robert Pantano",
                     Description = "Robert Pantano is the creator of the YouTube channel and production house known as Pursuit of Wonder, which covers similar topics of philosophy, science, and literature through short stories, guided experiences, video essays, and more.",
-                    ImageUrl = "https://yt3.ggpht.com/ytc/AKedOLSOgx4aSr0YiJreg-4ReQwO4hKw_wbVSKcrIf5JCQ=s900-c-k-c0x00ffffff-no-rj",
+                    ImageUrl = "https://m.media-amazon.com/images/S/amzn-author-media-prod/gjc29m1lc6p369v2j6m5hs8t4h._SX450_.jpg",
                     Books = data.Books.Where(p => p.Author.Name == "Robert Pantano").ToList()
                 },
                 new Author
                 {
                     Name = "John Tolkien",
                     Description = "John Ronald Reuel Tolkien was an English writer, poet, philologist, and academic, best known as the author of the high fantasy works The Hobbit and The Lord of the Rings. From 1925-45, Tolkien was the Rawlinson and Bosworth Professor of Anglo-Saxon and a Fellow of Pembroke College, both at the University of Oxford. He then moved within the same university, to become the Merton Professor of English Language and Literature and Fellow of Merton College, positions he held from 1945 until his retirement in 1959. Tolkien was a close friend of C. S. Lewis, a co-member of the informal literary discussion group The Inklings. He was appointed a Commander of the Order of the British Empire by Queen Elizabeth II on 28 March 1972.",
-                    ImageUrl = "https://m.media-amazon.com/images/M/MV5BMGMxMmRkNzctMWQzYy00MTY3LWEzMDAtMzEzMDhkZWI4MjZlXkEyXkFqcGdeQXVyNDUzOTQ5MjY@._V1_.jpg",
+                    ImageUrl = "https://m.media-amazon.com/images/I/71GP8lxqn0L._SX450_.jpg",
                     Books = data.Books.Where(p => p.Author.Name == "John Tolkien").ToList()
                 },
                 new Author
                 {
                     Name = "Marcus Aurelius",
                     Description = "Marcus Aurelius Antoninus was Roman emperor from 161 to 180 and a Stoic philosopher. He was the last of the rulers known as the Five Good Emperors, and the last emperor of the Pax Romana, an age of relative peace and stability for the Roman Empire lasting from 27 BCE to 180 CE.",
-                    ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9OsS0Bl4dOwm0DFcR5U0H8neR_fyJ9J_ePQ&usqp=CAU",
+                    ImageUrl = "https://m.media-amazon.com/images/I/81eUW9G6mML._SX450_.jpg",
                     Books = data.Books.Where(p => p.Author.Name == "Marcus Aurelius").ToList()
                 },
                 new Author

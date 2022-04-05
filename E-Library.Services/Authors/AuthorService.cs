@@ -12,6 +12,46 @@ namespace E_Library.Services.Authors
         {
             this.data = data;
         }
+        public int GetAuthorsCount(string searchTerm)
+        {
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                return this.data.Authors
+                    .Where(a => a.Name.ToLower().Contains(searchTerm.ToLower()))
+                    .Count();
+            }
+            return this.data.Authors
+                .Count();
+        }
+        public IEnumerable<AuthorServiceModel> GetAuthors(int currentPage, int authorsPerPage, string searchTerm)
+        {
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                return this.data.Authors
+                    .Where(a => a.Name.ToLower().Contains(searchTerm.ToLower()))
+                    .Skip((currentPage - 1) * authorsPerPage)
+                    .Take(authorsPerPage)
+                    .Select(a => new AuthorServiceModel
+                    {
+                        Id = a.Id,
+                        Name = a.Name,
+                        Description = a.Description,
+                        ImageUrl = a.ImageUrl
+                    })
+                    .ToList();
+            }
+            return this.data.Authors
+                .Skip((currentPage - 1) * authorsPerPage)
+                .Take(authorsPerPage)
+                .Select(a => new AuthorServiceModel
+                {
+                    Id = a.Id,
+                    Name = a.Name,
+                    Description = a.Description,
+                    ImageUrl = a.ImageUrl
+                })
+                .ToList();
+        }
         public void Add(string name, string description, string imageUrl)
         {
             if (this.data.Authors.Any(a => a.Name == name))

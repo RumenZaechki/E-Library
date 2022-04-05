@@ -10,7 +10,7 @@ A simplified online library app made during the ASP.NET Core course at SoftUni.
 - Have access to the home page, all books page, details page and reviews page. Can add books to cart, buy books and add reviews to the books.
 
 **Admin**
-- Have access to all books page and details page. Can add new books, edit or delete any of all the books in the DB, delete reviews and remove users.
+- Have access to all books page and details page. Can add, edit or delete any of all the books in the DB, add or edit any of all the authors in the DB, delete reviews and remove users.
 
 **When you run the project for the first time sample data will be seeded as well as these test accounts:**
 
