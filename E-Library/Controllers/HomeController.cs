@@ -1,8 +1,10 @@
 ﻿using E_Library.Models;
 using E_Library.Models.Books;
 using E_Library.Models.Home;
+using E_Library.Services.Books.Models;
 using E_Library.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using System.Diagnostics;
 
 namespace E_Library.Controllers
@@ -10,22 +12,35 @@ namespace E_Library.Controllers
     public class HomeController : Controller
     {
         private readonly IHomeService homeService;
-        public HomeController(IHomeService homeService)
+        private readonly IMemoryCache cache;
+        public HomeController(IHomeService homeService, IMemoryCache cache)
         {
             this.homeService = homeService;
+            this.cache = cache;
         }
 
         public IActionResult Index()
         {
-            var books = this.homeService.GetRecentBooks();
-            var booksToShow = books.Select(b => new BookListingViewModel
+            const string latestBooksCacheKey = "LatestBooksCacheKey";
+            var latestBooks = this.cache.Get<List<BookServiceModel>>(latestBooksCacheKey);
+
+            if (latestBooks == null)
+            {
+                latestBooks = this.homeService.GetRecentBooks();
+
+                var cacheOptions = new MemoryCacheEntryOptions()
+                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(30));
+
+                this.cache.Set(latestBooksCacheKey, latestBooks, cacheOptions);
+            }
+
+            var booksToShow = latestBooks.Select(b => new BookListingViewModel
             {
                 Id = b.Id,
                 Title = b.Title,
                 ImageUrl = b.ImageUrl,
                 Release = b.Release,
                 Author = b.Author,
-                //Category = b.Category
             })
                 .ToList();
             return View(new IndexViewModel
