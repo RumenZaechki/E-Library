@@ -27,12 +27,11 @@ namespace E_Library.Services.Users
         public void DeleteUser(string userId)
         {
             var user = this.data.Users.FirstOrDefault(u => u.Id == userId);
-            if (user == null)
+            if (user != null)
             {
-                return;
+                this.data.Users.Remove(user);
+                this.data.SaveChanges();
             }
-            this.data.Users.Remove(user);
-            this.data.SaveChanges();
         }
     }
 }

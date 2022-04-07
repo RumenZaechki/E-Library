@@ -1,5 +1,4 @@
-﻿
-namespace E_Library.Data.Constants
+﻿namespace E_Library.Data.Constants
 {
     public class CategoryConstants
     {

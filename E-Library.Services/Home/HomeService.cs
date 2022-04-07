@@ -25,7 +25,6 @@ namespace E_Library.Services.Home
                     ImageUrl = x.ImageUrl,
                     Release = x.Release,
                     Author = x.Author.Name,
-                    //Category = x.Category.Name
                 }).
                 ToList();
         }

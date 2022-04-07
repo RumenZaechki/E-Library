@@ -54,54 +54,53 @@ namespace E_Library.Services
 
         public void Create(string title, string description, decimal price, string imageUrl, int release, string author, string publisher, int categoryId)
         {
-            if (!IsValid(title, description, price, imageUrl, release, author, publisher, categoryId))
+            if (IsValid(title, description, price, imageUrl, release, author, publisher, categoryId))
             {
-                return;
-            }
-            Author authorToAdd = null;
-            if (!this.data.Authors.Any(a => a.Name == author))
-            {
-                authorToAdd = new Author
+                Author authorToAdd = null;
+                if (!this.data.Authors.Any(a => a.Name == author))
                 {
-                    Name = author,
+                    authorToAdd = new Author
+                    {
+                        Name = author,
+                    };
+                    this.data.Authors.Add(authorToAdd);
+                    this.data.SaveChanges();
+                }
+                authorToAdd = this.data.Authors
+                    .Where(a => a.Name == author)
+                    .FirstOrDefault();
+
+                Publisher publisherToAdd = null;
+                if (!this.data.Publishers.Any(a => a.Name == publisher))
+                {
+                    publisherToAdd = new Publisher
+                    {
+                        Name = publisher
+                    };
+                    this.data.Publishers.Add(publisherToAdd);
+                    this.data.SaveChanges();
+                }
+                publisherToAdd = this.data.Publishers
+                    .Where(p => p.Name == publisher)
+                    .FirstOrDefault();
+
+                Book bookToAdd = new Book
+                {
+                    Title = title,
+                    Description = description,
+                    Price = price,
+                    ImageUrl = imageUrl,
+                    Release = release,
+                    CategoryId = categoryId,
+                    AuthorId = authorToAdd.Id,
+                    Author = authorToAdd,
+                    PublisherId = publisherToAdd.Id,
+                    Publisher = publisherToAdd
                 };
-                this.data.Authors.Add(authorToAdd);
+
+                this.data.Books.Add(bookToAdd);
                 this.data.SaveChanges();
             }
-            authorToAdd = this.data.Authors
-                .Where(a => a.Name == author)
-                .FirstOrDefault();
-
-            Publisher publisherToAdd = null;
-            if (!this.data.Publishers.Any(a => a.Name == publisher))
-            {
-                publisherToAdd = new Publisher
-                {
-                    Name = publisher
-                };
-                this.data.Publishers.Add(publisherToAdd);
-                this.data.SaveChanges();
-            }
-            publisherToAdd = this.data.Publishers
-                .Where(p => p.Name == publisher)
-                .FirstOrDefault();
-
-            Book bookToAdd = new Book
-            {
-                Title = title,
-                Description = description,
-                Price = price,
-                ImageUrl = imageUrl,
-                Release = release,
-                CategoryId = categoryId,
-                AuthorId = authorToAdd.Id,
-                Author = authorToAdd,
-                PublisherId = publisherToAdd.Id,
-                Publisher = publisherToAdd
-            };
-
-            this.data.Books.Add(bookToAdd);
-            this.data.SaveChanges();
         }
 
 
@@ -204,72 +203,65 @@ namespace E_Library.Services
         public void Edit(string id, string title, string description, decimal price, string imageUrl, int release, string author, string publisher, int categoryId)
         {
             Book book = this.data.Books.FirstOrDefault(b => b.Id == id);
-            if (book == null)
+            if (book != null)
             {
-                return;
-            }
-            Author authorToEdit = this.data.Authors.FirstOrDefault(a => a.Id == book.AuthorId);
-            Publisher publisherToEdit = this.data.Publishers.FirstOrDefault(p => p.Id == book.PublisherId);
-            if (authorToEdit == null || publisherToEdit == null)
-            {
-                return;
-            }
 
-            if (authorToEdit.Name != author)
-            {
-                authorToEdit = this.data.Authors.FirstOrDefault(a => a.Name == author);
-                if (authorToEdit == null)
+                Author authorToEdit = this.data.Authors.FirstOrDefault(a => a.Id == book.AuthorId);
+                Publisher publisherToEdit = this.data.Publishers.FirstOrDefault(p => p.Id == book.PublisherId);
+                if (authorToEdit != null && publisherToEdit != null)
                 {
-                    authorToEdit = new Author
+
+                    if (authorToEdit.Name != author)
                     {
-                        Name = author,
-                    };
-                    this.data.Authors.Add(authorToEdit);
+                        authorToEdit = this.data.Authors.FirstOrDefault(a => a.Name == author);
+                        if (authorToEdit == null)
+                        {
+                            authorToEdit = new Author
+                            {
+                                Name = author,
+                            };
+                            this.data.Authors.Add(authorToEdit);
+                            this.data.SaveChanges();
+                        }
+                    }
+
+                    if (publisherToEdit.Name != publisher)
+                    {
+                        publisherToEdit = this.data.Publishers.FirstOrDefault(p => p.Name == publisher);
+                        if (publisherToEdit == null)
+                        {
+                            publisherToEdit = new Publisher
+                            {
+                                Name = author
+                            };
+                            this.data.Publishers.Add(publisherToEdit);
+                            this.data.SaveChanges();
+                        }
+                    }
+
+                    book.Title = title;
+                    book.Description = description;
+                    book.Price = price;
+                    book.ImageUrl = imageUrl;
+                    book.Release = release;
+                    book.CategoryId = categoryId;
+                    book.Author = authorToEdit;
+                    book.Publisher = publisherToEdit;
+                    this.data.Books.Update(book);
+                    this.data.Authors.Update(authorToEdit);
+                    this.data.Publishers.Update(publisherToEdit);
                     this.data.SaveChanges();
                 }
             }
-
-            if (publisherToEdit.Name != publisher)
-            {
-                publisherToEdit = this.data.Publishers.FirstOrDefault(p => p.Name == publisher);
-                if (publisherToEdit == null)
-                {
-                    publisherToEdit = new Publisher
-                    {
-                        Name = author
-                    };
-                    this.data.Publishers.Add(publisherToEdit);
-                    this.data.SaveChanges();
-                }
-            }
-
-            book.Title = title;
-            book.Description = description;
-            book.Price = price;
-            book.ImageUrl = imageUrl;
-            book.Release = release;
-            book.CategoryId = categoryId;
-            book.Author = authorToEdit;
-            book.Publisher = publisherToEdit;
-            //book.Author.Name = author;
-            //authorToEdit.Name = author;
-            //authorToEdit.Description = authorDescription;
-            //authorToEdit.ImageUrl = authorImage;
-            //publisherToEdit.Name = publisher;
-            this.data.Books.Update(book);
-            this.data.Authors.Update(authorToEdit);
-            this.data.Publishers.Update(publisherToEdit);
-            this.data.SaveChanges();
         }
         public void Delete(string id)
         {
             Book book = this.data.Books.FirstOrDefault(b => b.Id == id);
-            if (book == null)
+            if (book != null)
             {
-                return;
+                this.data.Books.Remove(book);
+                this.data.SaveChanges();
             }
-            this.data.Books.Remove(book);
-            this.data.SaveChanges();
         }
         private bool IsValid(string title, string description, decimal price, string imageUrl, int release, string author, string publisher, int categoryId)
         {

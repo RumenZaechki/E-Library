@@ -1,5 +1,4 @@
-﻿
-namespace E_Library.Data.Models
+﻿namespace E_Library.Data.Models
 {
     public class BookCart
     {

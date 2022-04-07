@@ -15,37 +15,35 @@ namespace E_Library.Services.Reviews
         public void DeleteReview(string reviewId)
         {
             Review review = this.data.Reviews.FirstOrDefault(r => r.Id == reviewId);
-            if (review == null)
+            if (review != null)
             {
-                return;
+                User user = this.data.Users.FirstOrDefault(u => u.Id == review.UserId);
+                Book book = this.data.Books.FirstOrDefault(b => b.Id == review.BookId);
+                user.Reviews.Remove(review);
+                book.Reviews.Remove(review);
+                this.data.Reviews.Remove(review);
+                this.data.SaveChanges();
             }
-            User user = this.data.Users.FirstOrDefault(u => u.Id == review.UserId);
-            Book book = this.data.Books.FirstOrDefault(b => b.Id == review.BookId);
-            user.Reviews.Remove(review);
-            book.Reviews.Remove(review);
-            this.data.Reviews.Remove(review);
-            this.data.SaveChanges();
         }
         public void AddReview(string bookId, string userId, int rating, string description)
         {
             Book book = this.data.Books.FirstOrDefault(b => b.Id == bookId);
             User user = this.data.Users.FirstOrDefault(u => u.Id == userId);
-            if (book == null || user == null)
+            if (book != null && user != null)
             {
-                return;
+                Review review = new Review
+                {
+                    BookId = bookId,
+                    Book = book,
+                    UserId = userId,
+                    User = user,
+                    Rating = rating,
+                    Description = description
+                };
+                book.Reviews.Add(review);
+                user.Reviews.Add(review);
+                this.data.SaveChanges();
             }
-            Review review = new Review
-            {
-                BookId = bookId,
-                Book = book,
-                UserId = userId,
-                User = user,
-                Rating = rating,
-                Description = description
-            };
-            book.Reviews.Add(review);
-            user.Reviews.Add(review);
-            this.data.SaveChanges();
         }
         public ICollection<ReviewServiceModel> GetAllReviews(string bookId)
         {

@@ -62,18 +62,17 @@ namespace E_Library.Services.Authors
         }
         public void Add(string name, string description, string imageUrl)
         {
-            if (this.data.Authors.Any(a => a.Name == name) || !IsValid(name, description, imageUrl))
+            if (!this.data.Authors.Any(a => a.Name == name) && IsValid(name, description, imageUrl))
             {
-                return;
+                var author = new Author
+                {
+                    Name = name,
+                    Description = description,
+                    ImageUrl = imageUrl
+                };
+                this.data.Authors.Add(author);
+                this.data.SaveChanges();
             }
-            var author = new Author
-            {
-                Name = name,
-                Description = description,
-                ImageUrl = imageUrl
-            };
-            this.data.Authors.Add(author);
-            this.data.SaveChanges();
         }
         public AuthorServiceModel GetAuthor(string id)
         {
@@ -108,16 +107,15 @@ namespace E_Library.Services.Authors
         public void Edit(string id, string name, string description, string imageUrl)
         {
             var author = this.data.Authors.FirstOrDefault(a => a.Id == id);
-            if (author == null || !IsValid(name, description, imageUrl))
+            if (author != null && IsValid(name, description, imageUrl))
             {
-                return;
+                author.Name = name;
+                author.Description = description;
+                author.ImageUrl = imageUrl;
+                author.Books = this.data.Books.Where(b => b.AuthorId == id).ToList();
+                this.data.Authors.Update(author);
+                this.data.SaveChanges();
             }
-            author.Name = name;
-            author.Description = description;
-            author.ImageUrl = imageUrl;
-            author.Books = this.data.Books.Where(b => b.AuthorId == id).ToList();
-            this.data.Authors.Update(author);
-            this.data.SaveChanges();
         }
 
         private bool IsValid(string name, string description, string imageUrl)
