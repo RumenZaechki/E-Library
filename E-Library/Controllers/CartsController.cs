@@ -1,4 +1,5 @@
-﻿using E_Library.Models.Carts;
+﻿using E_Library.Areas.Admin;
+using E_Library.Models.Carts;
 using E_Library.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -34,6 +35,10 @@ namespace E_Library.Controllers
         [Authorize]
         public IActionResult MyCart()
         {
+            if (User.IsInRole(AdminConstants.AdminRoleName))
+            {
+                return LocalRedirect("/Identity/Account/AccessDenied");
+            }
             var userId = GetUserId();
             var books = this.cartService.GetBooksFromCart(userId);
             var cartDetails = books

@@ -31,7 +31,7 @@ else
     </div>
 }
 
-@if (User.Identity.IsAuthenticated)
+@if (User.Identity.IsAuthenticated && !User.IsInRole(AdminConstants.AdminRoleName))
 {
     <a asp-controller="Reviews" asp-action="AddReview" asp-route-bookId="@Model.BookId" class="btn btn-primary" style="margin-top:10px">Add a review</a>
 }
