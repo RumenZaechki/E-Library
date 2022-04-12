@@ -29,20 +29,23 @@ namespace E_Library.Areas.Identity.Pages.Account
         private readonly IUserStore<User> _userStore;
         private readonly IUserEmailStore<User> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
+        private readonly IServiceProvider serviceProvider;
         //private readonly IEmailSender _emailSender;
 
         public RegisterModel(
             UserManager<User> userManager,
             IUserStore<User> userStore,
             SignInManager<User> signInManager,
-            ILogger<RegisterModel> logger)
-            //IEmailSender emailSender
+            ILogger<RegisterModel> logger,
+            IServiceProvider serviceProvider)
+        //IEmailSender emailSender
         {
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
+            this.serviceProvider = serviceProvider;
             //_emailSender = emailSender;
         }
 
@@ -165,6 +168,13 @@ namespace E_Library.Areas.Identity.Pages.Account
                     User = user
                 };
                 user.Cart = cart;
+                var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+                Task.Run(async () =>
+                {
+                    await userManager.AddToRoleAsync(user, UserConstants.UserRoleName);
+                })
+                    .GetAwaiter()
+                    .GetResult();
                 return user;    
                 //return Activator.CreateInstance<User>();
             }

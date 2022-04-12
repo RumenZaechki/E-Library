@@ -1,4 +1,4 @@
-﻿using E_Library.Areas.Admin;
+﻿using E_Library.Areas.Identity;
 using E_Library.Models.Carts;
 using E_Library.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
@@ -32,13 +32,9 @@ namespace E_Library.Controllers
             this.TempData[GlobalMessageKey] = "Successfully added book to cart.";
             return RedirectToAction("MyCart", "Carts");
         }
-        [Authorize]
+        [Authorize(Roles = UserConstants.UserRoleName)]
         public IActionResult MyCart()
         {
-            if (User.IsInRole(AdminConstants.AdminRoleName))
-            {
-                return LocalRedirect("/Identity/Account/AccessDenied");
-            }
             var userId = GetUserId();
             var books = this.cartService.GetBooksFromCart(userId);
             var cartDetails = books

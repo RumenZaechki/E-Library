@@ -1,4 +1,4 @@
-﻿using E_Library.Areas.Admin;
+﻿using E_Library.Areas.Identity;
 using E_Library.Models.Reviews;
 using E_Library.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
@@ -35,26 +35,18 @@ namespace E_Library.Controllers
             };
             return View(reviewModel);
         }
-        [Authorize]
+        [Authorize(Roles = UserConstants.UserRoleName)]
         public IActionResult AddReview(string bookId)
         {
-            if (User.IsInRole(AdminConstants.AdminRoleName))
-            {
-                return LocalRedirect("/Identity/Account/AccessDenied");
-            }
             return View(new AddReviewFormModel
             {
                 BookId = bookId
             });
         }
-        [Authorize]
+        [Authorize(Roles = UserConstants.UserRoleName)]
         [HttpPost]
         public IActionResult AddReview(AddReviewFormModel reviewModel)
         {
-            if (User.IsInRole(AdminConstants.AdminRoleName))
-            {
-                return LocalRedirect("/Identity/Account/AccessDenied");
-            }
             string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             this.reviewsService.AddReview(reviewModel.BookId, userId, reviewModel.Rating, reviewModel.Description);
             this.TempData[GlobalMessageKey] = "Successfully added review to the book.";

@@ -51,7 +51,7 @@ builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 
-app.PrepareDatabase();
+await app.PrepareDatabase();
 
 if (app.Environment.IsDevelopment())
 {
