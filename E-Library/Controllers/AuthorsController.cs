@@ -32,6 +32,13 @@ namespace E_Library.Controllers
         public IActionResult Details(string authorId)
         {
             var author = this.authorService.GetAuthor(authorId);
+            if (author == null)
+            {
+                return RedirectToAction("Error", "Home", new
+                {
+                    Description = "Couldn't find author."
+                });
+            }
             return View(new AuthorViewModel
             {
                 Id = author.Id,

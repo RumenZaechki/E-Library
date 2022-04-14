@@ -45,6 +45,13 @@ namespace E_Library.Controllers
         public IActionResult Details(string id)
         {
             var book = this.bookService.Details(id);
+            if (book == null)
+            {
+                return RedirectToAction("Error", "Home", new
+                {
+                    Description = "Couldn't find book."
+                });
+            }
             return View(new BookDetailsViewModel
             {
                 Id = book.Id,

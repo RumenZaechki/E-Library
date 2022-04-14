@@ -19,7 +19,7 @@ namespace E_Library.Services.Publishers
 
             if (publisher == null)
             {
-                return new PublisherServiceModel();
+                return null;
             }
 
             var books = this.data.Books

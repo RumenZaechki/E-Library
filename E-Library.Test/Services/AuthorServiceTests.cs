@@ -215,10 +215,7 @@ namespace E_Library.Test.Services
 
             var actual = authorService.GetAuthor("invalid");
 
-            Assert.Null(actual.Name);
-            Assert.Null(actual.Description);
-            Assert.Null(actual.ImageUrl);
-            Assert.Equal(0, actual.Books.Count);
+            Assert.Null(actual);
         }
 
         private Author[] GetAuthors()

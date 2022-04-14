@@ -30,7 +30,7 @@ namespace E_Library.Test.Services
 
             var actual = publishersService.Details("1");
 
-            Assert.Null(actual.Name);
+            Assert.Null(actual);
         }
 
         [Fact]
@@ -42,7 +42,7 @@ namespace E_Library.Test.Services
 
             var actual = publishersService.Details("125362342");
 
-            Assert.Null(actual.Name);
+            Assert.Null(actual);
         }
         public void AddPublishersToData(LibraryDbContext data)
         {

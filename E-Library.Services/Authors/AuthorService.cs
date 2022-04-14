@@ -81,8 +81,7 @@ namespace E_Library.Services.Authors
 
             if (author == null)
             {
-                var model = new AuthorServiceModel();
-                return model;
+                return null;
             }
 
             var books = this.data.Books
