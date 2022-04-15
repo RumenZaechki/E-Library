@@ -40,6 +40,11 @@
 
     <hr class="mb-2" style="height:3px;border:none;" />
     <a asp-controller="Reviews" asp-action="All" asp-route-bookId="@Model.Id" class="btn btn-primary">See Reviews</a>
+    @if (User.IsInRole(AdminConstants.AdminRoleName))
+    {
+        <a asp-area="Admin" asp-controller="Books" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+        <a asp-area="Admin" asp-controller="Books" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+    }
     @if (!User.IsInRole(AdminConstants.AdminRoleName) && User.Identity.IsAuthenticated)
     {
         <a asp-controller="Carts" asp-action="AddToCart" asp-route-bookId="@Model.Id" class="btn btn-primary">Add To Cart</a>

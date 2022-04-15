@@ -24,9 +24,13 @@ namespace E_Library.Areas.Admin.Controllers
         [Authorize]
         public IActionResult Add(AuthorFormModel author)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(author);
+            }
             this.authorService.Add(author.Name, author.Description, author.ImageUrl);
             this.TempData[GlobalMessageKey] = "Successfully added author.";
-            return RedirectToAction("All", "Books");
+            return RedirectToAction("All", "Authors", new {area = ""});
         }
 
         public IActionResult Edit(string id)
@@ -48,6 +52,10 @@ namespace E_Library.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Edit(string id, AuthorFormModel author)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(author);
+            }
             this.authorService.Edit(id, author.Name, author.Description, author.ImageUrl);
             this.TempData[GlobalMessageKey] = "Successfully edited author.";
             return RedirectToAction("Details", "Authors", new { area = "", authorId = id });
