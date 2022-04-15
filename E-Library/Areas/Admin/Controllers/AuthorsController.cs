@@ -32,6 +32,10 @@ namespace E_Library.Areas.Admin.Controllers
         public IActionResult Edit(string id)
         {
             var author = authorService.GetAuthor(id);
+            if (author == null)
+            {
+                return NotFound();
+            }
             return View(new AuthorFormModel
             {
                 Name = author.Name,

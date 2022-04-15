@@ -16,10 +16,7 @@ namespace E_Library.Controllers
             var publisherServiceModel = this.publishersService.Details(publisherId);
             if (publisherServiceModel == null)
             {
-                return RedirectToAction("Error", "Home", new
-                {
-                    Description = "Couldn't find publisher."
-                });
+                return NotFound();
             }
             var viewModel = new PublisherViewModel
             {

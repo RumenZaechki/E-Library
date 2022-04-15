@@ -39,6 +39,10 @@ namespace E_Library.Areas.Admin.Controllers
         public IActionResult Edit(string id)
         {
             var book = this.bookService.Details(id);
+            if (book == null)
+            {
+                return NotFound();
+            }
             return View(new BookFormModel
             {
                 Title = book.Title,
