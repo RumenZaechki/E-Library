@@ -1,6 +1,7 @@
 ﻿using E_Library.Data;
 using E_Library.Data.Models;
 using E_Library.Services.Contracts;
+using Microsoft.EntityFrameworkCore;
 
 namespace E_Library.Services.Carts
 {
@@ -11,20 +12,20 @@ namespace E_Library.Services.Carts
         {
             this.data = data;
         }
-        public bool IsBookInCart(string userId, string bookId)
+        public async Task<bool> IsBookInCartAsync(string userId, string bookId)
         {
-            var book = this.data.Books.Where(x => x.Id == bookId).FirstOrDefault();
-            var user = this.data.Users.Where(u => u.Id == userId).FirstOrDefault();
-            var cart = this.data.Carts.Where(x => x.User == user).FirstOrDefault();
+            var book = await this.data.Books.Where(x => x.Id == bookId).FirstOrDefaultAsync();
+            var user = await this.data.Users.Where(u => u.Id == userId).FirstOrDefaultAsync();
+            var cart = await this.data.Carts.Where(x => x.User == user).FirstOrDefaultAsync();
             if (this.data.BookCarts.Any(bc => bc.CartId == cart.Id && bc.BookId == book.Id))
             {
                 return true;
             }
             return false;
         }
-        public void Buy(string userId)
+        public async Task BuyAsync(string userId)
         {
-            var cart = this.data.Carts.Where(x => x.User.Id == userId).FirstOrDefault();
+            var cart = await this.data.Carts.Where(x => x.User.Id == userId).FirstOrDefaultAsync();
             var bookCarts = this.data.BookCarts.Where(bc => bc.Cart == cart);
             if (cart != null && bookCarts != null)
             {
@@ -32,25 +33,25 @@ namespace E_Library.Services.Carts
                 {
                     this.data.BookCarts.Remove(item);
                 }
-                this.data.SaveChanges();
+                await this.data.SaveChangesAsync();
             }
         }
-        public void RemoveBookFromCart(string bookId, string userId)
+        public async Task RemoveBookFromCartAsync(string bookId, string userId)
         {
-            var cart = this.data.Carts.Where(x => x.User.Id == userId).FirstOrDefault();
-            var book = this.data.Books.FirstOrDefault(b => b.Id == bookId);
-            var bookCart = this.data.BookCarts.Where(bc => bc.Cart == cart).FirstOrDefault();
+            var cart = await this.data.Carts.Where(x => x.User.Id == userId).FirstOrDefaultAsync();
+            var book = await this.data.Books.FirstOrDefaultAsync(b => b.Id == bookId);
+            var bookCart = await this.data.BookCarts.Where(bc => bc.Cart == cart).FirstOrDefaultAsync();
             if (cart != null && bookCart != null && book != null)
             {
                 this.data.BookCarts.Remove(bookCart);
-                this.data.SaveChanges();
+                await this.data.SaveChangesAsync();
             }
         }
-        public void AddBookToCart(string userId, string bookId)
+        public async Task AddBookToCartAsync(string userId, string bookId)
         {
-            var book = this.data.Books.Where(x => x.Id == bookId).FirstOrDefault();
-            var user = this.data.Users.Where(u => u.Id == userId).FirstOrDefault();
-            var cart = this.data.Carts.Where(x => x.User == user).FirstOrDefault();
+            var book = await this.data.Books.Where(x => x.Id == bookId).FirstOrDefaultAsync();
+            var user = await this.data.Users.Where(u => u.Id == userId).FirstOrDefaultAsync();
+            var cart = await this.data.Carts.Where(x => x.User == user).FirstOrDefaultAsync();
             if (book != null && user != null && cart != null)
             {
                 this.data.BookCarts.Add(new BookCart
@@ -60,21 +61,21 @@ namespace E_Library.Services.Carts
                     CartId = cart.Id,
                     Cart = cart
                 });
-                this.data.SaveChanges();
+                await this.data.SaveChangesAsync();
             }
         }
-        public IEnumerable<CartBookModel> GetBooksFromCart(string userId)
+        public async Task<IEnumerable<CartBookModel>> GetBooksFromCartAsync(string userId)
         {
-            var cart = this.data.Carts.Where(x => x.User.Id == userId).FirstOrDefault();
+            var cart = await this.data.Carts.Where(x => x.User.Id == userId).FirstOrDefaultAsync();
             var bookCarts = this.data.BookCarts.Where(bc => bc.Cart == cart);
-            return bookCarts
+            return await bookCarts
                 .Select(x => new CartBookModel
                 {
                     Id = x.Book.Id,
                     Title = x.Book.Title,
                     Price = x.Book.Price.ToString("F2")
                 })
-                .ToList();
+                .ToListAsync();
         }
     }
 }

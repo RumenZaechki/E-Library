@@ -12,17 +12,19 @@ namespace E_Library.Controllers
             this.bookService = bookService;
         }
 
-        public IActionResult All([FromQuery] AllBooksQueryModel query)
+        public async Task<IActionResult> All([FromQuery] AllBooksQueryModel query)
         {
-            var categories = this.bookService
-                .GetBookCategories()
+            var categories = await this.bookService
+                .GetBookCategoriesAsync();
+            var resCat = categories
                 .Select(c => new BookCategoryViewModel
                 {
                     Id = c.Id,
                     Name = c.Name
                 });
-            var books = this.bookService
-                .FindBooks(query.SearchTerm, query.SelectedCategory, query.CurrentPage, AllBooksQueryModel.BooksPerPage)
+            var books = await this.bookService
+                .FindBooksAsync(query.SearchTerm, query.SelectedCategory, query.CurrentPage, AllBooksQueryModel.BooksPerPage);
+            var resBooks = books
                 .Select(b => new BookListingViewModel
                 {
                     Id = b.Id,
@@ -33,18 +35,18 @@ namespace E_Library.Controllers
                 });
             return View(new AllBooksQueryModel
             {
-                AllBooks = books,
+                AllBooks = resBooks,
                 SearchTerm = query.SearchTerm,
                 SelectedCategory = query.SelectedCategory,
-                Categories = categories,
-                BooksCount = this.bookService.GetBooksCount(query.SearchTerm, query.SelectedCategory),
+                Categories = resCat,
+                BooksCount = await this.bookService.GetBooksCountAsync(query.SearchTerm, query.SelectedCategory),
                 CurrentPage = query.CurrentPage,
             });
         }
 
-        public IActionResult Details(string id)
+        public async Task<IActionResult> Details(string id)
         {
-            var book = this.bookService.Details(id);
+            var book = await this.bookService.DetailsAsync(id);
             if (book == null)
             {
                 return NotFound();

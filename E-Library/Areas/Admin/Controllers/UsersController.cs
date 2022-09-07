@@ -15,23 +15,24 @@ namespace E_Library.Areas.Admin.Controllers
             this.usersService = usersService;
         }
         [Authorize]
-        public IActionResult AllUsers()
+        public async Task<IActionResult> AllUsers()
         {
             var adminId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var users = usersService
-                .GetAllUsers(adminId)
+            var users = await this.usersService
+                .GetAllUsersAsync(adminId);
+            var res = users
                 .Select(u => new UserViewModel
                 {
                     Id = u.Id,
                     Username = u.Username,
                 });
-            return View(users);
+            return View(res);
         }
 
         [Authorize]
-        public IActionResult DeleteUser(string userId)
+        public async Task<IActionResult> DeleteUser(string userId)
         {
-            this.usersService.DeleteUser(userId);
+            await this.usersService.DeleteUserAsync(userId);
             this.TempData[GlobalMessageKey] = "Successfully deleted user.";
             return RedirectToAction("AllUsers", "Users", new { area = "Admin" });
         }

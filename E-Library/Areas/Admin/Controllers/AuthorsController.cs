@@ -22,20 +22,20 @@ namespace E_Library.Areas.Admin.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult Add(AuthorFormModel author)
+        public async Task<IActionResult> Add(AuthorFormModel author)
         {
             if (!ModelState.IsValid)
             {
                 return View(author);
             }
-            this.authorService.Add(author.Name, author.Description, author.ImageUrl);
+            await this.authorService.AddAsync(author.Name, author.Description, author.ImageUrl);
             this.TempData[GlobalMessageKey] = "Successfully added author.";
             return RedirectToAction("All", "Authors", new {area = ""});
         }
 
-        public IActionResult Edit(string id)
+        public async Task<IActionResult> Edit(string id)
         {
-            var author = authorService.GetAuthor(id);
+            var author = await authorService.GetAuthorAsync(id);
             if (author == null)
             {
                 return NotFound();
@@ -50,13 +50,13 @@ namespace E_Library.Areas.Admin.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Edit(string id, AuthorFormModel author)
+        public async Task<IActionResult> Edit(string id, AuthorFormModel author)
         {
             if (!ModelState.IsValid)
             {
                 return View(author);
             }
-            this.authorService.Edit(id, author.Name, author.Description, author.ImageUrl);
+            await this.authorService.EditAsync(id, author.Name, author.Description, author.ImageUrl);
             this.TempData[GlobalMessageKey] = "Successfully edited author.";
             return RedirectToAction("Details", "Authors", new { area = "", authorId = id });
         }

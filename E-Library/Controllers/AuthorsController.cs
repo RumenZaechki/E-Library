@@ -11,10 +11,11 @@ namespace E_Library.Controllers
         {
             this.authorService = authorService;
         }
-        public IActionResult All([FromQuery] AllAuthorsQueryModel query)
+        public async Task<IActionResult> All([FromQuery] AllAuthorsQueryModel query)
         {
-            var authors = this.authorService
-                .GetAuthors(query.CurrentPage, query.AuthorsPerPage, query.SearchTerm)
+            var authors = await this.authorService
+                .GetAuthorsAsync(query.CurrentPage, query.AuthorsPerPage, query.SearchTerm);
+            var res = authors
                 .Select(a => new AuthorListingViewModel
                 {
                     Id = a.Id,
@@ -23,15 +24,15 @@ namespace E_Library.Controllers
                 });
             return View(new AllAuthorsQueryModel
             {
-                AllAuthors = authors,
+                AllAuthors = res,
                 SearchTerm = query.SearchTerm,
-                AuthorsCount = this.authorService.GetAuthorsCount(query.SearchTerm),
+                AuthorsCount = await this.authorService.GetAuthorsCountAsync(query.SearchTerm),
                 CurrentPage = query.CurrentPage,
             });
         }
-        public IActionResult Details(string authorId)
+        public async Task<IActionResult> Details(string authorId)
         {
-            var author = this.authorService.GetAuthor(authorId);
+            var author = await this.authorService.GetAuthorAsync(authorId);
             if (author == null)
             {
                 return NotFound();

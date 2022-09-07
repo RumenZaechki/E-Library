@@ -11,9 +11,9 @@ namespace E_Library.Controllers
         {
             this.publishersService = publishersService;
         }
-        public IActionResult Details(string publisherId)
+        public async Task<IActionResult> Details(string publisherId)
         {
-            var publisherServiceModel = this.publishersService.Details(publisherId);
+            var publisherServiceModel = await this.publishersService.DetailsAsync(publisherId);
             if (publisherServiceModel == null)
             {
                 return NotFound();

@@ -2,6 +2,7 @@
 using E_Library.Data.Models;
 using E_Library.Services.Books.Models;
 using E_Library.Services.Contracts;
+using Microsoft.EntityFrameworkCore;
 
 namespace E_Library.Services
 {
@@ -13,14 +14,14 @@ namespace E_Library.Services
             this.data = data;
         }
 
-        public int GetBooksCount(string searchTerm, string selectedCategory)
+        public async Task<int> GetBooksCountAsync(string searchTerm, string selectedCategory)
         {
             int count = 0;
             if (!string.IsNullOrWhiteSpace(searchTerm) && !string.IsNullOrWhiteSpace(selectedCategory))
             {
-                return this.data.Books
+                return await this.data.Books
                     .Where(b => b.Title.ToLower().Contains(searchTerm.ToLower()) && b.Category.Name.ToLower() == selectedCategory.ToLower())
-                    .Count();
+                    .CountAsync();
             }
             if (!string.IsNullOrWhiteSpace(selectedCategory))
             {
@@ -29,60 +30,60 @@ namespace E_Library.Services
             }
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                count += this.data.Books
+                count += await this.data.Books
                         .Where(b => b.Title.ToLower().Contains(searchTerm.ToLower()))
-                        .Count();
+                        .CountAsync();
             }
             if (!string.IsNullOrWhiteSpace(searchTerm) || !string.IsNullOrWhiteSpace(selectedCategory))
             {
                 return count;
             }
-            return this.data.Books.Count();
+            return await this.data.Books.CountAsync();
         }
 
-        public IEnumerable<CategoryServiceModel> GetBookCategories()
+        public async Task<IEnumerable<CategoryServiceModel>> GetBookCategoriesAsync()
         {
-            return this.data
+            return await this.data
                 .Categories
                 .Select(c => new CategoryServiceModel
                 {
                     Id = c.Id,
                     Name = c.Name,
                 })
-                .ToList();
+                .ToListAsync();
         }
 
-        public void Create(string title, string description, decimal price, string imageUrl, int release, string author, string publisher, int categoryId)
+        public async Task CreateAsync(string title, string description, decimal price, string imageUrl, int release, string author, string publisher, int categoryId)
         {
             if (IsValid(title, description, price, imageUrl, release, author, publisher, categoryId))
             {
                 Author authorToAdd = null;
-                if (!this.data.Authors.Any(a => a.Name == author))
+                if (!await this.data.Authors.AnyAsync(a => a.Name == author))
                 {
                     authorToAdd = new Author
                     {
                         Name = author,
                     };
                     this.data.Authors.Add(authorToAdd);
-                    this.data.SaveChanges();
+                    await this.data.SaveChangesAsync();
                 }
-                authorToAdd = this.data.Authors
+                authorToAdd = await this.data.Authors
                     .Where(a => a.Name == author)
-                    .FirstOrDefault();
+                    .FirstOrDefaultAsync();
 
                 Publisher publisherToAdd = null;
-                if (!this.data.Publishers.Any(a => a.Name == publisher))
+                if (!await this.data.Publishers.AnyAsync(a => a.Name == publisher))
                 {
                     publisherToAdd = new Publisher
                     {
                         Name = publisher
                     };
                     this.data.Publishers.Add(publisherToAdd);
-                    this.data.SaveChanges();
+                    await this.data.SaveChangesAsync();
                 }
-                publisherToAdd = this.data.Publishers
+                publisherToAdd = await this.data.Publishers
                     .Where(p => p.Name == publisher)
-                    .FirstOrDefault();
+                    .FirstOrDefaultAsync();
 
                 Book bookToAdd = new Book
                 {
@@ -99,12 +100,12 @@ namespace E_Library.Services
                 };
 
                 this.data.Books.Add(bookToAdd);
-                this.data.SaveChanges();
+                await this.data.SaveChangesAsync();
             }
         }
 
 
-        public IEnumerable<BookServiceModel> FindBooks(string searchTerm, string selectedCategory, int currentPage, int booksPerPage)
+        public async Task<IEnumerable<BookServiceModel>> FindBooksAsync(string searchTerm, string selectedCategory, int currentPage, int booksPerPage)
         {
             if (currentPage <= 0)
             {
@@ -116,7 +117,7 @@ namespace E_Library.Services
             }
             if (!string.IsNullOrWhiteSpace(selectedCategory) && !string.IsNullOrWhiteSpace(searchTerm))
             {
-                var books = this.data.Books
+                var books = await this.data.Books
                     .Where(b => b.Title.ToLower().Contains(searchTerm.ToLower()) && b.Category.Name.ToLower() == selectedCategory.ToLower())
                     .Skip((currentPage - 1) * booksPerPage)
                     .Take(booksPerPage)
@@ -131,14 +132,14 @@ namespace E_Library.Services
                         Author = b.Author.Name,
                         Category = b.Category.Name
                     })
-                    .ToList();
+                    .ToListAsync();
                 return books;
             }
             else if (!string.IsNullOrWhiteSpace(selectedCategory) || !string.IsNullOrWhiteSpace(searchTerm))
             {
                 var booksFromSelectedCategory = string.IsNullOrWhiteSpace(selectedCategory) ? null : FindBooksThatMatchCategory(selectedCategory)
                                                 .ToList();
-                var booksFromSearchTerm = string.IsNullOrWhiteSpace(searchTerm) ? null : this.data.Books
+                var booksFromSearchTerm = string.IsNullOrWhiteSpace(searchTerm) ? null : await this.data.Books
                         .Where(b => b.Title.ToLower().Contains(searchTerm.ToLower()))
                         .Skip((currentPage - 1) * booksPerPage)
                         .Take(booksPerPage)
@@ -153,13 +154,13 @@ namespace E_Library.Services
                             Author = b.Author.Name,
                             Category = b.Category.Name
                         })
-                        .ToList();
+                        .ToListAsync();
                 var result = booksFromSearchTerm ?? Enumerable.Empty<BookServiceModel>().Union(booksFromSelectedCategory ?? Enumerable.Empty<BookServiceModel>());
                 return result;
             }
             else
             {
-                return this.data.Books
+                return await this.data.Books
                     .Skip((currentPage - 1) * booksPerPage)
                     .Take(booksPerPage)
                     .Select(x => new BookServiceModel
@@ -173,13 +174,13 @@ namespace E_Library.Services
                         Author = x.Author.Name,
                         Category = x.Category.Name
                     })
-                    .ToList();
+                    .ToListAsync();
             }
         }
 
-        public BookServiceModel Details(string id)
+        public async Task<BookServiceModel> DetailsAsync(string id)
         {
-            return this.data.Books
+            return await this.data.Books
                 .Where(x => x.Id == id)
                 .Select(b => new BookServiceModel
                 {
@@ -197,23 +198,23 @@ namespace E_Library.Services
                     Publisher = b.Publisher.Name,
                     Category = b.Category.Name
                 })
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
         }
 
-        public void Edit(string id, string title, string description, decimal price, string imageUrl, int release, string author, string publisher, int categoryId)
+        public async Task EditAsync(string id, string title, string description, decimal price, string imageUrl, int release, string author, string publisher, int categoryId)
         {
-            Book book = this.data.Books.FirstOrDefault(b => b.Id == id);
+            Book book = await this.data.Books.FirstOrDefaultAsync(b => b.Id == id);
             if (book != null)
             {
 
-                Author authorToEdit = this.data.Authors.FirstOrDefault(a => a.Id == book.AuthorId);
-                Publisher publisherToEdit = this.data.Publishers.FirstOrDefault(p => p.Id == book.PublisherId);
+                Author authorToEdit = await this.data.Authors.FirstOrDefaultAsync(a => a.Id == book.AuthorId);
+                Publisher publisherToEdit = await this.data.Publishers.FirstOrDefaultAsync(p => p.Id == book.PublisherId);
                 if (authorToEdit != null && publisherToEdit != null)
                 {
 
                     if (authorToEdit.Name != author)
                     {
-                        authorToEdit = this.data.Authors.FirstOrDefault(a => a.Name == author);
+                        authorToEdit = await this.data.Authors.FirstOrDefaultAsync(a => a.Name == author);
                         if (authorToEdit == null)
                         {
                             authorToEdit = new Author
@@ -221,13 +222,13 @@ namespace E_Library.Services
                                 Name = author,
                             };
                             this.data.Authors.Add(authorToEdit);
-                            this.data.SaveChanges();
+                            await this.data.SaveChangesAsync();
                         }
                     }
 
                     if (publisherToEdit.Name != publisher)
                     {
-                        publisherToEdit = this.data.Publishers.FirstOrDefault(p => p.Name == publisher);
+                        publisherToEdit = await this.data.Publishers.FirstOrDefaultAsync(p => p.Name == publisher);
                         if (publisherToEdit == null)
                         {
                             publisherToEdit = new Publisher
@@ -235,7 +236,7 @@ namespace E_Library.Services
                                 Name = author
                             };
                             this.data.Publishers.Add(publisherToEdit);
-                            this.data.SaveChanges();
+                            await this.data.SaveChangesAsync();
                         }
                     }
 
@@ -250,17 +251,17 @@ namespace E_Library.Services
                     this.data.Books.Update(book);
                     this.data.Authors.Update(authorToEdit);
                     this.data.Publishers.Update(publisherToEdit);
-                    this.data.SaveChanges();
+                    await this.data.SaveChangesAsync();
                 }
             }
         }
-        public void Delete(string id)
+        public async Task DeleteAsync(string id)
         {
-            Book book = this.data.Books.FirstOrDefault(b => b.Id == id);
+            Book book = await this.data.Books.FirstOrDefaultAsync(b => b.Id == id);
             if (book != null)
             {
                 this.data.Books.Remove(book);
-                this.data.SaveChanges();
+                await this.data.SaveChangesAsync();
             }
         }
         private bool IsValid(string title, string description, decimal price, string imageUrl, int release, string author, string publisher, int categoryId)

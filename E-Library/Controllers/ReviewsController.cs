@@ -16,10 +16,11 @@ namespace E_Library.Controllers
         {
             this.reviewsService = reviewsService;
         }
-        public IActionResult All(string bookId)
+        public async Task<IActionResult> All(string bookId)
         {
-            var comments = this.reviewsService
-                .GetAllReviews(bookId)
+            var comments = await this.reviewsService
+                .GetAllReviewsAsync(bookId);
+            var res = comments
                 .Select(r => new CommentsViewModel
                 {
                     Id = r.Id,
@@ -30,7 +31,7 @@ namespace E_Library.Controllers
                 .ToList();
             var reviewModel = new ReviewViewModel
             {
-                Comments = comments,
+                Comments = res,
                 BookId = bookId
             };
             return View(reviewModel);
@@ -45,10 +46,10 @@ namespace E_Library.Controllers
         }
         [Authorize(Roles = UserConstants.UserRoleName)]
         [HttpPost]
-        public IActionResult AddReview(AddReviewFormModel reviewModel)
+        public async Task<IActionResult> AddReview(AddReviewFormModel reviewModel)
         {
             string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            this.reviewsService.AddReview(reviewModel.BookId, userId, reviewModel.Rating, reviewModel.Description);
+            await this.reviewsService.AddReviewAsync(reviewModel.BookId, userId, reviewModel.Rating, reviewModel.Description);
             this.TempData[GlobalMessageKey] = "Successfully added review to the book.";
             return RedirectToAction("All", "Reviews", new { bookId = reviewModel.BookId });
         }

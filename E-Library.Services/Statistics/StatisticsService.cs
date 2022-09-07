@@ -1,5 +1,6 @@
 ﻿using E_Library.Data;
 using E_Library.Services.Contracts;
+using Microsoft.EntityFrameworkCore;
 
 namespace E_Library.Services.Statistics
 {
@@ -10,13 +11,13 @@ namespace E_Library.Services.Statistics
         {
             this.data = data;
         }
-        public int GetTotalUsers()
+        public async Task<int> GetTotalUsersAsync()
         {
-            return this.data.Users.Count();
+            return await this.data.Users.CountAsync();
         }
-        public int GetTotalBooks()
+        public async Task<int> GetTotalBooksAsync()
         {
-            return this.data.Books.Count();
+            return await this.data.Books.CountAsync();
         }
     }
 }

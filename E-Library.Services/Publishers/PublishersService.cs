@@ -2,6 +2,7 @@
 using E_Library.Data.Models;
 using E_Library.Services.Contracts;
 using E_Library.Services.Publishers.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace E_Library.Services.Publishers
 {
@@ -12,10 +13,10 @@ namespace E_Library.Services.Publishers
         {
             this.data = data;
         }
-        public PublisherServiceModel Details(string publisherId)
+        public async Task<PublisherServiceModel> DetailsAsync(string publisherId)
         {
-            Publisher publisher = this.data.Publishers
-                .FirstOrDefault(p => p.Id == publisherId);
+            Publisher publisher = await this.data.Publishers
+                .FirstOrDefaultAsync(p => p.Id == publisherId);
 
             if (publisher == null)
             {
@@ -25,23 +26,23 @@ namespace E_Library.Services.Publishers
             var books = this.data.Books
                 .Where(p => p.PublisherId == publisherId);
 
-            var booksService = books
+            var booksService = await books
                 .Select(b => new PublisherBookServiceModel
                 {
                     Id = b.Id,
                     Title = b.Title,
                     ImageUrl = b.ImageUrl
                 })
-                .ToList();
+                .ToListAsync();
 
-            var authorsService = books
+            var authorsService = await books
                 .Select(b => new PublisherAuthorServiceModel
                 {
                     Id = b.AuthorId,
                     Name = b.Author.Name
                 })
                 .Distinct()
-                .ToList();
+                .ToListAsync();
 
             PublisherServiceModel model = new PublisherServiceModel
             {

@@ -2,6 +2,7 @@
 using E_Library.Services.Users;
 using E_Library.Test.Mocks;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace E_Library.Test.Services
@@ -9,7 +10,7 @@ namespace E_Library.Test.Services
     public class UsersServiceTests
     {
         [Fact]
-        public void GetAllUsersShouldReturnCorrectResultWhenThereAreUsersInTheDb()
+        public async Task GetAllUsersShouldReturnCorrectResultWhenThereAreUsersInTheDb()
         {
             var data = DbMock.Instance;
             var user = GetUser();
@@ -17,25 +18,26 @@ namespace E_Library.Test.Services
             data.SaveChanges();
             var usersService = new UsersService(data);
 
-            var result = usersService.GetAllUsers("").ToList();
+            var result = await usersService.GetAllUsersAsync("");
+            var res = result.ToList();
 
             Assert.NotEmpty(result);
-            Assert.Equal(result[0].Username, user.UserName);
+            Assert.Equal(res[0].Username, user.UserName);
         }
 
         [Fact]
-        public void GetAllUsersShouldReturnEmptyCollectionWhenNoUsersAreInTheDb()
+        public async Task GetAllUsersShouldReturnEmptyCollectionWhenNoUsersAreInTheDb()
         {
             var data = DbMock.Instance;
             var usersService = new UsersService(data);
 
-            var result = usersService.GetAllUsers("");
+            var result = await usersService.GetAllUsersAsync("");
 
             Assert.Empty(result);
         }
 
         [Fact]
-        public void DeleteUserWorksCorrectlyWhenGivenCorrectInput()
+        public async Task DeleteUserWorksCorrectlyWhenGivenCorrectInput()
         {
             var data = DbMock.Instance;
             var user = GetUser();
@@ -45,13 +47,13 @@ namespace E_Library.Test.Services
             Assert.Single(data.Users);
 
             var usersService = new UsersService(data);
-            usersService.DeleteUser(user.Id);
+            await usersService.DeleteUserAsync(user.Id);
 
             Assert.Empty(data.Users);
         }
 
         [Fact]
-        public void DeleteUserDoesNothingWhenGivenIncorrectInput()
+        public async Task DeleteUserDoesNothingWhenGivenIncorrectInput()
         {
             var data = DbMock.Instance;
             var user = GetUser();
@@ -59,7 +61,7 @@ namespace E_Library.Test.Services
             data.SaveChanges();
             var usersService = new UsersService(data);
 
-            usersService.DeleteUser("invalidUserId");
+            await usersService.DeleteUserAsync("invalidUserId");
 
             Assert.NotEmpty(data.Users);
         }

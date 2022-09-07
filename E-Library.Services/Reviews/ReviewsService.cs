@@ -2,6 +2,7 @@
 using E_Library.Data.Models;
 using E_Library.Services.Contracts;
 using E_Library.Services.Reviews.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace E_Library.Services.Reviews
 {
@@ -12,23 +13,23 @@ namespace E_Library.Services.Reviews
         {
             this.data = data;
         }
-        public void DeleteReview(string reviewId)
+        public async Task DeleteReviewAsync(string reviewId)
         {
-            Review review = this.data.Reviews.FirstOrDefault(r => r.Id == reviewId);
+            Review review = await this.data.Reviews.FirstOrDefaultAsync(r => r.Id == reviewId);
             if (review != null)
             {
-                User user = this.data.Users.FirstOrDefault(u => u.Id == review.UserId);
-                Book book = this.data.Books.FirstOrDefault(b => b.Id == review.BookId);
+                User user = await this.data.Users.FirstOrDefaultAsync(u => u.Id == review.UserId);
+                Book book = await this.data.Books.FirstOrDefaultAsync(b => b.Id == review.BookId);
                 user.Reviews.Remove(review);
                 book.Reviews.Remove(review);
                 this.data.Reviews.Remove(review);
-                this.data.SaveChanges();
+                await this.data.SaveChangesAsync();
             }
         }
-        public void AddReview(string bookId, string userId, int rating, string description)
+        public async Task AddReviewAsync(string bookId, string userId, int rating, string description)
         {
-            Book book = this.data.Books.FirstOrDefault(b => b.Id == bookId);
-            User user = this.data.Users.FirstOrDefault(u => u.Id == userId);
+            Book book = await this.data.Books.FirstOrDefaultAsync(b => b.Id == bookId);
+            User user = await this.data.Users.FirstOrDefaultAsync(u => u.Id == userId);
             if (book != null && user != null)
             {
                 Review review = new Review
@@ -42,12 +43,12 @@ namespace E_Library.Services.Reviews
                 };
                 book.Reviews.Add(review);
                 user.Reviews.Add(review);
-                this.data.SaveChanges();
+                await this.data.SaveChangesAsync();
             }
         }
-        public ICollection<ReviewServiceModel> GetAllReviews(string bookId)
+        public async Task<ICollection<ReviewServiceModel>> GetAllReviewsAsync(string bookId)
         {
-            return this.data.Reviews
+            return await this.data.Reviews
                 .Where(x => x.Book.Id == bookId)
                 .OrderByDescending(r => r.CreatedOn)
                 .Select(r => new ReviewServiceModel
@@ -57,7 +58,7 @@ namespace E_Library.Services.Reviews
                     Description = r.Description,
                     User = r.User.UserName,
                 })
-                .ToList();
+                .ToListAsync();
         }
     }
 }

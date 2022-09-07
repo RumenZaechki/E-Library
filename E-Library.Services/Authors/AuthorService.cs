@@ -2,6 +2,7 @@
 using E_Library.Data.Models;
 using E_Library.Services.Authors.Models;
 using E_Library.Services.Contracts;
+using Microsoft.EntityFrameworkCore;
 
 namespace E_Library.Services.Authors
 {
@@ -12,18 +13,18 @@ namespace E_Library.Services.Authors
         {
             this.data = data;
         }
-        public int GetAuthorsCount(string searchTerm)
+        public async Task<int> GetAuthorsCountAsync(string searchTerm)
         {
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                return this.data.Authors
+                return await this.data.Authors
                     .Where(a => a.Name.ToLower().Contains(searchTerm.ToLower()))
-                    .Count();
+                    .CountAsync();
             }
-            return this.data.Authors
-                .Count();
+            return await this.data.Authors
+                .CountAsync();
         }
-        public IEnumerable<AuthorServiceModel> GetAuthors(int currentPage, int authorsPerPage, string searchTerm)
+        public async Task<IEnumerable<AuthorServiceModel>> GetAuthorsAsync(int currentPage, int authorsPerPage, string searchTerm)
         {
             if (currentPage <= 0)
             {
@@ -35,7 +36,7 @@ namespace E_Library.Services.Authors
             }
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                return this.data.Authors
+                return await this.data.Authors
                     .Where(a => a.Name.ToLower().Contains(searchTerm.ToLower()))
                     .Skip((currentPage - 1) * authorsPerPage)
                     .Take(authorsPerPage)
@@ -46,9 +47,9 @@ namespace E_Library.Services.Authors
                         Description = a.Description,
                         ImageUrl = a.ImageUrl
                     })
-                    .ToList();
+                    .ToListAsync();
             }
-            return this.data.Authors
+            return await this.data.Authors
                 .Skip((currentPage - 1) * authorsPerPage)
                 .Take(authorsPerPage)
                 .Select(a => new AuthorServiceModel
@@ -58,11 +59,11 @@ namespace E_Library.Services.Authors
                     Description = a.Description,
                     ImageUrl = a.ImageUrl
                 })
-                .ToList();
+                .ToListAsync();
         }
-        public void Add(string name, string description, string imageUrl)
+        public async Task AddAsync(string name, string description, string imageUrl)
         {
-            if (!this.data.Authors.Any(a => a.Name == name) && IsValid(name, description, imageUrl))
+            if (!await this.data.Authors.AnyAsync(a => a.Name == name) && IsValid(name, description, imageUrl))
             {
                 var author = new Author
                 {
@@ -71,27 +72,27 @@ namespace E_Library.Services.Authors
                     ImageUrl = imageUrl
                 };
                 this.data.Authors.Add(author);
-                this.data.SaveChanges();
+                await this.data.SaveChangesAsync();
             }
         }
-        public AuthorServiceModel GetAuthor(string id)
+        public async Task<AuthorServiceModel> GetAuthorAsync(string id)
         {
-            Author author = this.data.Authors
-                .FirstOrDefault(a => a.Id == id);
+            Author author = await this.data.Authors
+                .FirstOrDefaultAsync(a => a.Id == id);
 
             if (author == null)
             {
                 return null;
             }
 
-            var books = this.data.Books
+            var books = await this.data.Books
                 .Where(a => a.AuthorId == id)
                 .Select(b => new AuthorBookServiceModel
                 {
                     Id = b.Id,
                     Title = b.Title
                 })
-                .ToList();
+                .ToListAsync();
 
             return new AuthorServiceModel
             {
@@ -103,17 +104,17 @@ namespace E_Library.Services.Authors
             };
         }
 
-        public void Edit(string id, string name, string description, string imageUrl)
+        public async Task EditAsync(string id, string name, string description, string imageUrl)
         {
-            var author = this.data.Authors.FirstOrDefault(a => a.Id == id);
+            var author = await this.data.Authors.FirstOrDefaultAsync(a => a.Id == id);
             if (author != null && IsValid(name, description, imageUrl))
             {
                 author.Name = name;
                 author.Description = description;
                 author.ImageUrl = imageUrl;
-                author.Books = this.data.Books.Where(b => b.AuthorId == id).ToList();
+                author.Books = await this.data.Books.Where(b => b.AuthorId == id).ToListAsync();
                 this.data.Authors.Update(author);
-                this.data.SaveChanges();
+                await this.data.SaveChangesAsync();
             }
         }
 

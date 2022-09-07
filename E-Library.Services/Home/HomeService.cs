@@ -1,6 +1,7 @@
 ﻿using E_Library.Data;
 using E_Library.Services.Books.Models;
 using E_Library.Services.Contracts;
+using Microsoft.EntityFrameworkCore;
 
 namespace E_Library.Services.Home
 {
@@ -11,9 +12,9 @@ namespace E_Library.Services.Home
         {
             this.data = data;
         }
-        public List<BookServiceModel> GetRecentBooks()
+        public async Task<List<BookServiceModel>> GetRecentBooksAsync()
         {
-            return this.data.Books
+            return await this.data.Books
                 .OrderByDescending(x => x.CreatedOn)
                 .Take(3)
                 .Select(x => new BookServiceModel
@@ -26,7 +27,7 @@ namespace E_Library.Services.Home
                     Release = x.Release,
                     Author = x.Author.Name,
                 }).
-                ToList();
+                ToListAsync();
         }
     }
 }

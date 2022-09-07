@@ -5,6 +5,7 @@ using E_Library.Services.Contracts;
 using E_Library.Test.Mocks;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace E_Library.Test.Services
@@ -12,7 +13,7 @@ namespace E_Library.Test.Services
     public class AuthorServiceTests
     {
         [Fact]
-        public void EditWorksCorrectlyWhenGivenCorrectInput()
+        public async Task EditWorksCorrectlyWhenGivenCorrectInput()
         {
             var data = DbMock.Instance;
             var author = new Author
@@ -31,8 +32,8 @@ namespace E_Library.Test.Services
             data.SaveChanges();
             IAuthorService authorService = new AuthorService(data);
 
-            authorService.Edit(author.Id, "Random Dude", "Another random description", "When I said that I can't be bothered, I meant that I can't be bothered, ok?");
-            var actual = authorService.GetAuthor(author.Id);
+            await authorService.EditAsync(author.Id, "Random Dude", "Another random description", "When I said that I can't be bothered, I meant that I can't be bothered, ok?");
+            var actual = await authorService.GetAuthorAsync(author.Id);
 
             Assert.Equal(expected.Name, actual.Name);
             Assert.Equal(expected.Description, actual.Description);
@@ -40,7 +41,7 @@ namespace E_Library.Test.Services
         }
 
         [Fact]
-        public void EditShouldDoNothingWhenGivenIncorrectInput()
+        public async Task EditShouldDoNothingWhenGivenIncorrectInput()
         {
             var data = DbMock.Instance;
             var expected = new Author
@@ -53,8 +54,8 @@ namespace E_Library.Test.Services
             data.SaveChanges();
             IAuthorService authorService = new AuthorService(data);
 
-            authorService.Edit("invalidId", "", "", "");
-            var actual = authorService.GetAuthor(expected.Id);
+            await authorService.EditAsync("invalidId", "", "", "");
+            var actual = await authorService.GetAuthorAsync(expected.Id);
 
             Assert.Equal(expected.Name, actual.Name);
             Assert.Equal(expected.Description, actual.Description);
@@ -62,7 +63,7 @@ namespace E_Library.Test.Services
         }
 
         [Fact]
-        public void GetAuthorsShouldReturnCorrectResultWhenGivenCorrectInputAndSearchTerm()
+        public async Task GetAuthorsShouldReturnCorrectResultWhenGivenCorrectInputAndSearchTerm()
         {
             var data = DbMock.Instance;
             data.Authors.AddRange(GetAuthors());
@@ -78,17 +79,18 @@ namespace E_Library.Test.Services
                 }
             };
 
-            var actual = authorService
-                    .GetAuthors(-1, -2, "hE")
+            var actual = await authorService
+                    .GetAuthorsAsync(-1, -2, "hE");
+            var res = actual
                     .OrderByDescending(a => a.Name)
                     .ToList();
 
             Assert.Equal(2, data.Authors.Count());
-            Assert.Equal(expected[0].Name, actual[0].Name);
+            Assert.Equal(expected[0].Name, res[0].Name);
         }
 
         [Fact]
-        public void GetAuthorsShouldReturnCorrectResultWhenGivenIncorrectInputAndNoSearchTerm()
+        public async Task GetAuthorsShouldReturnCorrectResultWhenGivenIncorrectInputAndNoSearchTerm()
         {
             var data = DbMock.Instance;
             data.Authors.AddRange(GetAuthors());
@@ -110,49 +112,50 @@ namespace E_Library.Test.Services
                 }
             };
 
-            var actual = authorService
-                    .GetAuthors(-1, -2, "")
+            var actual = await authorService
+                    .GetAuthorsAsync(-1, -2, "");
+            var res = actual
                     .OrderByDescending(a => a.Name)
                     .ToList();
 
             Assert.Equal(2, data.Authors.Count());
-            Assert.Equal(expected[0].Name, actual[0].Name);
-            Assert.Equal(expected[1].Name, actual[1].Name);
+            Assert.Equal(expected[0].Name, res[0].Name);
+            Assert.Equal(expected[1].Name, res[1].Name);
         }
 
         [Fact]
-        public void GetAuthorsCountShouldReturnCorrectResultWhenGivenASearchTerm()
+        public async Task GetAuthorsCountShouldReturnCorrectResultWhenGivenASearchTerm()
         {
             var data = DbMock.Instance;
             data.Authors.AddRange(GetAuthors());
             data.SaveChanges();
             IAuthorService authorService = new AuthorService(data);
 
-            var result = authorService.GetAuthorsCount("Herman");
+            var result = await authorService.GetAuthorsCountAsync("Herman");
 
             Assert.Equal(1, result);
         }
 
         [Fact]
-        public void GetAuthorsCountShouldReturnCorrectResultWhenGivenNoSearchTerm()
+        public async Task GetAuthorsCountShouldReturnCorrectResultWhenGivenNoSearchTerm()
         {
             var data = DbMock.Instance;
             data.Authors.AddRange(GetAuthors());
             data.SaveChanges();
             IAuthorService authorService = new AuthorService(data);
 
-            var result = authorService.GetAuthorsCount("");
+            var result = await authorService.GetAuthorsCountAsync("");
 
             Assert.Equal(2, result);
         }
 
         [Fact]
-        public void AddWorksCorrectlyWhenGivenCorrectInput()
+        public async Task AddWorksCorrectlyWhenGivenCorrectInput()
         {
             var data = DbMock.Instance;
             IAuthorService authorService = new AuthorService(data);
 
-            authorService.Add("Herman Melville", "random description idk", "nonexistent sorry can't be bothered right now");
+            await authorService.AddAsync("Herman Melville", "random description idk", "nonexistent sorry can't be bothered right now");
             var result = data.Authors.FirstOrDefault();
 
             Assert.NotEmpty(data.Authors);
@@ -161,38 +164,38 @@ namespace E_Library.Test.Services
         }
 
         [Fact]
-        public void AddShouldDoNothingWhenAuthorAlreadyExists()
+        public async Task AddShouldDoNothingWhenAuthorAlreadyExists()
         {
             var data = DbMock.Instance;
             data.Authors.AddRange(GetAuthors());
             data.SaveChanges();
             IAuthorService authorService = new AuthorService(data);
 
-            authorService.Add("Herman Melville", "random description idk", "nonexistent sorry can't be bothered right now");
+            await authorService.AddAsync("Herman Melville", "random description idk", "nonexistent sorry can't be bothered right now");
 
             Assert.Equal(2, data.Authors.Count());
             Assert.Equal(1, data.Authors.Where(a => a.Name == "Herman Melville").Count());
         }
 
         [Fact]
-        public void AddShouldDoNothingWhenGivenIncorrectInput()
+        public async Task AddShouldDoNothingWhenGivenIncorrectInput()
         {
             var data = DbMock.Instance;
             IAuthorService authorService = new AuthorService(data);
 
-            authorService.Add("", "", "");
+            await authorService.AddAsync("", "", "");
 
             Assert.Empty(data.Authors);
         }
 
         [Fact]
-        public void GetAuthorShouldReturnCorrectAuthorWhenGivenCorrectInput()
+        public async Task GetAuthorShouldReturnCorrectAuthorWhenGivenCorrectInput()
         {
             var data = DbMock.Instance;
             data.Authors.AddRange(GetAuthors());
             data.SaveChanges();
             IAuthorService authorService = new AuthorService(data);
-            var actual = authorService.GetAuthor("1");
+            var actual = await authorService.GetAuthorAsync("1");
             var expected = new AuthorServiceModel
             {
                 Name = "Herman Melville",
@@ -206,14 +209,14 @@ namespace E_Library.Test.Services
         }
 
         [Fact]
-        public void GetAuthorShouldReturnNullIfGivenInvalidInput()
+        public async Task GetAuthorShouldReturnNullIfGivenInvalidInput()
         {
             var data = DbMock.Instance;
             data.Authors.AddRange(GetAuthors());
             data.SaveChanges();
             IAuthorService authorService = new AuthorService(data);
 
-            var actual = authorService.GetAuthor("invalid");
+            var actual = await authorService.GetAuthorAsync("invalid");
 
             Assert.Null(actual);
         }

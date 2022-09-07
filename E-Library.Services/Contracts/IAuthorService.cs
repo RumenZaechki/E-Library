@@ -4,10 +4,10 @@ namespace E_Library.Services.Contracts
 {
     public interface IAuthorService
     {
-        public int GetAuthorsCount(string searchTerm);
-        public IEnumerable<AuthorServiceModel> GetAuthors(int currentPage, int authorsPerPage, string searchTerm);
-        public void Add(string name, string description, string imageUrl);
-        public AuthorServiceModel GetAuthor(string id);
-        public void Edit(string id, string name, string description, string imageUrl);
+        public Task<int> GetAuthorsCountAsync(string searchTerm);
+        public Task<IEnumerable<AuthorServiceModel>> GetAuthorsAsync(int currentPage, int authorsPerPage, string searchTerm);
+        public Task AddAsync(string name, string description, string imageUrl);
+        public Task<AuthorServiceModel> GetAuthorAsync(string id);
+        public Task EditAsync(string id, string name, string description, string imageUrl);
     }
 }

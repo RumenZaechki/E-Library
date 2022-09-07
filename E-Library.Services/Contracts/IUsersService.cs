@@ -4,7 +4,7 @@ namespace E_Library.Services.Contracts
 {
     public interface IUsersService
     {
-        public IEnumerable<UserServiceModel> GetAllUsers(string adminId);
-        public void DeleteUser(string userId);
+        public Task<IEnumerable<UserServiceModel>> GetAllUsersAsync(string adminId);
+        public Task DeleteUserAsync(string userId);
     }
 }

@@ -6,6 +6,7 @@ using E_Library.Test.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace E_Library.Test.Services
@@ -13,14 +14,14 @@ namespace E_Library.Test.Services
     public class HomeServiceTests
     {
         [Fact]
-        public void GetBooksShouldReturnTheThreeBooksAddedAtTheLatest()
+        public async Task GetBooksShouldReturnTheThreeBooksAddedAtTheLatest()
         {
             var data = DbMock.Instance;
             data.Books.AddRange(GetBooks());
             data.SaveChanges();
             IHomeService homeService = new HomeService(data);
 
-            var actual = homeService.GetRecentBooks();
+            var actual = await homeService.GetRecentBooksAsync();
             var expected = GetModels();
 
             Assert.NotNull(actual);
@@ -32,12 +33,12 @@ namespace E_Library.Test.Services
         }
 
         [Fact]
-        public void GetBooksShouldReturnEmptyListWhenDbIsEmpty()
+        public async Task GetBooksShouldReturnEmptyListWhenDbIsEmpty()
         {
             var data = DbMock.Instance;
             IHomeService homeService = new HomeService(data);
 
-            var actual = homeService.GetRecentBooks();
+            var actual = await homeService.GetRecentBooksAsync();
 
             Assert.Empty(actual);
         }

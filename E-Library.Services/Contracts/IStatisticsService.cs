@@ -3,7 +3,7 @@ namespace E_Library.Services.Contracts
 {
     public interface IStatisticsService
     {
-        public int GetTotalUsers();
-        public int GetTotalBooks();
+        public Task<int> GetTotalUsersAsync();
+        public Task<int> GetTotalBooksAsync();
     }
 }

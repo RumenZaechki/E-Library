@@ -4,12 +4,12 @@ namespace E_Library.Services.Contracts
 {
     public interface IBookService
     {
-        public int GetBooksCount(string searchTerm, string selectedCategory);
-        public IEnumerable<CategoryServiceModel> GetBookCategories();
-        public void Create(string title, string description, decimal price, string imageUrl, int release, string author, string publisher, int categoryId);
-        public IEnumerable<BookServiceModel> FindBooks(string searchTerm, string selectedCategory, int currentPage, int booksPerPage);
-        public BookServiceModel Details(string id);
-        public void Edit(string id, string title, string description, decimal price, string imageUrl, int release, string author, string publisher, int categoryId);
-        public void Delete(string id);
+        public Task<int> GetBooksCountAsync(string searchTerm, string selectedCategory);
+        public Task<IEnumerable<CategoryServiceModel>> GetBookCategoriesAsync();
+        public Task CreateAsync(string title, string description, decimal price, string imageUrl, int release, string author, string publisher, int categoryId);
+        public Task<IEnumerable<BookServiceModel>> FindBooksAsync(string searchTerm, string selectedCategory, int currentPage, int booksPerPage);
+        public Task<BookServiceModel> DetailsAsync(string id);
+        public Task EditAsync(string id, string title, string description, decimal price, string imageUrl, int release, string author, string publisher, int categoryId);
+        public Task DeleteAsync(string id);
     }
 }

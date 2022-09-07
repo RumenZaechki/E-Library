@@ -14,35 +14,36 @@ namespace E_Library.Areas.Admin.Controllers
         {
             this.bookService = bookService;
         }
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             return View(new BookFormModel
             {
-                Categories = GetCategories()
+                Categories = await GetCategories()
             });
         }
 
         [Authorize]
         [HttpPost]
-        public IActionResult Create(BookFormModel book)
+        public async Task<IActionResult> Create(BookFormModel book)
         {
             if (!ModelState.IsValid)
             {
-                book.Categories = GetCategories();
+                book.Categories = await GetCategories();
                 return View(book);
             }
-            bookService.Create(book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author, book.Publisher, book.CategoryId);
+            await bookService.CreateAsync(book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author, book.Publisher, book.CategoryId);
             this.TempData[GlobalMessageKey] = "Successfully created book.";
             return RedirectToAction("Index", "Home", new {area = ""});
         }
         [Authorize]
-        public IActionResult Edit(string id)
+        public async Task<IActionResult> Edit(string id)
         {
-            var book = this.bookService.Details(id);
+            var book = await this.bookService.DetailsAsync(id);
             if (book == null)
             {
                 return NotFound();
             }
+            var categories = await this.bookService.GetBookCategoriesAsync();
             return View(new BookFormModel
             {
                 Title = book.Title,
@@ -52,8 +53,7 @@ namespace E_Library.Areas.Admin.Controllers
                 Release = book.Release,
                 Author = book.Author,
                 Publisher = book.Publisher,
-                Categories = this.bookService
-                    .GetBookCategories()
+                Categories = categories
                     .Select(b => new BookCategoryViewModel
                     {
                         Id = b.Id,
@@ -64,28 +64,28 @@ namespace E_Library.Areas.Admin.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult Edit(string id, BookFormModel book)
+        public async Task<IActionResult> Edit(string id, BookFormModel book)
         {
             if (!ModelState.IsValid)
             {
-                book.Categories = GetCategories();
+                book.Categories = await GetCategories();
                 return View(book);
             }
-            this.bookService.Edit(id, book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author, book.Publisher, book.CategoryId);
+            await this.bookService.EditAsync(id, book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author, book.Publisher, book.CategoryId);
             this.TempData[GlobalMessageKey] = "Successfully edited book.";
             return RedirectToAction("All", "Books", new {area = ""});
         }
 
         [Authorize]
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            this.bookService.Delete(id);
+            await this.bookService.DeleteAsync(id);
             this.TempData[GlobalMessageKey] = "Successfully removed book.";
             return RedirectToAction("All", "Books", new { area = "" });
         }
-        private IEnumerable<BookCategoryViewModel> GetCategories()
+        private async Task<IEnumerable<BookCategoryViewModel>> GetCategories()
         {
-            var categoriesObj = this.bookService.GetBookCategories();
+            var categoriesObj = await this.bookService.GetBookCategoriesAsync();
             return categoriesObj.Select(c => new BookCategoryViewModel
             {
                 Id = c.Id,

@@ -6,6 +6,7 @@ using E_Library.Test.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace E_Library.Test.Services
@@ -13,7 +14,7 @@ namespace E_Library.Test.Services
     public class ReviewsServiceTests
     {
         [Fact]
-        public void DeleteReviewWorksCorrectlyWhenGivenCorrectInput()
+        public async Task DeleteReviewWorksCorrectlyWhenGivenCorrectInput()
         {
             var data = DbMock.Instance;
             var user = GetUser();
@@ -26,13 +27,13 @@ namespace E_Library.Test.Services
             int secondRating = 2;
             string secondDescription = "Actually, no, it's utter garbage.";
             IReviewsService reviewsService = new ReviewsService(data);
-            reviewsService.AddReview(book.Id, user.Id, firstRating, firstDescription);
-            reviewsService.AddReview(book.Id, user.Id, secondRating, secondDescription);
+            await reviewsService.AddReviewAsync(book.Id, user.Id, firstRating, firstDescription);
+            await reviewsService.AddReviewAsync(book.Id, user.Id, secondRating, secondDescription);
             var firstReviewId = data.Reviews
                 .FirstOrDefault(r => r.UserId == user.Id && r.Description == firstDescription) 
                 .Id;
 
-            reviewsService.DeleteReview(firstReviewId);
+            await reviewsService.DeleteReviewAsync(firstReviewId);
             var actual = book.Reviews.FirstOrDefault();
 
             Assert.Equal(1, book.Reviews.Count);
@@ -42,7 +43,7 @@ namespace E_Library.Test.Services
         }
 
         [Fact]
-        public void DeleteReviewShouldDoNothingWhenGivenIncorrectInput()
+        public async Task DeleteReviewShouldDoNothingWhenGivenIncorrectInput()
         {
             var data = DbMock.Instance;
             var user = GetUser();
@@ -55,17 +56,17 @@ namespace E_Library.Test.Services
             int secondRating = 2;
             string secondDescription = "Actually, no, it's utter garbage.";
             IReviewsService reviewsService = new ReviewsService(data);
-            reviewsService.AddReview(book.Id, user.Id, firstRating, firstDescription);
-            reviewsService.AddReview(book.Id, user.Id, secondRating, secondDescription);
+            await reviewsService.AddReviewAsync(book.Id, user.Id, firstRating, firstDescription);
+            await reviewsService.AddReviewAsync(book.Id, user.Id, secondRating, secondDescription);
 
-            reviewsService.DeleteReview("incorrectId");
+            await reviewsService.DeleteReviewAsync("incorrectId");
 
             Assert.Equal(2, book.Reviews.Count);
             Assert.Equal(2, user.Reviews.Count);
         }
 
         [Fact]
-        public void GetAllReviewsShouldReturnCorrectResultWhenGivenCorrectInput()
+        public async Task GetAllReviewsShouldReturnCorrectResultWhenGivenCorrectInput()
         {
             var data = DbMock.Instance;
             var user = GetUser();
@@ -78,8 +79,8 @@ namespace E_Library.Test.Services
             int secondRating = 2;
             string secondDescription = "Actually, no, it's utter garbage.";
             IReviewsService reviewsService = new ReviewsService(data);
-            reviewsService.AddReview(book.Id, user.Id, firstRating, firstDescription);
-            reviewsService.AddReview(book.Id, user.Id, secondRating, secondDescription);
+            await reviewsService.AddReviewAsync(book.Id, user.Id, firstRating, firstDescription);
+            await reviewsService.AddReviewAsync(book.Id, user.Id, secondRating, secondDescription);
 
             var expected = new List<ReviewServiceModel>
             {
@@ -94,15 +95,16 @@ namespace E_Library.Test.Services
                     Description = firstDescription
                 }
             };
-            var actual = reviewsService.GetAllReviews(book.Id).ToList();
-            Assert.Equal(expected[0].Rating, actual[0].Rating);
-            Assert.Equal(expected[0].Description, actual[0].Description);
-            Assert.Equal(expected[1].Rating, actual[1].Rating);
-            Assert.Equal(expected[1].Description, actual[1].Description);
+            var actual = await reviewsService.GetAllReviewsAsync(book.Id);
+            var res = actual.ToList();
+            Assert.Equal(expected[0].Rating, res[0].Rating);
+            Assert.Equal(expected[0].Description, res[0].Description);
+            Assert.Equal(expected[1].Rating, res[1].Rating);
+            Assert.Equal(expected[1].Description, res[1].Description);
         }
 
         [Fact]
-        public void GetAllReviewsShouldReturnNullWhenGivenIncorrectInput()
+        public async Task GetAllReviewsShouldReturnNullWhenGivenIncorrectInput()
         {
             var data = DbMock.Instance;
             var user = GetUser();
@@ -115,15 +117,16 @@ namespace E_Library.Test.Services
             int secondRating = 2;
             string secondDescription = "Actually, no, it's utter garbage.";
             IReviewsService reviewsService = new ReviewsService(data);
-            reviewsService.AddReview(book.Id, user.Id, firstRating, firstDescription);
-            reviewsService.AddReview(book.Id, user.Id, secondRating, secondDescription);
+            await reviewsService.AddReviewAsync(book.Id, user.Id, firstRating, firstDescription);
+            await reviewsService.AddReviewAsync(book.Id, user.Id, secondRating, secondDescription);
 
-            var result = reviewsService.GetAllReviews("incorrectId").ToList();
-            Assert.Empty(result);
+            var result = await reviewsService.GetAllReviewsAsync("incorrectId");
+            var res = result.ToList();
+            Assert.Empty(res);
         }
 
         [Fact]
-        public void AddReviewWorksCorrectlyWhenGivenCorrectInput()
+        public async Task AddReviewWorksCorrectlyWhenGivenCorrectInput()
         {
             var data = DbMock.Instance;
             var user = GetUser();
@@ -135,14 +138,14 @@ namespace E_Library.Test.Services
             string description = "Good enough, I guess";
             IReviewsService reviewsService = new ReviewsService(data);
 
-            reviewsService.AddReview(book.Id, user.Id, rating, description);
+            await reviewsService.AddReviewAsync(book.Id, user.Id, rating, description);
 
             Assert.Equal(1, book.Reviews.Count);
             Assert.Equal(1, user.Reviews.Count);
         }
 
         [Fact]
-        public void AddReviewShouldDoNothingWhenGivenIncorrectInput()
+        public async Task AddReviewShouldDoNothingWhenGivenIncorrectInput()
         {
             var data = DbMock.Instance;
             var user = GetUser();
@@ -154,7 +157,7 @@ namespace E_Library.Test.Services
             string description = "Good enough, I guess";
             IReviewsService reviewsService = new ReviewsService(data);
 
-            reviewsService.AddReview("incorrectId", "anotherIncorrectId", rating, description);
+            await reviewsService.AddReviewAsync("incorrectId", "anotherIncorrectId", rating, description);
 
             Assert.Equal(0, book.Reviews.Count);
             Assert.Equal(0, user.Reviews.Count);

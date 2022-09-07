@@ -3,6 +3,7 @@ using E_Library.Data.Models;
 using E_Library.Services.Contracts;
 using E_Library.Services.Publishers;
 using E_Library.Test.Mocks;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace E_Library.Test.Services
@@ -10,43 +11,43 @@ namespace E_Library.Test.Services
     public class PublishersServiceTests
     {
         [Fact]
-        public void DetailsShouldReturnCorrectPublisherWhenDbIsNotEmpty()
+        public async Task DetailsShouldReturnCorrectPublisherWhenDbIsNotEmpty()
         {
             var data = DbMock.Instance;
             AddPublishersToData(data);
             IPublishersService publishersService = new PublishersService(data);
 
-            var actual = publishersService.Details("1");
+            var actual = await publishersService.DetailsAsync("1");
 
             Assert.NotNull(actual);
             Assert.Equal("RandomDude", actual.Name);
         }
 
         [Fact]
-        public void DetailsShouldReturnNullWhenDbIsEmpty()
+        public async Task DetailsShouldReturnNullWhenDbIsEmpty()
         {
             var data = DbMock.Instance;
             IPublishersService publishersService = new PublishersService(data);
 
-            var actual = publishersService.Details("1");
+            var actual = await publishersService.DetailsAsync("1");
 
             Assert.Null(actual);
         }
 
         [Fact]
-        public void DetailsShouldReturnNullWhenGivenWrongInput()
+        public async Task DetailsShouldReturnNullWhenGivenWrongInput()
         {
             var data = DbMock.Instance;
             AddPublishersToData(data);
             IPublishersService publishersService = new PublishersService(data);
 
-            var actual = publishersService.Details("125362342");
+            var actual = await publishersService.DetailsAsync("125362342");
 
             Assert.Null(actual);
         }
-        public void AddPublishersToData(LibraryDbContext data)
+        public async Task AddPublishersToData(LibraryDbContext data)
         {
-            data.Publishers.AddRange(new[]
+            await data.Publishers.AddRangeAsync(new[]
             {
                 new Publisher
                 {
@@ -59,7 +60,7 @@ namespace E_Library.Test.Services
                     Name = "AnotherRandomDude"
                 }
             });
-            data.SaveChanges();
+            await data.SaveChangesAsync();
         }
     }
 }

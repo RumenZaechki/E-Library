@@ -6,6 +6,7 @@ using E_Library.Test.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace E_Library.Test.Services
@@ -13,7 +14,7 @@ namespace E_Library.Test.Services
     public class BookServiceTests
     {
         [Fact]
-        public void FindBooksReturnsOneBookWhenGivenOnlySearchTerm()
+        public async Task FindBooksReturnsOneBookWhenGivenOnlySearchTerm()
         {
             var data = DbMock.Instance;
             CategorySeeder.SeedCategories(data);
@@ -22,16 +23,17 @@ namespace E_Library.Test.Services
             BookSeeder.SeedBooks(data);
             var booksService = new BookService(data);
 
-            var result = booksService.FindBooks("lord", "", 1, 3).ToList();
+            var result = await booksService.FindBooksAsync("lord", "", 1, 3);
+            var actual = result.ToList();
 
-            Assert.NotNull(result);
-            Assert.NotEmpty(result);
-            Assert.Equal(1, result.Count());
-            Assert.Equal("Lord Of The Rings", result[0].Title);
+            Assert.NotNull(actual);
+            Assert.NotEmpty(actual);
+            Assert.Equal(1, actual.Count());
+            Assert.Equal("Lord Of The Rings", actual[0].Title);
         }
 
         [Fact]
-        public void FindBooksReturnsTwoBooksWhenGivenOnlyCategory()
+        public async Task FindBooksReturnsTwoBooksWhenGivenOnlyCategory()
         {
             var data = DbMock.Instance;
             CategorySeeder.SeedCategories(data);
@@ -40,17 +42,18 @@ namespace E_Library.Test.Services
             BookSeeder.SeedBooks(data);
             var booksService = new BookService(data);
 
-            var result = booksService.FindBooks("", "Fantasy and science fiction", 1, 3).ToList();
+            var result = await booksService.FindBooksAsync("", "Fantasy and science fiction", 1, 3);
+            var res = result.ToList();
 
-            Assert.NotNull(result);
-            Assert.NotEmpty(result);
-            Assert.Equal(2, result.Count());
-            Assert.Equal("The Hitchhiker's Guide to the Galaxy", result[0].Title);
-            Assert.Equal("Lord Of The Rings", result[1].Title);
+            Assert.NotNull(res);
+            Assert.NotEmpty(res);
+            Assert.Equal(2, res.Count());
+            Assert.Equal("The Hitchhiker's Guide to the Galaxy", res[0].Title);
+            Assert.Equal("Lord Of The Rings", res[1].Title);
         }
 
         [Fact]
-        public void FindBooksReturnsOneBookWhenGivenCorrectInput()
+        public async Task FindBooksReturnsOneBookWhenGivenCorrectInput()
         {
             var data = DbMock.Instance;
             CategorySeeder.SeedCategories(data);
@@ -59,16 +62,17 @@ namespace E_Library.Test.Services
             BookSeeder.SeedBooks(data);
             var booksService = new BookService(data);
 
-            var result = booksService.FindBooks("lord", "Fantasy and science fiction", 1, 3).ToList();
+            var result = await booksService.FindBooksAsync("lord", "Fantasy and science fiction", 1, 3);
+            var res = result.ToList();
 
-            Assert.NotNull(result);
-            Assert.NotEmpty(result);
-            Assert.Equal(1, result.Count());
-            Assert.Equal("Lord Of The Rings", result[0].Title);
+            Assert.NotNull(res);
+            Assert.NotEmpty(res);
+            Assert.Equal(1, res.Count());
+            Assert.Equal("Lord Of The Rings", res[0].Title);
         }
 
         [Fact]
-        public void FindBooksReturnsAllBooksWhenGivenIncorrectInput()
+        public async Task FindBooksReturnsAllBooksWhenGivenIncorrectInput()
         {
             var data = DbMock.Instance;
             CategorySeeder.SeedCategories(data);
@@ -77,7 +81,7 @@ namespace E_Library.Test.Services
             BookSeeder.SeedBooks(data);
             var booksService = new BookService(data);
 
-            var result = booksService.FindBooks("", "", 0, 0);
+            var result = await booksService.FindBooksAsync("", "", 0, 0);
 
             Assert.NotNull(result);
             Assert.NotEmpty(result);
@@ -85,7 +89,7 @@ namespace E_Library.Test.Services
         }
 
         [Fact]
-        public void EditWorksCorrectlyWhenGivenCorrectInput()
+        public async Task EditWorksCorrectlyWhenGivenCorrectInput()
         {
             var data = DbMock.Instance;
             CategorySeeder.SeedCategories(data);
@@ -96,7 +100,7 @@ namespace E_Library.Test.Services
             data.SaveChanges();
             var booksService = new BookService(data);
 
-            booksService.Edit(book.Id, book.Title, book.Description, 19m, book.ImageUrl, book.Release, book.Author.Name, book.Publisher.Name, book.CategoryId);
+            await booksService.EditAsync(book.Id, book.Title, book.Description, 19m, book.ImageUrl, book.Release, book.Author.Name, book.Publisher.Name, book.CategoryId);
             var result = data.Books.FirstOrDefault();
 
             Assert.Equal(book.Title, result.Title);
@@ -111,7 +115,7 @@ namespace E_Library.Test.Services
         }
 
         [Fact]
-        public void EditDoesNothingWhenGivenIncorrectPublisherInput()
+        public async Task EditDoesNothingWhenGivenIncorrectPublisherInput()
         {
             var data = DbMock.Instance;
             CategorySeeder.SeedCategories(data);
@@ -122,7 +126,7 @@ namespace E_Library.Test.Services
             data.SaveChanges();
             var booksService = new BookService(data);
 
-            booksService.Edit(book.Id, book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author.Name, "incorrectPublisher", book.CategoryId);
+            await booksService.EditAsync(book.Id, book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author.Name, "incorrectPublisher", book.CategoryId);
             var result = data.Books.FirstOrDefault();
 
             Assert.Equal(book.Title, result.Title);
@@ -137,7 +141,7 @@ namespace E_Library.Test.Services
         }
 
         [Fact]
-        public void EditDoesNothingWhenGivenIncorrectAuthorInput()
+        public async Task EditDoesNothingWhenGivenIncorrectAuthorInput()
         {
             var data = DbMock.Instance;
             CategorySeeder.SeedCategories(data);
@@ -148,7 +152,7 @@ namespace E_Library.Test.Services
             data.SaveChanges();
             var booksService = new BookService(data);
 
-            booksService.Edit(book.Id, book.Title, book.Description, book.Price, book.ImageUrl, book.Release, "incorrectAuthor", book.Publisher.Name, book.CategoryId);
+            await booksService.EditAsync(book.Id, book.Title, book.Description, book.Price, book.ImageUrl, book.Release, "incorrectAuthor", book.Publisher.Name, book.CategoryId);
             var result = data.Books.FirstOrDefault();
 
             Assert.Equal(book.Title, result.Title);
@@ -163,7 +167,7 @@ namespace E_Library.Test.Services
         }
 
         [Fact]
-        public void EditDoesNothingWhenGivenIncorrectInput()
+        public async Task EditDoesNothingWhenGivenIncorrectInput()
         {
             var data = DbMock.Instance;
             CategorySeeder.SeedCategories(data);
@@ -174,7 +178,7 @@ namespace E_Library.Test.Services
             data.SaveChanges();
             var booksService = new BookService(data);
 
-            booksService.Edit("incorrectId", "incorrectTitle", "incorrectDescription", 0m, "incorrectImageUrl", 0, "incorrectAuthor", "IncorrectPublisher", 0);
+            await booksService.EditAsync("incorrectId", "incorrectTitle", "incorrectDescription", 0m, "incorrectImageUrl", 0, "incorrectAuthor", "IncorrectPublisher", 0);
             var result = data.Books.FirstOrDefault();
 
             Assert.Equal(book.Title, result.Title);
@@ -189,7 +193,7 @@ namespace E_Library.Test.Services
         }
 
         [Fact]
-        public void DeleteWorksCorrectlyWhenGivenCorrectInput()
+        public async Task DeleteWorksCorrectlyWhenGivenCorrectInput()
         {
             var data = DbMock.Instance;
             CategorySeeder.SeedCategories(data);
@@ -199,13 +203,13 @@ namespace E_Library.Test.Services
             Assert.Equal(1, data.Books.Count());
             var booksService = new BookService(data);
 
-            booksService.Delete(book.Id);
+            await booksService.DeleteAsync(book.Id);
 
             Assert.Empty(data.Books);
         }
 
         [Fact]
-        public void DeleteDoesNothingWhenGivenIncorrectInput()
+        public async Task DeleteDoesNothingWhenGivenIncorrectInput()
         {
             var data = DbMock.Instance;
             CategorySeeder.SeedCategories(data);
@@ -214,13 +218,13 @@ namespace E_Library.Test.Services
             data.SaveChanges();
             var booksService = new BookService(data);
 
-            booksService.Delete("incorrectId");
+            await booksService.DeleteAsync("incorrectId");
 
             Assert.Equal(1, data.Books.Count());
         }
 
         [Fact]
-        public void GetBooksCountShouldReturnCountTwoWhenGivenOnlyCorrectSelectedCategory()
+        public async Task GetBooksCountShouldReturnCountTwoWhenGivenOnlyCorrectSelectedCategory()
         {
             var data = DbMock.Instance;
             CategorySeeder.SeedCategories(data);
@@ -229,13 +233,13 @@ namespace E_Library.Test.Services
             BookSeeder.SeedBooks(data);
             var booksService = new BookService(data);
 
-            var actual = booksService.GetBooksCount("", "Fantasy and science fiction");
+            var actual = await booksService.GetBooksCountAsync("", "Fantasy and science fiction");
 
             Assert.Equal(2, actual);
         }
 
         [Fact]
-        public void GetBooksCountShouldReturnCountOneWhenGivenOnlyCorrectSearchTerm()
+        public async Task GetBooksCountShouldReturnCountOneWhenGivenOnlyCorrectSearchTerm()
         {
             var data = DbMock.Instance;
             CategorySeeder.SeedCategories(data);
@@ -244,13 +248,13 @@ namespace E_Library.Test.Services
             BookSeeder.SeedBooks(data);
             var booksService = new BookService(data);
 
-            var actual = booksService.GetBooksCount("lord", "");
+            var actual = await booksService.GetBooksCountAsync("lord", "");
 
             Assert.Equal(1, actual);
         }
 
         [Fact]
-        public void GetBooksCountShouldReturnAllBooksCountWhenGivenNullInput()
+        public async Task GetBooksCountShouldReturnAllBooksCountWhenGivenNullInput()
         {
             var data = DbMock.Instance;
             CategorySeeder.SeedCategories(data);
@@ -259,13 +263,13 @@ namespace E_Library.Test.Services
             BookSeeder.SeedBooks(data);
             var booksService = new BookService(data);
 
-            var actual = booksService.GetBooksCount("", "");
+            var actual = await booksService.GetBooksCountAsync("", "");
 
             Assert.Equal(8, actual);
         }
 
         [Fact]
-        public void GetBooksCountShouldReturnZeroWhenGivenIncorrectInput()
+        public async Task GetBooksCountShouldReturnZeroWhenGivenIncorrectInput()
         {
             var data = DbMock.Instance;
             CategorySeeder.SeedCategories(data);
@@ -274,19 +278,19 @@ namespace E_Library.Test.Services
             BookSeeder.SeedBooks(data);
             var booksService = new BookService(data);
 
-            var actual = booksService.GetBooksCount("invalidSearchTerm", "invalidSelectedCategory");
+            var actual = await booksService.GetBooksCountAsync("invalidSearchTerm", "invalidSelectedCategory");
 
             Assert.Equal(0, actual);
         }
 
         [Fact]
-        public void DetailsShouldReturnCorrectResultWhenGivenCorrectInput()
+        public async Task DetailsShouldReturnCorrectResultWhenGivenCorrectInput()
         {
             var data = DbMock.Instance;
             CategorySeeder.SeedCategories(data);
             var book = GetBook();
             var booksService = new BookService(data);
-            booksService.Create(book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author.Name, book.Publisher.Name, book.CategoryId);
+            await booksService.CreateAsync(book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author.Name, book.Publisher.Name, book.CategoryId);
             var expected = new BookServiceModel
             {
                 Id = book.Id,
@@ -302,7 +306,7 @@ namespace E_Library.Test.Services
                 Category = data.Categories.FirstOrDefault(c => c.Id == book.CategoryId).Name
             };
 
-            var actual = booksService.Details(data.Books.FirstOrDefault().Id);
+            var actual = await booksService.DetailsAsync(data.Books.FirstOrDefault().Id);
 
             Assert.NotNull(actual);
             Assert.Equal(expected.Title, actual.Title);
@@ -318,7 +322,7 @@ namespace E_Library.Test.Services
         }
 
         [Fact]
-        public void DetailsShouldReturnNullWhenGivenIncorrectInput()
+        public async Task DetailsShouldReturnNullWhenGivenIncorrectInput()
         {
             var data = DbMock.Instance;
             CategorySeeder.SeedCategories(data);
@@ -326,13 +330,13 @@ namespace E_Library.Test.Services
             data.SaveChanges();
             var booksService = new BookService(data);
 
-            var result = booksService.Details("incorrectId");
+            var result = await booksService.DetailsAsync("incorrectId");
 
             Assert.Null(result);
         }
 
         [Fact]
-        public void GetBookCategoriesReturnsCorrectResultWhenThereAreCategoriesInTheDb()
+        public async Task GetBookCategoriesReturnsCorrectResultWhenThereAreCategoriesInTheDb()
         {
             var data = DbMock.Instance;
             CategorySeeder.SeedCategories(data);
@@ -389,36 +393,37 @@ namespace E_Library.Test.Services
                 }
             };
 
-            var actual = booksService.GetBookCategories().ToList();
+            var actual = await booksService.GetBookCategoriesAsync();
+            var res = actual.ToList();
 
-            Assert.NotEmpty(actual);
-            Assert.Equal(expected[0].Name, actual[0].Name);
-            Assert.Equal(expected[1].Name, actual[1].Name);
-            Assert.Equal(expected[2].Name, actual[2].Name);
-            Assert.Equal(expected[3].Name, actual[3].Name);
-            Assert.Equal(expected[4].Name, actual[4].Name);
-            Assert.Equal(expected[5].Name, actual[5].Name);
-            Assert.Equal(expected[6].Name, actual[6].Name);
-            Assert.Equal(expected[7].Name, actual[7].Name);
-            Assert.Equal(expected[8].Name, actual[8].Name);
-            Assert.Equal(expected[9].Name, actual[9].Name);
-            Assert.Equal(expected[10].Name, actual[10].Name);
-            Assert.Equal(expected[11].Name, actual[11].Name);
+            Assert.NotEmpty(res);
+            Assert.Equal(expected[0].Name, res[0].Name);
+            Assert.Equal(expected[1].Name, res[1].Name);
+            Assert.Equal(expected[2].Name, res[2].Name);
+            Assert.Equal(expected[3].Name, res[3].Name);
+            Assert.Equal(expected[4].Name, res[4].Name);
+            Assert.Equal(expected[5].Name, res[5].Name);
+            Assert.Equal(expected[6].Name, res[6].Name);
+            Assert.Equal(expected[7].Name, res[7].Name);
+            Assert.Equal(expected[8].Name, res[8].Name);
+            Assert.Equal(expected[9].Name, res[9].Name);
+            Assert.Equal(expected[10].Name, res[10].Name);
+            Assert.Equal(expected[11].Name, res[11].Name);
         }
 
         [Fact]
-        public void GetBookCategoriesReturnsEmptyCollectionWhenThereAreNoCategoriesInTheDb()
+        public async Task GetBookCategoriesReturnsEmptyCollectionWhenThereAreNoCategoriesInTheDb()
         {
             var data = DbMock.Instance;
             var booksService = new BookService(data);
 
-            var result = booksService.GetBookCategories();
+            var result = await booksService.GetBookCategoriesAsync();
 
             Assert.Empty(result);
         }
 
         [Fact]
-        public void CreateDoesNotAddAnAlreadyExistingPublisher()
+        public async Task CreateDoesNotAddAnAlreadyExistingPublisher()
         {
             var data = DbMock.Instance;
             CategorySeeder.SeedCategories(data);
@@ -428,7 +433,7 @@ namespace E_Library.Test.Services
             data.SaveChanges();
             var booksService = new BookService(data);
 
-            booksService.Create(book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author.Name, book.Publisher.Name, book.CategoryId);
+            await booksService.CreateAsync(book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author.Name, book.Publisher.Name, book.CategoryId);
 
             Assert.Equal(1, data.Publishers.Count());
             var actual = data.Books.FirstOrDefault().Publisher;
@@ -437,7 +442,7 @@ namespace E_Library.Test.Services
         }
 
         [Fact]
-        public void CreateDoesNotAddAnAlreadyExistingAuthor()
+        public async Task CreateDoesNotAddAnAlreadyExistingAuthor()
         {
             var data = DbMock.Instance;
             CategorySeeder.SeedCategories(data);
@@ -447,7 +452,7 @@ namespace E_Library.Test.Services
             data.SaveChanges();
             var booksService = new BookService(data);
 
-            booksService.Create(book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author.Name, book.Publisher.Name, book.CategoryId);
+            await booksService.CreateAsync(book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author.Name, book.Publisher.Name, book.CategoryId);
 
             Assert.Equal(1, data.Authors.Count());
             var actual = data.Books.FirstOrDefault().Author;
@@ -458,14 +463,14 @@ namespace E_Library.Test.Services
         }
 
         [Fact]
-        public void CreateWorksCorrectlyWhenGivenCorrectInput()
+        public async Task CreateWorksCorrectlyWhenGivenCorrectInput()
         {
             var data = DbMock.Instance;
             CategorySeeder.SeedCategories(data);
             var book = GetBook();
             var booksService = new BookService(data);
 
-            booksService.Create(book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author.Name, book.Publisher.Name, book.CategoryId);
+            await booksService.CreateAsync(book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author.Name, book.Publisher.Name, book.CategoryId);
 
             Assert.Equal(1, data.Books.Count());
 
@@ -481,7 +486,7 @@ namespace E_Library.Test.Services
         }
 
         [Fact]
-        public void CreateDoesNothingWhenSuchABookAlreadyExists()
+        public async Task CreateDoesNothingWhenSuchABookAlreadyExists()
         {
             var data = DbMock.Instance;
             var book = GetBook();
@@ -490,18 +495,18 @@ namespace E_Library.Test.Services
             Assert.Equal(1, data.Books.Count());
 
             var booksService = new BookService(data);
-            booksService.Create(book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author.Name, book.Publisher.Name, book.CategoryId);
+            await booksService.CreateAsync(book.Title, book.Description, book.Price, book.ImageUrl, book.Release, book.Author.Name, book.Publisher.Name, book.CategoryId);
 
             Assert.Equal(1, data.Books.Count());
         }
 
         [Fact]
-        public void CreateDoesNothingWhenGivenIncorrectInput()
+        public async Task CreateDoesNothingWhenGivenIncorrectInput()
         {
             var data = DbMock.Instance;
             var booksService = new BookService(data);
 
-            booksService.Create("invalidTitle", "invalidDescription", 0m, "invalidImageUrl", -5, "invalidAuthorName", "invalidPublisherName", 16);
+            await booksService.CreateAsync("invalidTitle", "invalidDescription", 0m, "invalidImageUrl", -5, "invalidAuthorName", "invalidPublisherName", 16);
 
             Assert.Empty(data.Books);
         }

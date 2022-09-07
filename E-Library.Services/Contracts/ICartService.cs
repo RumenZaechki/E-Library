@@ -4,10 +4,10 @@ namespace E_Library.Services.Contracts
 {
     public interface ICartService
     {
-        public bool IsBookInCart(string userId, string bookId);
-        public void Buy(string userId);
-        public void RemoveBookFromCart(string bookId, string userId);
-        public void AddBookToCart(string userId, string bookId);
-        public IEnumerable<CartBookModel> GetBooksFromCart(string userId);
+        public Task<bool> IsBookInCartAsync(string userId, string bookId);
+        public Task BuyAsync(string userId);
+        public Task RemoveBookFromCartAsync(string bookId, string userId);
+        public Task AddBookToCartAsync(string userId, string bookId);
+        public Task<IEnumerable<CartBookModel>> GetBooksFromCartAsync(string userId);
     }
 }

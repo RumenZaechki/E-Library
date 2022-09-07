@@ -17,26 +17,26 @@ namespace E_Library.Controllers
             this.cartService = cartService;
         }
         [Authorize]
-        public IActionResult AddToCart(string bookId)
+        public async Task<IActionResult> AddToCart(string bookId)
         {
             var userId = GetUserId();
 
-            if (cartService.IsBookInCart(userId, bookId))
+            if (await cartService.IsBookInCartAsync(userId, bookId))
             {
                 this.TempData[GlobalMessageKey] = "Item already added to cart!";
                 return RedirectToAction("All", "Books");
             }
 
-            this.cartService.AddBookToCart(userId, bookId);
+            await this.cartService.AddBookToCartAsync(userId, bookId);
 
             this.TempData[GlobalMessageKey] = "Successfully added book to cart.";
             return RedirectToAction("MyCart", "Carts");
         }
         [Authorize(Roles = UserConstants.UserRoleName)]
-        public IActionResult MyCart()
+        public async Task<IActionResult> MyCart()
         {
             var userId = GetUserId();
-            var books = this.cartService.GetBooksFromCart(userId);
+            var books = await this.cartService.GetBooksFromCartAsync(userId);
             var cartDetails = books
                 .Select(b => new CartDetailsViewModel
                 {
@@ -48,18 +48,18 @@ namespace E_Library.Controllers
             return View(cartDetails);
         }
         [Authorize]
-        public IActionResult Remove(string bookId)
+        public async Task<IActionResult> Remove(string bookId)
         {
             var userId = GetUserId();
-            this.cartService.RemoveBookFromCart(bookId, userId);
+            await this.cartService.RemoveBookFromCartAsync(bookId, userId);
             this.TempData[GlobalMessageKey] = "Successfully removed book from cart.";
             return RedirectToAction("MyCart", "Carts");
         }
         [Authorize]
-        public IActionResult Buy()
+        public async Task<IActionResult> Buy()
         {
             var userId = GetUserId();
-            this.cartService.Buy(userId);
+            await this.cartService.BuyAsync(userId);
             this.TempData[GlobalMessageKey] = "Successfully bought books.";
             return RedirectToAction("MyCart", "Carts");
         }

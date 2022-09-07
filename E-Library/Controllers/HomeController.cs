@@ -19,14 +19,14 @@ namespace E_Library.Controllers
             this.cache = cache;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             const string latestBooksCacheKey = "LatestBooksCacheKey";
             var latestBooks = this.cache.Get<List<BookServiceModel>>(latestBooksCacheKey);
 
             if (latestBooks == null)
             {
-                latestBooks = this.homeService.GetRecentBooks();
+                latestBooks = await this.homeService.GetRecentBooksAsync();
 
                 var cacheOptions = new MemoryCacheEntryOptions()
                     .SetAbsoluteExpiration(TimeSpan.FromMinutes(30));

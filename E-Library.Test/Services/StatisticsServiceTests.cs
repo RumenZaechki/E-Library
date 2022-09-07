@@ -4,6 +4,7 @@ using E_Library.Services.Contracts;
 using E_Library.Services.Statistics;
 using E_Library.Test.Mocks;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace E_Library.Test.Services
@@ -11,7 +12,7 @@ namespace E_Library.Test.Services
     public class StatisticsServiceTests
     {
         [Fact]
-        public void GetTotalUsersReturnsCorrectResultWhenDbIsNotEmpty()
+        public async Task GetTotalUsersReturnsCorrectResultWhenDbIsNotEmpty()
         {
             var data = DbMock.Instance;
             var users = Enumerable
@@ -21,42 +22,42 @@ namespace E_Library.Test.Services
             data.SaveChanges();
             IStatisticsService statisticsService = new StatisticsService(data);
 
-            var result = statisticsService.GetTotalUsers();
+            var result = await statisticsService.GetTotalUsersAsync();
 
             Assert.Equal(10, result);
         }
 
         [Fact]
-        public void GetTotalUsersReturnsZeroWhenDbIsEmpty()
+        public async Task GetTotalUsersReturnsZeroWhenDbIsEmpty()
         {
             var data = DbMock.Instance;
             IStatisticsService statisticsService = new StatisticsService(data);
 
-            var result = statisticsService.GetTotalUsers();
+            var result = await statisticsService.GetTotalUsersAsync();
 
             Assert.Equal(0, result);
         }
 
         [Fact]
-        public void GetTotalBooksReturnsCorrectResultWhenDbIsNotEmpty()
+        public async Task GetTotalBooksReturnsCorrectResultWhenDbIsNotEmpty()
         {
             var data = DbMock.Instance;
             SeedBooks(data);
             
             IStatisticsService statisticsService = new StatisticsService(data);
 
-            var result = statisticsService.GetTotalBooks();
+            var result = await statisticsService.GetTotalBooksAsync();
 
             Assert.Equal(4, result);
         }
 
         [Fact]
-        public void GetTotalBooksReturnsZeroWhenDbIsEmpty()
+        public async Task GetTotalBooksReturnsZeroWhenDbIsEmpty()
         {
             var data = DbMock.Instance;
             IStatisticsService statisticsService = new StatisticsService(data);
 
-            var result = statisticsService.GetTotalBooks();
+            var result = await statisticsService.GetTotalBooksAsync();
 
             Assert.Equal(0, result);
         }

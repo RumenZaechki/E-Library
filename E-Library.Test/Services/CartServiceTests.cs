@@ -3,6 +3,7 @@ using E_Library.Services.Carts;
 using E_Library.Test.Mocks;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace E_Library.Test.Services
@@ -10,7 +11,7 @@ namespace E_Library.Test.Services
     public class CartServiceTests
     {
         [Fact]
-        public void RemoveBookFromCartShouldWorkCorrectlyWhenGivenCorrectInput()
+        public async Task RemoveBookFromCartShouldWorkCorrectlyWhenGivenCorrectInput()
         {
             var data = DbMock.Instance;
             var user = GetUser();
@@ -20,18 +21,18 @@ namespace E_Library.Test.Services
             data.SaveChanges();
             var cartService = new CartService(data);
 
-            cartService.AddBookToCart(user.Id, book.Id);
+            await cartService.AddBookToCartAsync(user.Id, book.Id);
 
             Assert.NotEmpty(user.Cart.CartBooks);
             Assert.Equal(1, user.Cart.CartBooks.Count);
 
-            cartService.RemoveBookFromCart(book.Id, user.Id);
+            await cartService.RemoveBookFromCartAsync(book.Id, user.Id);
 
             Assert.Empty(user.Cart.CartBooks);
         }
 
         [Fact]
-        public void RemoveBookFromCartShouldDoNothingWhenGivenIncorrectInput()
+        public async Task RemoveBookFromCartShouldDoNothingWhenGivenIncorrectInput()
         {
             var data = DbMock.Instance;
             var user = GetUser();
@@ -41,25 +42,25 @@ namespace E_Library.Test.Services
             data.SaveChanges();
             var cartService = new CartService(data);
 
-            cartService.AddBookToCart(user.Id, book.Id);
-            cartService.RemoveBookFromCart("incorrectId", "anotherIncorrectId");
+            await cartService.AddBookToCartAsync(user.Id, book.Id);
+            await cartService.RemoveBookFromCartAsync("incorrectId", "anotherIncorrectId");
 
             Assert.NotEmpty(user.Cart.CartBooks);
             Assert.Equal(1, user.Cart.CartBooks.Count);
 
-            cartService.RemoveBookFromCart(book.Id, "anotherIncorrectId");
+            await cartService.RemoveBookFromCartAsync(book.Id, "anotherIncorrectId");
 
             Assert.NotEmpty(user.Cart.CartBooks);
             Assert.Equal(1, user.Cart.CartBooks.Count);
 
-            cartService.RemoveBookFromCart("incorrectId", user.Id);
+            await cartService.RemoveBookFromCartAsync("incorrectId", user.Id);
 
             Assert.NotEmpty(user.Cart.CartBooks);
             Assert.Equal(1, user.Cart.CartBooks.Count);
         }
 
         [Fact]
-        public void BuyShouldWorkCorrectlyWhenGivenCorrectInput()
+        public async Task BuyShouldWorkCorrectlyWhenGivenCorrectInput()
         {
             var data = DbMock.Instance;
             var user = GetUser();
@@ -69,17 +70,17 @@ namespace E_Library.Test.Services
             data.SaveChanges();
             var cartService = new CartService(data);
 
-            cartService.AddBookToCart(user.Id, book.Id);
+            await cartService.AddBookToCartAsync(user.Id, book.Id);
 
             Assert.NotEmpty(user.Cart.CartBooks);
 
-            cartService.Buy(user.Id);
+            await cartService.BuyAsync(user.Id);
 
             Assert.Empty(user.Cart.CartBooks);
         }
 
         [Fact]
-        public void BuyShouldDoNothingWhenGivenIncorrectInput()
+        public async Task BuyShouldDoNothingWhenGivenIncorrectInput()
         {
             var data = DbMock.Instance;
             var user = GetUser();
@@ -88,15 +89,15 @@ namespace E_Library.Test.Services
             data.Books.Add(book);
             data.SaveChanges();
             var cartService = new CartService(data);
-            cartService.AddBookToCart(user.Id, book.Id);
+            await cartService.AddBookToCartAsync(user.Id, book.Id);
 
-            cartService.Buy("incorrectId");
+            await cartService.BuyAsync("incorrectId");
 
             Assert.NotEmpty(user.Cart.CartBooks);
         }
 
         [Fact]
-        public void GetBooksFromCartShouldReturnCorrectResultWhenThereAreBooksInCart()
+        public async Task GetBooksFromCartShouldReturnCorrectResultWhenThereAreBooksInCart()
         {
             var data = DbMock.Instance;
             var user = GetUser();
@@ -112,8 +113,8 @@ namespace E_Library.Test.Services
                 Price = book.Price.ToString("F2")
             };
 
-            cartService.AddBookToCart(user.Id, book.Id);
-            var result = cartService.GetBooksFromCart(user.Id);
+            await cartService.AddBookToCartAsync(user.Id, book.Id);
+            var result = await cartService.GetBooksFromCartAsync(user.Id);
             var actual = result.FirstOrDefault();
 
             Assert.NotEmpty(result);
@@ -123,7 +124,7 @@ namespace E_Library.Test.Services
         }
 
         [Fact]
-        public void GetBooksFromCartShouldReturnEmptyCollectionWhenNoBooksAreInCart()
+        public async Task GetBooksFromCartShouldReturnEmptyCollectionWhenNoBooksAreInCart()
         {
             var data = DbMock.Instance;
             var user = GetUser();
@@ -133,13 +134,13 @@ namespace E_Library.Test.Services
             data.SaveChanges();
             var cartService = new CartService(data);
 
-            var result = cartService.GetBooksFromCart(user.Id);
+            var result = await cartService.GetBooksFromCartAsync(user.Id);
 
             Assert.Empty(result);
         }
 
         [Fact]
-        public void IsBookInCartShouldReturnTrueWhenGivenBookThatIsInCart()
+        public async Task IsBookInCartShouldReturnTrueWhenGivenBookThatIsInCart()
         {
             var data = DbMock.Instance;
             var user = GetUser();
@@ -149,14 +150,14 @@ namespace E_Library.Test.Services
             data.SaveChanges();
             var cartService = new CartService(data);
 
-            cartService.AddBookToCart(user.Id, book.Id);
-            var result = cartService.IsBookInCart(user.Id, book.Id);
+            await cartService.AddBookToCartAsync(user.Id, book.Id);
+            var result = await cartService.IsBookInCartAsync(user.Id, book.Id);
 
             Assert.True(result);
         }
 
         [Fact]
-        public void IsBookInCartShouldReturnFalseWhenGivenBookThatIsNotInCart()
+        public async Task IsBookInCartShouldReturnFalseWhenGivenBookThatIsNotInCart()
         {
             var data = DbMock.Instance;
             var user = GetUser();
@@ -168,14 +169,14 @@ namespace E_Library.Test.Services
             data.SaveChanges();
             var cartService = new CartService(data);
 
-            cartService.AddBookToCart(user.Id, book.Id);
-            var result = cartService.IsBookInCart(secondUser.Id, book.Id);
+            await cartService.AddBookToCartAsync(user.Id, book.Id);
+            var result = await cartService.IsBookInCartAsync(secondUser.Id, book.Id);
 
             Assert.False(result);
         }
 
         [Fact]
-        public void IsBookInCartShouldReturnFalseWhenGivenAnEmptyCart()
+        public async Task IsBookInCartShouldReturnFalseWhenGivenAnEmptyCart()
         {
             var data = DbMock.Instance;
             var user = GetUser();
@@ -185,13 +186,13 @@ namespace E_Library.Test.Services
             data.SaveChanges();
             var cartService = new CartService(data);
 
-            var result = cartService.IsBookInCart(user.Id, book.Id);
+            var result = await cartService.IsBookInCartAsync(user.Id, book.Id);
 
             Assert.False(result);
         }
 
         [Fact]
-        public void AddToCartWorksCorrectlyWhenGivenCorrectInput()
+        public async Task AddToCartWorksCorrectlyWhenGivenCorrectInput()
         {
             var data = DbMock.Instance;
             var user = GetUser();
@@ -201,7 +202,7 @@ namespace E_Library.Test.Services
             data.SaveChanges();
             var cartService = new CartService(data);
 
-            cartService.AddBookToCart(user.Id, book.Id);
+            await cartService.AddBookToCartAsync(user.Id, book.Id);
 
             var result = data.BookCarts.FirstOrDefault(bc => bc.CartId == user.Cart.Id && bc.BookId == book.Id);
             Assert.NotNull(result);
@@ -210,12 +211,12 @@ namespace E_Library.Test.Services
         }
 
         [Fact]
-        public void AddToCartShouldDoNothingWhenGivenIncorrectInput()
+        public async Task AddToCartShouldDoNothingWhenGivenIncorrectInput()
         {
             var data = DbMock.Instance;
             var cartService = new CartService(data);
 
-            cartService.AddBookToCart("incorrectId", "anotherIncorrectId");
+            await cartService.AddBookToCartAsync("incorrectId", "anotherIncorrectId");
 
             Assert.Empty(data.BookCarts);
         }

@@ -1,6 +1,7 @@
 ﻿using E_Library.Data;
 using E_Library.Services.Contracts;
 using E_Library.Services.Users.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace E_Library.Services.Users
 {
@@ -12,25 +13,25 @@ namespace E_Library.Services.Users
             this.data = data;
         }
 
-        public IEnumerable<UserServiceModel> GetAllUsers(string adminId)
+        public async Task<IEnumerable<UserServiceModel>> GetAllUsersAsync(string adminId)
         {
-            return this.data.Users
+            return await this.data.Users
                 .Where(u => u.Id != adminId)
                 .Select(u => new UserServiceModel
                 {
                     Id = u.Id,
                     Username = u.UserName
                 })
-                .ToList();
+                .ToListAsync();
         }
 
-        public void DeleteUser(string userId)
+        public async Task DeleteUserAsync(string userId)
         {
-            var user = this.data.Users.FirstOrDefault(u => u.Id == userId);
+            var user = await this.data.Users.FirstOrDefaultAsync(u => u.Id == userId);
             if (user != null)
             {
                 this.data.Users.Remove(user);
-                this.data.SaveChanges();
+                await this.data.SaveChangesAsync();
             }
         }
     }

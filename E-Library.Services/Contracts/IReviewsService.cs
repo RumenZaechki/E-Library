@@ -4,8 +4,8 @@ namespace E_Library.Services.Contracts
 {
     public interface IReviewsService
     {
-        public void DeleteReview(string reviewId);
-        public void AddReview(string bookId, string userId, int rating, string description);
-        public ICollection<ReviewServiceModel> GetAllReviews(string bookId);
+        public Task DeleteReviewAsync(string reviewId);
+        public Task AddReviewAsync(string bookId, string userId, int rating, string description);
+        public Task<ICollection<ReviewServiceModel>> GetAllReviewsAsync(string bookId);
     }
 }

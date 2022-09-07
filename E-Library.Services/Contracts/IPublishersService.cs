@@ -4,6 +4,6 @@ namespace E_Library.Services.Contracts
 {
     public interface IPublishersService
     {
-        public PublisherServiceModel Details(string publisherId);
+        public Task<PublisherServiceModel> DetailsAsync(string publisherId);
     }
 }

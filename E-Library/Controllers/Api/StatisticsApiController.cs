@@ -14,12 +14,12 @@ namespace E_Library.Controllers.Api
             this.statisticsService = statisticsService;
         }
         [HttpGet]
-        public StatisticsResponseModel GetStatistics()
+        public async Task<StatisticsResponseModel> GetStatistics()
         {
             return new StatisticsResponseModel
             {
-                TotalBooks = statisticsService.GetTotalBooks(),
-                TotalUsers = statisticsService.GetTotalUsers(),
+                TotalBooks = await statisticsService.GetTotalBooksAsync(),
+                TotalUsers = await statisticsService.GetTotalUsersAsync(),
             };
         }
     }

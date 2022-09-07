@@ -14,9 +14,9 @@ namespace E_Library.Areas.Admin.Controllers
         }
 
         [Authorize]
-        public IActionResult Delete(string commentId, string bookId)
+        public async Task<IActionResult> Delete(string commentId, string bookId)
         {
-            this.reviewsService.DeleteReview(commentId);
+            await this.reviewsService.DeleteReviewAsync(commentId);
             this.TempData[GlobalMessageKey] = "Successfully removed review from book.";
             return RedirectToAction("All", "Reviews", new {area = "", bookId = bookId});
         }
